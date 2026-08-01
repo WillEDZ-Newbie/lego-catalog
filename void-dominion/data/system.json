@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0",
+  "id": "system-void-dominion",
+  "name": "Void Dominion",
+  "shell": "Void Dominion",
+  "operatingInterface": "Atlas",
+  "convergencePoint": "Nexus",
+  "tagline": "Local-first operating environment",
+  "documentAuthority": "Implementation Brief v3",
+  "hierarchy": {
+    "shell": "Void Dominion",
+    "map": "Atlas",
+    "center": "Nexus",
+    "infrastructure": "9 Permanent Locations",
+    "projects": "Project Worlds"
+  },
+  "shortcutsContract": [
+    "⭐ Chief", "⭐ Receptionist", "⭐ Morning", "⭐ Evening", "⭐ Weekly",
+    "EXEC • Brain", "EXEC • Router", "EXEC • Queue",
+    "OPS • Calendar", "OPS • Reminders", "OPS • Health", "OPS • Finance", "OPS • Home",
+    "LIFE • Project & Goals", "LIFE • Travel", "LIFE • Relationships", "LIFE • Shopping",
+    "SYS • Files", "SYS • JSON", "SYS • Messenger", "SYS • Logger", "SYS • Debug"
+  ],
+  "createdAt": "2026-08-01T00:00:00.000Z",
+  "updatedAt": "2026-08-01T00:00:00.000Z"
+}

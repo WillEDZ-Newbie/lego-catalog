@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Void Dominion — a local-first operating environment. Atlas, Nexus, nine permanent Locations and immersive Project Worlds.">
+  <meta name="color-scheme" content="dark">
+  <title>Void Dominion</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <a class="skip-link" href="#view-root" style="position:absolute;left:-999px;top:0;">Skip to content</a>
+  <div class="app">
+    <aside class="nav" id="nav-root" aria-label="Void Dominion navigation"></aside>
+    <main class="main">
+      <div class="status-root" id="status-root"></div>
+      <div class="content" id="view-root" tabindex="-1" role="region" aria-label="Main view"></div>
+    </main>
+    <footer class="footer">
+      Void Dominion · local-first · Atlas operating environment ·
+      <span class="muted">Foundation build — visual assets, animation and transitions are configurable placeholders awaiting production.</span>
+    </footer>
+  </div>
+
+  <div class="modal-root" id="modal-root" hidden></div>
+  <div class="toast-root" id="toast-root" aria-live="polite"></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

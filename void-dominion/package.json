@@ -1,0 +1,14 @@
+{
+  "name": "void-dominion",
+  "version": "0.1.0",
+  "description": "Void Dominion / Atlas — a local-first operating environment. Foundation build.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "serve": "python3 -m http.server 8080",
+    "start": "python3 -m http.server 8080",
+    "test": "node tests/run.js"
+  },
+  "keywords": ["local-first", "atlas", "void-dominion"],
+  "license": "UNLICENSED"
+}

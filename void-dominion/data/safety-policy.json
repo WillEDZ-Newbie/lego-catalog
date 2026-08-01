@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1.0",
+  "id": "safety-policy-default",
+  "riskClasses": {
+    "low": {
+      "label": "Routine, reversible",
+      "examples": ["Open a World", "Filter a gallery", "Create a local draft", "Update a reversible view preference"],
+      "defaultDecision": "allow-with-log",
+      "requiresApproval": false,
+      "record": "Activity entry when meaningful"
+    },
+    "moderate": {
+      "label": "Meaningful but reversible",
+      "examples": ["Create or edit metadata", "Change project status", "Archive an Object", "Create a proposed World record"],
+      "defaultDecision": "allow-with-log",
+      "requiresApproval": false,
+      "record": "Before/after state and source"
+    },
+    "high": {
+      "label": "Consequential",
+      "examples": ["Move or rename files", "Publish code", "Send a message", "Create a calendar commitment", "Share private data"],
+      "defaultDecision": "require-approval",
+      "requiresApproval": true,
+      "record": "Approval record, exact proposed effect and result"
+    },
+    "critical": {
+      "label": "Destructive or canonical",
+      "examples": ["Permanent deletion", "Spend money", "Book or cancel", "Overwrite authoritative data", "Alter locked canon", "Merge/remove a World", "Reset system data"],
+      "defaultDecision": "require-approval",
+      "requiresApproval": true,
+      "backupFirst": true,
+      "record": "Approval, backup/reference, result and recovery information"
+    }
+  },
+  "actionRisk": {
+    "world.create": "high",
+    "world.update": "moderate",
+    "world.archive": "moderate",
+    "world.restore": "moderate",
+    "world.delete": "critical",
+    "world.merge": "critical",
+    "object.create": "low",
+    "object.update": "moderate",
+    "object.archive": "moderate",
+    "object.delete": "critical",
+    "room.create": "low",
+    "room.update": "moderate",
+    "room.delete": "high",
+    "canon.change": "high",
+    "canon.finalize": "high",
+    "canon.delete": "critical",
+    "settings.update": "moderate",
+    "provider.enable": "high",
+    "file.move": "high",
+    "file.rename": "high",
+    "file.delete": "critical",
+    "message.send": "high",
+    "purchase": "critical",
+    "booking": "critical",
+    "data.reset": "critical",
+    "data.import": "moderate",
+    "data.migrate": "critical",
+    "ui.preference": "low",
+    "capture.create": "low"
+  },
+  "alwaysRequireApproval": [
+    "Permanent deletion or irreversible replacement",
+    "Purchases, payments, subscriptions, bookings or financial commitments",
+    "Sending messages, emails or publishing content",
+    "Cancelling appointments, travel or commitments",
+    "Medical instruction changes or any action presented as diagnosis or treatment",
+    "Sharing sensitive or personal information",
+    "Creating, merging, renaming or deleting a Project World",
+    "Changing established canon or replacing a final approved decision",
+    "Writing to or publishing through GitHub",
+    "Moving or renaming authoritative files",
+    "Enabling a new external integration that can read or write private data"
+  ],
+  "invariants": [
+    "No external action may be displayed as successful until the responsible provider confirms success.",
+    "No permission, connection or data access may be inferred from the presence of a path, URL or account name.",
+    "Silence, inactivity, opening a dialog or accepting a different action never counts as approval.",
+    "Approval is action-specific, target-specific and time-bounded.",
+    "High-risk actions must not be bundled with routine actions behind one approval.",
+    "Permanent deletion must remain unavailable when a safe archive or reversible alternative is feasible."
+  ]
+}
