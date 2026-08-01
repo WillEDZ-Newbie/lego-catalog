@@ -1,0 +1,61 @@
+/* layout.css — shell scaffold: sidenav, workspace, topbar, outlet, grids. */
+.app-root, .shell { min-height: 100vh; }
+
+.shell {
+  display: grid;
+  grid-template-columns: var(--nav-w) 1fr;
+  min-height: 100vh;
+}
+
+/* Sidenav */
+.sidenav {
+  position: sticky; top: 0; align-self: start;
+  height: 100vh; overflow-y: auto;
+  background: linear-gradient(180deg, var(--void-100), var(--void-050));
+  border-right: 1px solid var(--border);
+  padding: var(--sp-4);
+  z-index: var(--z-nav);
+}
+.brand { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-2) var(--sp-5); }
+.brand__mark { color: var(--accent); font-size: 1.3rem; text-shadow: var(--glow); }
+.brand__name { font-weight: 700; letter-spacing: .18em; font-size: var(--fs-sm); }
+.navgroup { margin-bottom: var(--sp-5); }
+.navgroup__title { padding: 0 var(--sp-2) var(--sp-2); }
+.navlink {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3); border-radius: var(--radius-sm);
+  color: var(--text-dim); font-size: var(--fs-sm);
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.navlink:hover { background: var(--surface-2); color: var(--text); }
+.navlink.is-active { background: color-mix(in oklab, var(--accent) 14%, transparent); color: var(--text); box-shadow: inset 2px 0 0 var(--accent); }
+
+/* Workspace */
+.workspace { display: flex; flex-direction: column; min-width: 0; }
+.topbar {
+  position: sticky; top: 0; z-index: var(--z-topbar);
+  display: flex; align-items: center; gap: var(--sp-4);
+  height: var(--topbar-h); padding: 0 var(--sp-5);
+  background: color-mix(in oklab, var(--void-050) 82%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.outlet { padding: var(--sp-6) var(--sp-6) var(--sp-8); min-width: 0; }
+.outlet:focus { outline: none; }
+
+/* Grids */
+.grid { display: grid; gap: var(--sp-4); }
+.grid--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid--stats { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.grid--locations { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.grid--worlds { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+.grid--nexus { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+
+.view { max-width: 1200px; }
+.view__head { margin-bottom: var(--sp-5); }
+.view__eyebrow { display: flex; align-items: center; gap: var(--sp-2); color: var(--accent); font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .12em; }
+.view__icon { font-size: 1.1rem; }
+.section-title { margin: var(--sp-6) 0 var(--sp-3); }
+.section-title-row { display: flex; align-items: center; justify-content: space-between; margin: var(--sp-6) 0 var(--sp-3); }
+.row { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; }
+.crumbs { color: var(--text-dim); font-size: var(--fs-sm); margin-bottom: var(--sp-3); }

@@ -1,0 +1,74 @@
+/* tokens.css — design tokens: colour, type, spacing, depth, glow, motion, z.
+   Every visual surface reads from these so themes/assets can be swapped
+   without touching component code (§16). */
+:root {
+  /* Palette: dark void/obsidian, metallic silver, controlled green illumination */
+  --void-000: #05060a;
+  --void-050: #0a0c14;
+  --void-100: #0f121d;
+  --void-200: #161a28;
+  --void-300: #1e2334;
+  --void-400: #2a3145;
+  --silver-100: #e7eaf2;
+  --silver-200: #c2c8d6;
+  --silver-300: #97a0b5;
+  --silver-400: #6b7488;
+  --green-300: #8fe3c2;
+  --green-400: #57c99a;
+  --green-500: #2f9e75;
+  --accent: var(--green-300);
+
+  --bg: var(--void-000);
+  --surface: var(--void-100);
+  --surface-2: var(--void-200);
+  --surface-3: var(--void-300);
+  --border: #232a3d;
+  --border-strong: #313a52;
+  --text: var(--silver-100);
+  --text-dim: var(--silver-300);
+  --text-faint: var(--silver-400);
+  --focus: var(--green-300);
+
+  --danger: #e3697a;
+  --danger-bg: #2a141a;
+  --warn: #e3c98f;
+  --ok: #8fe3a0;
+  --info: #8fbce3;
+
+  /* Type */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, system-ui, sans-serif;
+  --font-mono: "SF Mono", ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
+  --fs-xs: 0.72rem; --fs-sm: 0.82rem; --fs-md: 0.94rem; --fs-lg: 1.15rem;
+  --fs-xl: 1.5rem; --fs-2xl: 2.1rem; --fs-3xl: 3rem;
+
+  /* Spacing */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px;
+  --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
+
+  /* Radius / depth / glow */
+  --radius-sm: 6px; --radius: 12px; --radius-lg: 18px;
+  --shadow-1: 0 1px 3px rgba(0,0,0,.4);
+  --shadow-2: 0 8px 30px rgba(0,0,0,.5);
+  --glow: 0 0 24px color-mix(in oklab, var(--accent) 35%, transparent);
+
+  /* Motion */
+  --dur-fast: 120ms; --dur: 220ms; --dur-slow: 420ms;
+  --ease: cubic-bezier(.2,.7,.2,1);
+
+  /* Z-index scale */
+  --z-nav: 20; --z-topbar: 30; --z-toast: 60; --z-modal: 80;
+
+  --nav-w: 264px;
+  --topbar-h: 60px;
+}
+
+:root[data-theme="obsidian"] {
+  --bg: #060608; --surface: #101014; --surface-2: #17171d; --accent: #b7c0d0;
+}
+
+/* Reduced motion: zero out durations app-wide when requested (§6/§16). */
+:root[data-motion="reduced"] * {
+  animation-duration: 0.001ms !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}

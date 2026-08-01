@@ -1,0 +1,30 @@
+[
+  {
+    "schemaVersion": "1.0",
+    "id": "activity-seed-1",
+    "actor": "system",
+    "type": "system.seeded",
+    "entityType": "system",
+    "entityId": "system-void-dominion",
+    "summary": "Void Dominion foundation seeded.",
+    "before": {},
+    "after": {},
+    "approvalId": null,
+    "result": "success",
+    "timestamp": "2026-01-02T09:00:00.000Z"
+  },
+  {
+    "schemaVersion": "1.0",
+    "id": "activity-seed-2",
+    "actor": "system",
+    "type": "world.created",
+    "entityType": "world",
+    "entityId": "world-halo",
+    "summary": "Seeded World: Halo / Widgy.",
+    "before": {},
+    "after": {},
+    "approvalId": null,
+    "result": "success",
+    "timestamp": "2026-01-02T09:10:00.000Z"
+  }
+]

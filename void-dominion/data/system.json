@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "id": "system-void-dominion",
+  "name": "Void Dominion",
+  "shell": "Void Dominion",
+  "operatingMap": "Atlas",
+  "convergence": "Nexus",
+  "tagline": "Local-first operating environment",
+  "canonNote": "Void Dominion is the highest shell. Atlas is the visible operating map. Nexus is the central convergence point. Nine permanent Locations provide the infrastructure of the entire system, including Void Dominion itself. Each significant project is its own immersive World with its own gallery.",
+  "locationCount": 9,
+  "createdAt": "2026-01-01T00:00:00.000Z",
+  "updatedAt": "2026-01-01T00:00:00.000Z"
+}

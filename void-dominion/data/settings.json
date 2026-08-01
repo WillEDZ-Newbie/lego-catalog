@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0",
+  "id": "settings",
+  "theme": "void",
+  "reducedMotion": "auto",
+  "developerMode": false,
+  "pauseAmbientWhenHidden": true,
+  "providers": {
+    "local": { "enabled": true, "status": "connected", "mode": "live", "writeCapability": "approved" },
+    "icloud": { "enabled": false, "status": "not-configured", "mode": "stub", "writeCapability": "none" },
+    "github": { "enabled": false, "status": "not-configured", "mode": "stub", "writeCapability": "none" },
+    "chief": { "enabled": true, "status": "mock", "mode": "mock", "writeCapability": "none" },
+    "ai": { "enabled": true, "status": "mock", "mode": "mock", "writeCapability": "none" }
+  },
+  "featureFlags": {
+    "immersiveGallery": true,
+    "commandBar": true,
+    "activityTimeline": true
+  }
+}

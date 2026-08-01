@@ -1,0 +1,2 @@
+Placeholder for the "Impossible staircase reference" seed object
+(object-atlas-ref-1). Not a real asset — replace during visual production.
