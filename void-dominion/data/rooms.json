@@ -1,0 +1,16 @@
+[
+  { "schemaVersion": "1.0", "id": "room-ai-development", "worldId": "world-atlas-impossible", "name": "Development", "type": "development", "objectIds": [], "notes": "Sample room." },
+  { "schemaVersion": "1.0", "id": "room-ai-assets", "worldId": "world-atlas-impossible", "name": "Assets", "type": "assets", "objectIds": ["object-ai-cover"], "notes": "Sample room." },
+  { "schemaVersion": "1.0", "id": "room-ai-canon", "worldId": "world-atlas-impossible", "name": "Canon", "type": "canon", "objectIds": [], "notes": "Sample room." },
+  { "schemaVersion": "1.0", "id": "room-halo-development", "worldId": "world-halo", "name": "Development", "type": "development", "objectIds": [], "notes": "Sample room." },
+  { "schemaVersion": "1.0", "id": "room-halo-animation", "worldId": "world-halo", "name": "Animation", "type": "animation", "objectIds": [], "notes": "Halo-clock animation specifications." },
+  { "schemaVersion": "1.0", "id": "room-halo-code", "worldId": "world-halo", "name": "Code", "type": "code", "objectIds": [], "notes": "Widget layout code references." },
+  { "schemaVersion": "1.0", "id": "room-arch-assets", "worldId": "world-archetype-posters", "name": "Assets", "type": "assets", "objectIds": [], "notes": "Sample room." },
+  { "schemaVersion": "1.0", "id": "room-ez-canon", "worldId": "world-prince-ez", "name": "Canon", "type": "canon", "objectIds": [], "notes": "Sample room." },
+  { "schemaVersion": "1.0", "id": "room-chief-canon", "worldId": "world-chief", "name": "Canon", "type": "canon", "objectIds": [], "notes": "Locked Shortcuts contract." },
+  { "schemaVersion": "1.0", "id": "room-chief-code", "worldId": "world-chief", "name": "Code", "type": "code", "objectIds": [], "notes": "Sample room." },
+  { "schemaVersion": "1.0", "id": "room-voidos-development", "worldId": "world-voidos", "name": "Development", "type": "development", "objectIds": [], "notes": "Foundation build." },
+  { "schemaVersion": "1.0", "id": "room-voidos-release", "worldId": "world-voidos", "name": "Release", "type": "release", "objectIds": [], "notes": "Release readiness." },
+  { "schemaVersion": "1.0", "id": "room-coding-code", "worldId": "world-coding-projects", "name": "Code", "type": "code", "objectIds": [], "notes": "Sample room." },
+  { "schemaVersion": "1.0", "id": "room-sacred-assets", "worldId": "world-sacred-realism", "name": "Assets", "type": "assets", "objectIds": [], "notes": "Sample room." }
+]

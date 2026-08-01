@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Void Dominion — Tests</title>
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <style>
+    body { padding: 2rem; font-family: var(--font-sans); background: var(--bg); }
+    .result { padding: 0.35rem 0; border-bottom: 1px solid var(--border); font-family: var(--font-mono); font-size: 0.85rem; }
+    .ok { color: var(--green-300); }
+    .fail { color: #e692a8; }
+    .summary { margin-top: 1rem; font-size: 1.1rem; }
+  </style>
+</head>
+<body>
+  <h1>Void Dominion — Test suite</h1>
+  <div id="output"></div>
+  <script type="module">
+    import './suite.js';
+    import { run } from './framework.js';
+    const out = document.getElementById('output');
+    const { passed, failed, total, results } = await run();
+    for (const r of results) {
+      const div = document.createElement('div');
+      div.className = 'result ' + (r.ok ? 'ok' : 'fail');
+      div.textContent = (r.ok ? '✓ ' : '✗ ') + r.name + (r.ok ? '' : ' → ' + r.error);
+      out.appendChild(div);
+    }
+    const s = document.createElement('div');
+    s.className = 'summary ' + (failed ? 'fail' : 'ok');
+    s.textContent = `${passed}/${total} passed, ${failed} failed.`;
+    out.appendChild(s);
+  </script>
+</body>
+</html>

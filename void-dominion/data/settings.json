@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1.0",
+  "id": "settings-default",
+  "theme": "void",
+  "reducedMotion": false,
+  "developerMode": false,
+  "pauseAmbientWhenHidden": true,
+  "featureFlags": {
+    "immersiveGalleries": true,
+    "crossWorldDiscovery": true,
+    "chiefPanel": true
+  },
+  "providers": [
+    {
+      "providerId": "local",
+      "status": "connected",
+      "label": "Local metadata provider",
+      "capabilities": { "list": true, "read": true, "preview": true, "create": true, "update": true, "move": false, "delete": true, "commit": false },
+      "lastVerifiedAt": "2026-08-01T00:00:00.000Z",
+      "permissionScope": ["atlas-metadata"],
+      "error": null
+    },
+    {
+      "providerId": "icloud",
+      "status": "mock",
+      "label": "iCloud Drive (stub) — requires user-selected files, a local companion, Apple Shortcuts or a native app",
+      "capabilities": { "list": false, "read": false, "preview": false, "create": false, "update": false, "move": false, "delete": false, "commit": false },
+      "lastVerifiedAt": "",
+      "permissionScope": [],
+      "error": null
+    },
+    {
+      "providerId": "github",
+      "status": "mock",
+      "label": "GitHub (stub) — repository URLs are read references only; writes need authenticated provider and approval",
+      "capabilities": { "list": true, "read": true, "preview": true, "create": false, "update": false, "move": false, "delete": false, "commit": false },
+      "lastVerifiedAt": "",
+      "permissionScope": [],
+      "error": null
+    },
+    {
+      "providerId": "chief",
+      "status": "mock",
+      "label": "Chief (stub) — local mock of Apple Shortcuts reasoning and dispatch",
+      "capabilities": { "list": true, "read": true, "preview": true, "create": true, "update": true, "move": false, "delete": false, "commit": false },
+      "lastVerifiedAt": "",
+      "permissionScope": [],
+      "error": null
+    },
+    {
+      "providerId": "ai",
+      "status": "mock",
+      "label": "AI reasoning (stub) — deterministic local placeholder; no external model calls",
+      "capabilities": { "list": false, "read": true, "preview": false, "create": true, "update": false, "move": false, "delete": false, "commit": false },
+      "lastVerifiedAt": "",
+      "permissionScope": [],
+      "error": null
+    }
+  ],
+  "automations": []
+}

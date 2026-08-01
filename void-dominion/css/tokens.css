@@ -1,0 +1,93 @@
+/* tokens.css — design tokens for colour, type, spacing, depth, glow, motion.
+   Every visual surface reads from these so imagery/theme can be replaced
+   without rewriting components (§16, §41). Base palette: dark void/obsidian,
+   metallic silver, controlled green illumination. */
+
+:root {
+  /* Void / obsidian surfaces */
+  --void-900: #05070b;
+  --void-800: #0a0e16;
+  --void-700: #10141f;
+  --void-600: #171c2a;
+  --void-500: #1f2637;
+  --void-400: #2a3247;
+
+  /* Metallic silver */
+  --silver-100: #f2f4f8;
+  --silver-200: #d7dce6;
+  --silver-300: #b6becd;
+  --silver-400: #8b93a5;
+  --silver-500: #626a7d;
+
+  /* Controlled green illumination */
+  --green-300: #8fe6bd;
+  --green-400: #4fd6a3;
+  --green-500: #2fb488;
+  --glow-green: 0 0 0.75rem rgba(79, 214, 163, 0.35);
+
+  /* Status accents (non-colour indicators paired in components) */
+  --accent-warn: #d6a24f;
+  --accent-high: #d6785f;
+  --accent-critical: #d65f7a;
+  --accent-info: #4fb8d6;
+
+  /* Semantic surface roles */
+  --bg: var(--void-900);
+  --bg-elev: var(--void-700);
+  --bg-panel: var(--void-600);
+  --bg-input: var(--void-800);
+  --border: #232a3b;
+  --border-strong: #313a52;
+  --text: var(--silver-100);
+  --text-muted: var(--silver-400);
+  --link: var(--green-300);
+  --accent: var(--green-400);
+
+  /* Typography */
+  --font-sans: "Inter", "SF Pro Text", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.85rem;
+  --fs-md: 0.95rem;
+  --fs-lg: 1.15rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: 2rem;
+  --fs-3xl: 2.75rem;
+
+  /* Spacing */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-8: 3rem;
+
+  /* Radius & depth */
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 8px 24px rgba(0, 0, 0, 0.45);
+
+  /* Motion */
+  --dur-fast: 120ms;
+  --dur: 240ms;
+  --dur-slow: 480ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  /* Z-index scale */
+  --z-nav: 10;
+  --z-status: 20;
+  --z-toast: 80;
+  --z-modal: 100;
+
+  --nav-w: 264px;
+}
+
+:root.reduced-motion,
+:root.reduced-motion * {
+  --dur-fast: 0ms;
+  --dur: 0ms;
+  --dur-slow: 0ms;
+}

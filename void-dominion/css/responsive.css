@@ -1,0 +1,34 @@
+/* responsive.css — Mac and iPad layouts (§18 Quality). */
+
+/* iPad landscape / narrow desktop: collapse the sidebar to a top bar. */
+@media (max-width: 960px) {
+  .app { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr auto; }
+  .nav {
+    grid-row: auto; position: static; height: auto; flex-direction: row; flex-wrap: wrap;
+    align-items: center; gap: var(--sp-2); overflow-x: auto;
+  }
+  .nav__brand { padding: 0 var(--sp-2) 0 0; }
+  .nav__primary { flex-direction: row; flex-wrap: wrap; }
+  .nav__link { flex-direction: row; gap: var(--sp-1); }
+  .nav__link-hint { display: none; }
+  .nav__section-label { display: none; }
+  .nav__locations { flex-direction: row; flex-wrap: wrap; }
+  .nav__loc-name { display: none; }
+  .nav__command { margin: 0 0 0 auto; }
+  .footer { grid-column: 1; }
+  .kv { grid-template-columns: 1fr; }
+  .object-grid { grid-template-columns: 1fr; }
+}
+
+/* iPad portrait / phones. */
+@media (max-width: 620px) {
+  .content { padding: var(--sp-4); }
+  .world-hero { flex-direction: column; }
+  .focal__title { font-size: var(--fs-2xl); }
+  .status-pill--muted { display: none; }
+}
+
+/* Honour the OS reduced-motion preference by default. */
+@media (prefers-reduced-motion: reduce) {
+  .card--link:hover, .map-node:hover, .world-card:hover { transform: none; }
+}

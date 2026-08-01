@@ -1,0 +1,53 @@
+/* base.css — element-level typography and primitives. */
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  line-height: 1.55;
+  color: var(--text);
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(79, 214, 163, 0.06), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(79, 184, 214, 0.05), transparent 60%),
+    var(--bg);
+}
+
+h1 { font-size: var(--fs-2xl); line-height: 1.15; letter-spacing: -0.01em; }
+h2 { font-size: var(--fs-xl); line-height: 1.2; }
+h3 { font-size: var(--fs-lg); }
+p { color: var(--text); }
+a { color: var(--link); }
+a:hover { text-decoration: underline; }
+
+.muted { color: var(--text-muted); }
+.mono { font-family: var(--font-mono); font-size: var(--fs-sm); }
+.lead { font-size: var(--fs-lg); }
+.link { color: var(--link); font-weight: 500; }
+.sub { font-size: var(--fs-sm); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: var(--sp-4); }
+
+code { font-family: var(--font-mono); font-size: 0.85em; background: var(--void-800); padding: 0.1em 0.35em; border-radius: 4px; }
+
+.callout {
+  border-left: 3px solid var(--border-strong);
+  background: var(--void-800);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+.callout--warn { border-left-color: var(--accent-warn); color: var(--silver-200); }
+.callout--boundary { border-left-color: var(--silver-500); }
+
+.badge { display: inline-block; font-size: var(--fs-xs); padding: 0.15em 0.5em; border-radius: 999px; border: 1px dashed var(--border-strong); color: var(--text-muted); }
+.badge--placeholder { border-style: dashed; }
+
+.tag {
+  display: inline-block; font-size: var(--fs-xs); padding: 0.1em 0.55em; border-radius: 999px;
+  background: var(--void-500); color: var(--silver-200); border: 1px solid var(--border);
+}
+.tag--low, .tag--final { background: rgba(79, 214, 163, 0.15); color: var(--green-300); border-color: rgba(79, 214, 163, 0.3); }
+.tag--medium, .tag--moderate { background: rgba(79, 184, 214, 0.15); color: #9fd8e6; }
+.tag--high { background: rgba(214, 120, 95, 0.18); color: #e6a892; }
+.tag--critical { background: rgba(214, 95, 122, 0.2); color: #e692a8; }
+.tag--mock { background: rgba(214, 162, 79, 0.16); color: #e6c892; border-color: rgba(214,162,79,0.3); }
+
+.chip { display: inline-block; font-size: var(--fs-xs); padding: 0.15em 0.6em; margin: 0.1em; border-radius: 999px; background: var(--void-500); color: var(--silver-300); }

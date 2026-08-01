@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0",
+  "status": { "provider": "mock", "identity": "Chief", "connected": false, "label": "Local mock Chief — no live Apple Shortcuts connection." },
+  "queue": [
+    {
+      "id": "job-sample-1",
+      "actor": "user",
+      "input": "Sample capture: review Halo widget grid dimensions.",
+      "reasoningDepth": "brain",
+      "status": "queued",
+      "risk": "low",
+      "createdAt": "2026-08-01T00:00:00.000Z"
+    }
+  ],
+  "approvals": [
+    {
+      "schemaVersion": "1.0",
+      "id": "approval-sample-1",
+      "actionType": "canon_change",
+      "risk": "high",
+      "summary": "Sample: mark 'Halo clock behaviour' canon as final.",
+      "reason": "Demonstrates the approval lifecycle. This is a sample and performs no external action.",
+      "before": { "stage": "draft" },
+      "proposedAfter": { "stage": "final" },
+      "affectedEntities": ["canon-halo-1"],
+      "rollbackAvailable": true,
+      "status": "pending",
+      "createdAt": "2026-08-01T00:00:00.000Z",
+      "resolvedAt": null
+    }
+  ],
+  "reasoningLevels": [
+    { "level": "brain", "label": "EXEC • Brain", "use": "Routine classification, extraction, prioritisation and low-risk operational decisions." },
+    { "level": "strategy", "label": "Strategy process", "use": "Multi-step planning, conflicting priorities, weekly planning and optimisation." },
+    { "level": "oracle", "label": "Oracle process", "use": "Major life or system decisions, long-range analysis and pattern review. Advisory by default." }
+  ]
+}
