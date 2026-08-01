@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0",
+  "id": "safety-policy",
+  "note": "Safety is implemented as code in js/safety.js. This policy configures risk classification and the evaluator decisions.",
+  "decisions": ["allow", "allow-with-log", "require-approval", "deny"],
+  "riskClasses": [
+    {
+      "risk": "low",
+      "label": "Routine, reversible",
+      "examples": ["Open a World", "filter a gallery", "create a local draft", "update a reversible view preference", "add a non-sensitive shopping item"],
+      "decision": "allow-with-log",
+      "requiresApproval": false,
+      "requiresBackup": false
+    },
+    {
+      "risk": "medium",
+      "label": "Meaningful but reversible",
+      "examples": ["Create or edit metadata", "move a non-fixed task", "change project status", "archive an Object", "create a proposed World record"],
+      "decision": "allow-with-log",
+      "requiresApproval": false,
+      "requiresBackup": false,
+      "requiresBeforeAfter": true
+    },
+    {
+      "risk": "high",
+      "label": "Consequential",
+      "examples": ["Move or rename files", "publish code", "send a message or email", "book or cancel", "create a calendar commitment", "share private data", "write to GitHub"],
+      "decision": "require-approval",
+      "requiresApproval": true,
+      "requiresBackup": false
+    },
+    {
+      "risk": "critical",
+      "label": "Destructive or canonical",
+      "examples": ["Permanent deletion", "overwrite authoritative data", "purchases or payments", "merge or remove a World", "alter locked canon", "reset system data"],
+      "decision": "require-approval",
+      "requiresApproval": true,
+      "requiresBackup": true,
+      "highFriction": true
+    }
+  ],
+  "alwaysRequireApproval": [
+    "delete", "purchase", "payment", "booking", "cancel", "send", "publish",
+    "medical_change", "share_sensitive", "world_create", "world_merge", "world_delete",
+    "canon_change", "github_write", "file_move", "file_rename", "enable_integration"
+  ],
+  "rules": {
+    "archiveBeforeDelete": true,
+    "backupBeforeDestructive": true,
+    "showBeforeAfterForMoves": true,
+    "invalidateApprovalOnChange": true,
+    "neverReportSuccessWithoutProvider": true,
+    "escapeUserContent": true,
+    "noSecretsInClient": true
+  }
+}

@@ -1,0 +1,101 @@
+[
+  {
+    "schemaVersion": "1.0",
+    "id": "machine-oracle",
+    "index": 1,
+    "name": "Machine Oracle",
+    "responsibility": "Chief, reasoning, planning, decisions and system control.",
+    "requirement": "Chief status, reasoning requests, plans, pending approvals, decision history, safety review and provider status.",
+    "mustNotBecome": "A general project gallery.",
+    "icon": "◉",
+    "accent": "#8fe3c2"
+  },
+  {
+    "schemaVersion": "1.0",
+    "id": "memory-vault",
+    "index": 2,
+    "name": "Memory Vault",
+    "responsibility": "Archive.",
+    "requirement": "Global archival access, canonical records, superseded decisions, version history, restore and provenance. Not a second arbitrary file browser.",
+    "mustNotBecome": "A duplicate file store.",
+    "icon": "◈",
+    "accent": "#c2c8d6"
+  },
+  {
+    "schemaVersion": "1.0",
+    "id": "astral-greenhouse",
+    "index": 3,
+    "name": "Astral Greenhouse / Gardens",
+    "responsibility": "Visual discovery, browsing, inspiration, evolving work and asset selection.",
+    "requirement": "Cross-World visual discovery, work-in-progress review, inspiration boards, asset candidates and links into each World's own immersive gallery.",
+    "mustNotBecome": "The only gallery; each World still has its own gallery.",
+    "icon": "❈",
+    "accent": "#8fe3a0"
+  },
+  {
+    "schemaVersion": "1.0",
+    "id": "throne-reactor",
+    "index": 4,
+    "name": "Throne Reactor",
+    "responsibility": "System engine, configuration, automation and power controls.",
+    "requirement": "Settings, providers, automations, permissions, feature flags, system state, integration health and controlled maintenance.",
+    "mustNotBecome": "A project settings room.",
+    "icon": "⚙",
+    "accent": "#e3c98f"
+  },
+  {
+    "schemaVersion": "1.0",
+    "id": "void-railway",
+    "index": 5,
+    "name": "Void Railway",
+    "responsibility": "Navigation and transport between Project Worlds.",
+    "requirement": "World directory, recent Worlds, route transitions, resume state, deep links and World creation proposals subject to approval.",
+    "mustNotBecome": "A file browser.",
+    "icon": "─",
+    "accent": "#8fbce3"
+  },
+  {
+    "schemaVersion": "1.0",
+    "id": "observatory",
+    "index": 6,
+    "name": "Observatory",
+    "responsibility": "Overviews, analytics, long-range planning and project status.",
+    "requirement": "Atlas-wide project inventory, progress, activity, deadlines, risks, blockers, stale projects and strategic review.",
+    "mustNotBecome": "A separate project World.",
+    "icon": "◯",
+    "accent": "#b98fe3"
+  },
+  {
+    "schemaVersion": "1.0",
+    "id": "cosmic-aquarium",
+    "index": 7,
+    "name": "Cosmic Aquarium",
+    "responsibility": "Video, sound and media that does not have a correct dedicated space.",
+    "requirement": "Media index, preview metadata, unplaced media queue and reassignment into a correct World when one is identified.",
+    "mustNotBecome": "A replacement for project galleries.",
+    "icon": "◒",
+    "accent": "#8fd6e3"
+  },
+  {
+    "schemaVersion": "1.0",
+    "id": "leviathan-spine",
+    "index": 8,
+    "name": "Leviathan Spine",
+    "responsibility": "Structural backbone, infrastructure and foundational systems.",
+    "requirement": "Storage providers, file references, repository links, schemas, indexing, relationship graph, backups, validation and diagnostics.",
+    "mustNotBecome": "A decorative environment only.",
+    "icon": "≡",
+    "accent": "#e38f9c"
+  },
+  {
+    "schemaVersion": "1.0",
+    "id": "eclipse-monastery",
+    "index": 9,
+    "name": "Eclipse Monastery",
+    "responsibility": "Life structures and personal development.",
+    "requirement": "Personal systems, reflection, routines, development plans and the experiential interface to relevant Chief outputs.",
+    "mustNotBecome": "Chief itself or a medical decision-maker.",
+    "icon": "◐",
+    "accent": "#a9a9c2"
+  }
+]

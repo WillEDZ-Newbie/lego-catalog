@@ -1,0 +1,16 @@
+/* animations.css — ambient motion, gated by data-motion and tab visibility.
+   All ambient loops pause when the document is hidden (§16). */
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes glowPulse { 0%, 100% { opacity: .7; } 50% { opacity: 1; } }
+
+.outlet > .view { animation: fadeUp var(--dur) var(--ease); }
+.brand__mark { animation: glowPulse 4s ease-in-out infinite; }
+
+/* Pause ambient animation when the tab is hidden. */
+body.is-hidden .brand__mark,
+body.is-hidden .hero .placeholder,
+body.is-hidden .world-entrance .placeholder { animation-play-state: paused; }
+
+:root[data-motion="reduced"] .outlet > .view,
+:root[data-motion="reduced"] .brand__mark { animation: none; }

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "source-atlas-icloud",
+    "provider": "icloud",
+    "authority": "primary",
+    "path": "Atlas of the Impossible/references",
+    "repository": "",
+    "branch": "",
+    "url": "",
+    "contentHash": "",
+    "lastVerifiedAt": "",
+    "availability": "unknown",
+    "writeCapability": "none",
+    "notes": "iCloud Drive reference. Stub provider until live integration is approved."
+  },
+  {
+    "id": "source-halo-github",
+    "provider": "github",
+    "authority": "primary",
+    "path": "",
+    "repository": "example/halo-widgy",
+    "branch": "main",
+    "url": "https://github.com/example/halo-widgy",
+    "contentHash": "",
+    "lastVerifiedAt": "",
+    "availability": "unknown",
+    "writeCapability": "none",
+    "notes": "GitHub source. Stub provider; read/write not performed."
+  },
+  {
+    "id": "source-halo-icloud",
+    "provider": "icloud",
+    "authority": "mirror",
+    "path": "Halo/specs",
+    "repository": "",
+    "branch": "",
+    "url": "",
+    "contentHash": "",
+    "lastVerifiedAt": "",
+    "availability": "unknown",
+    "writeCapability": "none",
+    "notes": "iCloud Drive mirror for specs."
+  },
+  {
+    "id": "source-voidos-github",
+    "provider": "github",
+    "authority": "primary",
+    "path": "",
+    "repository": "example/void-dominion",
+    "branch": "main",
+    "url": "https://github.com/example/void-dominion",
+    "contentHash": "",
+    "lastVerifiedAt": "",
+    "availability": "unknown",
+    "writeCapability": "none",
+    "notes": "Void Dominion development repository reference."
+  }
+]

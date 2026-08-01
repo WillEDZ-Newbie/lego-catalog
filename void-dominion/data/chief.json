@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0",
+  "id": "chief",
+  "identity": "Chief",
+  "providerMode": "mock",
+  "providerLabel": "Local mock Chief provider — no live Apple Shortcuts connection.",
+  "pipeline": [
+    "User / Capture", "Receptionist", "Queue", "Brain",
+    "Strategy or Oracle (on escalation)", "Router", "OPS / LIFE specialist",
+    "Logger", "Messenger", "User"
+  ],
+  "reasoningLevels": [
+    { "id": "brain", "layer": "EXEC • Brain", "role": "Fast triage and routine reasoning", "authority": "May execute low-risk reversible actions through Router when policy allows." },
+    { "id": "strategy", "layer": "Strategy process", "role": "Multi-step planning and conflict resolution", "authority": "Produces a plan and jobs; consequential jobs remain approval-gated." },
+    { "id": "oracle", "layer": "Oracle process", "role": "Deep analysis and long-range review", "authority": "Recommendation only by default; cannot silently execute major decisions." }
+  ],
+  "escalationTriggers": [
+    "Multiple departments or Worlds are affected.",
+    "The request contains conflicting goals or commitments.",
+    "The action is high or critical risk.",
+    "Required information is missing or uncertain.",
+    "The recommendation changes established canon or direction.",
+    "A task has repeatedly failed or been postponed.",
+    "The decision has meaningful long-term consequences.",
+    "The model confidence falls below the configured threshold."
+  ],
+  "lockedShortcutsContract": {
+    "note": "Do not rename, merge, split or replace these components unless explicitly approved.",
+    "stars": ["Chief", "Receptionist", "Morning", "Evening", "Weekly"],
+    "exec": ["EXEC • Brain", "EXEC • Router", "EXEC • Queue"],
+    "ops": ["OPS • Calendar", "OPS • Reminders", "OPS • Health", "OPS • Finance", "OPS • Home"],
+    "life": ["LIFE • Project & Goals", "LIFE • Travel", "LIFE • Relationships", "LIFE • Shopping"],
+    "sys": ["SYS • Files", "SYS • JSON", "SYS • Messenger", "SYS • Logger", "SYS • Debug"]
+  },
+  "queue": [],
+  "confidenceThreshold": 0.6
+}
