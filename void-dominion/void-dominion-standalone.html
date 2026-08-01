@@ -1,0 +1,3142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Void Dominion — local-first operating environment (standalone build).">
+  <meta name="color-scheme" content="dark">
+  <title>Void Dominion</title>
+  <style>/* tokens.css — design tokens for colour, type, spacing, depth, glow, motion.
+   Every visual surface reads from these so imagery/theme can be replaced
+   without rewriting components (§16, §41). Base palette: dark void/obsidian,
+   metallic silver, controlled green illumination. */
+
+:root {
+  /* Void / obsidian surfaces */
+  --void-900: #05070b;
+  --void-800: #0a0e16;
+  --void-700: #10141f;
+  --void-600: #171c2a;
+  --void-500: #1f2637;
+  --void-400: #2a3247;
+
+  /* Metallic silver */
+  --silver-100: #f2f4f8;
+  --silver-200: #d7dce6;
+  --silver-300: #b6becd;
+  --silver-400: #8b93a5;
+  --silver-500: #626a7d;
+
+  /* Controlled green illumination */
+  --green-300: #8fe6bd;
+  --green-400: #4fd6a3;
+  --green-500: #2fb488;
+  --glow-green: 0 0 0.75rem rgba(79, 214, 163, 0.35);
+
+  /* Status accents (non-colour indicators paired in components) */
+  --accent-warn: #d6a24f;
+  --accent-high: #d6785f;
+  --accent-critical: #d65f7a;
+  --accent-info: #4fb8d6;
+
+  /* Semantic surface roles */
+  --bg: var(--void-900);
+  --bg-elev: var(--void-700);
+  --bg-panel: var(--void-600);
+  --bg-input: var(--void-800);
+  --border: #232a3b;
+  --border-strong: #313a52;
+  --text: var(--silver-100);
+  --text-muted: var(--silver-400);
+  --link: var(--green-300);
+  --accent: var(--green-400);
+
+  /* Typography */
+  --font-sans: "Inter", "SF Pro Text", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.85rem;
+  --fs-md: 0.95rem;
+  --fs-lg: 1.15rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: 2rem;
+  --fs-3xl: 2.75rem;
+
+  /* Spacing */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-8: 3rem;
+
+  /* Radius & depth */
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 8px 24px rgba(0, 0, 0, 0.45);
+
+  /* Motion */
+  --dur-fast: 120ms;
+  --dur: 240ms;
+  --dur-slow: 480ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  /* Z-index scale */
+  --z-nav: 10;
+  --z-status: 20;
+  --z-toast: 80;
+  --z-modal: 100;
+
+  --nav-w: 264px;
+}
+
+:root.reduced-motion,
+:root.reduced-motion * {
+  --dur-fast: 0ms;
+  --dur: 0ms;
+  --dur-slow: 0ms;
+}
+
+/* reset.css — minimal modern reset. */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html, body { height: 100%; }
+body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+img, picture, svg, video, canvas { display: block; max-width: 100%; }
+input, button, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: none; }
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; padding: 0; }
+:focus-visible { outline: 2px solid var(--green-400); outline-offset: 2px; border-radius: 4px; }
+[hidden] { display: none !important; }
+
+/* base.css — element-level typography and primitives. */
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  line-height: 1.55;
+  color: var(--text);
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(79, 214, 163, 0.06), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(79, 184, 214, 0.05), transparent 60%),
+    var(--bg);
+}
+
+h1 { font-size: var(--fs-2xl); line-height: 1.15; letter-spacing: -0.01em; }
+h2 { font-size: var(--fs-xl); line-height: 1.2; }
+h3 { font-size: var(--fs-lg); }
+p { color: var(--text); }
+a { color: var(--link); }
+a:hover { text-decoration: underline; }
+
+.muted { color: var(--text-muted); }
+.mono { font-family: var(--font-mono); font-size: var(--fs-sm); }
+.lead { font-size: var(--fs-lg); }
+.link { color: var(--link); font-weight: 500; }
+.sub { font-size: var(--fs-sm); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: var(--sp-4); }
+
+code { font-family: var(--font-mono); font-size: 0.85em; background: var(--void-800); padding: 0.1em 0.35em; border-radius: 4px; }
+
+.callout {
+  border-left: 3px solid var(--border-strong);
+  background: var(--void-800);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+.callout--warn { border-left-color: var(--accent-warn); color: var(--silver-200); }
+.callout--boundary { border-left-color: var(--silver-500); }
+
+.badge { display: inline-block; font-size: var(--fs-xs); padding: 0.15em 0.5em; border-radius: 999px; border: 1px dashed var(--border-strong); color: var(--text-muted); }
+.badge--placeholder { border-style: dashed; }
+
+.tag {
+  display: inline-block; font-size: var(--fs-xs); padding: 0.1em 0.55em; border-radius: 999px;
+  background: var(--void-500); color: var(--silver-200); border: 1px solid var(--border);
+}
+.tag--low, .tag--final { background: rgba(79, 214, 163, 0.15); color: var(--green-300); border-color: rgba(79, 214, 163, 0.3); }
+.tag--medium, .tag--moderate { background: rgba(79, 184, 214, 0.15); color: #9fd8e6; }
+.tag--high { background: rgba(214, 120, 95, 0.18); color: #e6a892; }
+.tag--critical { background: rgba(214, 95, 122, 0.2); color: #e692a8; }
+.tag--mock { background: rgba(214, 162, 79, 0.16); color: #e6c892; border-color: rgba(214,162,79,0.3); }
+
+.chip { display: inline-block; font-size: var(--fs-xs); padding: 0.15em 0.6em; margin: 0.1em; border-radius: 999px; background: var(--void-500); color: var(--silver-300); }
+
+/* layout.css — app shell grid, navigation, status strip. */
+
+.app {
+  display: grid;
+  grid-template-columns: var(--nav-w) 1fr;
+  grid-template-rows: 1fr auto;
+  min-height: 100vh;
+}
+
+/* Sidebar navigation */
+.nav {
+  grid-row: 1 / span 2;
+  background: linear-gradient(180deg, var(--void-800), var(--void-900));
+  border-right: 1px solid var(--border);
+  padding: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: var(--z-nav);
+}
+.nav__brand { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) 0 var(--sp-3); }
+.nav__glyph { color: var(--green-400); font-size: 1.3rem; filter: drop-shadow(var(--glow-green)); }
+.nav__title { font-weight: 600; letter-spacing: 0.02em; }
+.nav__primary { display: flex; flex-direction: column; gap: 2px; }
+.nav__link { padding: var(--sp-2) var(--sp-3); border-radius: var(--radius-sm); display: flex; flex-direction: column; }
+.nav__link:hover { background: var(--void-600); text-decoration: none; }
+.nav__link[aria-current="page"] { background: var(--void-500); box-shadow: inset 2px 0 0 var(--green-400); }
+.nav__link-label { font-weight: 500; }
+.nav__link-hint { font-size: var(--fs-xs); color: var(--text-muted); }
+.nav__section-label { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--silver-500); margin-top: var(--sp-3); }
+.nav__locations { display: flex; flex-direction: column; gap: 1px; }
+.nav__loc { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3); border-radius: var(--radius-sm); font-size: var(--fs-sm); }
+.nav__loc:hover { background: var(--void-600); text-decoration: none; }
+.nav__loc[aria-current="page"] { background: var(--void-500); }
+.nav__loc-index { width: 1.4em; height: 1.4em; display: grid; place-items: center; border-radius: 50%; background: var(--void-500); color: var(--silver-300); font-size: var(--fs-xs); }
+.nav__command { margin-top: auto; }
+
+/* Main content column */
+.main { display: flex; flex-direction: column; min-width: 0; }
+.status-strip {
+  display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center;
+  padding: var(--sp-2) var(--sp-5);
+  background: var(--void-800);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: var(--z-status);
+}
+.status-pill { font-size: var(--fs-xs); color: var(--silver-300); background: var(--void-600); padding: 0.2em 0.6em; border-radius: 999px; }
+.status-pill--ok { color: var(--green-300); }
+.status-pill--warn { color: #e6c892; }
+.status-pill--muted { color: var(--silver-500); margin-left: auto; }
+
+.content { padding: var(--sp-6) var(--sp-6) var(--sp-8); flex: 1; min-width: 0; }
+.content:focus { outline: none; }
+
+.view { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--sp-5); }
+.view__header { display: flex; flex-direction: column; gap: var(--sp-1); }
+.view__header--location { flex-direction: row; align-items: center; gap: var(--sp-4); }
+.loc-index { width: 2.4rem; height: 2.4rem; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--accent, var(--green-400)); color: var(--void-900); font-weight: 700; }
+.crumb { font-size: var(--fs-sm); color: var(--text-muted); }
+.tier-label { font-size: var(--fs-sm); text-transform: uppercase; letter-spacing: 0.08em; color: var(--silver-500); margin-top: var(--sp-3); }
+
+.footer { grid-column: 2; padding: var(--sp-3) var(--sp-6); border-top: 1px solid var(--border); color: var(--silver-500); font-size: var(--fs-xs); }
+
+/* components.css — panels, cards, buttons, forms, tables, gallery, modal, toast. */
+
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--sp-5);
+  box-shadow: var(--shadow-1);
+}
+.panel--focus { border-color: var(--border-strong); box-shadow: var(--shadow-2); }
+.panel__title { font-size: var(--fs-lg); margin-bottom: var(--sp-3); }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--sp-4); }
+.card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--sp-5); }
+.card--link:hover { border-color: var(--green-500); text-decoration: none; transform: translateY(-2px); transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+.card h3 { margin-bottom: var(--sp-2); }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-4); border-radius: var(--radius-sm); background: var(--void-500); color: var(--silver-100); border: 1px solid var(--border-strong); font-size: var(--fs-sm); transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); }
+.btn:hover { background: var(--void-400); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn--primary { background: var(--green-500); border-color: var(--green-400); color: var(--void-900); font-weight: 600; }
+.btn--primary:hover { background: var(--green-400); }
+.btn--danger { background: rgba(214, 95, 122, 0.15); border-color: var(--accent-critical); color: #e692a8; }
+.btn--danger:hover { background: rgba(214, 95, 122, 0.25); }
+.btn--ghost { background: transparent; }
+.btn--icon { padding: var(--sp-1) var(--sp-2); background: transparent; border: none; font-size: 1rem; }
+.btn--sm { padding: 0.15em 0.6em; font-size: var(--fs-xs); }
+.row { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; margin-top: var(--sp-3); }
+
+/* Key/value lists */
+.kv { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3) var(--sp-5); }
+.kv--tight { gap: var(--sp-2) var(--sp-4); grid-template-columns: 1fr; }
+.kv > div { display: flex; flex-direction: column; }
+.kv dt { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--silver-500); }
+.kv dd { color: var(--text); }
+
+/* Lists */
+.list { display: flex; flex-direction: column; gap: var(--sp-2); }
+.list li { display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap; }
+.list--dots li { gap: var(--sp-2); }
+.dot { width: 0.6em; height: 0.6em; border-radius: 50%; display: inline-block; }
+.dot--ok { background: var(--green-400); }
+.dot--warn { background: var(--accent-warn); }
+.dot--bad { background: var(--accent-critical); }
+.dot-row { display: flex; align-items: center; gap: var(--sp-2); }
+.chips { display: flex; flex-wrap: wrap; gap: var(--sp-1); }
+
+/* Forms */
+.field { display: flex; flex-direction: column; gap: var(--sp-1); margin-bottom: var(--sp-3); }
+.field > span { font-size: var(--fs-sm); color: var(--silver-300); }
+.input, .field input, .field textarea, .field select {
+  background: var(--bg-input); border: 1px solid var(--border-strong); border-radius: var(--radius-sm);
+  padding: var(--sp-2) var(--sp-3); color: var(--text); width: 100%;
+}
+.input--lg { font-size: var(--fs-lg); padding: var(--sp-3); }
+.field textarea { min-height: 5rem; resize: vertical; }
+.toggle { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-1) 0; }
+.toggle input { width: auto; }
+
+/* Tables */
+.table-wrap { overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+.table th, .table td { text-align: left; padding: var(--sp-2) var(--sp-3); border-bottom: 1px solid var(--border); }
+.table th { color: var(--silver-400); font-weight: 600; font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* Map (Atlas) */
+.map-tier { display: flex; justify-content: center; }
+.map-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--sp-3); }
+.map-node { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--sp-4); display: flex; flex-direction: column; gap: 2px; border-top: 2px solid var(--accent, var(--green-400)); text-align: left; }
+.map-node:hover { border-color: var(--accent, var(--green-400)); text-decoration: none; transform: translateY(-2px); transition: transform var(--dur) var(--ease); }
+.map-node--nexus { max-width: 360px; align-items: center; text-align: center; border-top-color: var(--green-400); box-shadow: var(--glow-green); }
+.map-node--add { border-style: dashed; align-items: center; text-align: center; color: var(--text-muted); }
+.map-node__index { font-size: var(--fs-xs); color: var(--silver-500); }
+.map-node__symbol { font-size: 1.4rem; color: var(--accent, var(--green-400)); }
+.map-node__name { font-weight: 600; }
+.map-node__fn { font-size: var(--fs-xs); color: var(--text-muted); }
+
+/* Worlds */
+.world-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--sp-4); }
+.world-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; }
+.world-card__cover { aspect-ratio: 16 / 9; background: linear-gradient(135deg, var(--void-500), var(--void-700)); display: grid; place-items: center; gap: var(--sp-2); position: relative; border-bottom: 2px solid var(--accent, var(--green-400)); }
+.world-card__symbol { font-size: 2rem; color: var(--accent, var(--green-400)); }
+.world-card__body { padding: var(--sp-4); display: flex; flex-direction: column; gap: var(--sp-2); }
+.world-card__meta { display: flex; gap: var(--sp-2); align-items: center; flex-wrap: wrap; }
+
+.world-hero { background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 12%, var(--void-700)), var(--void-800)); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--sp-6); display: flex; justify-content: space-between; gap: var(--sp-4); flex-wrap: wrap; }
+.world-hero__id { display: flex; gap: var(--sp-4); align-items: center; }
+.world-hero__symbol { font-size: 2.6rem; color: var(--accent, var(--green-400)); }
+.world-hero__actions { display: flex; gap: var(--sp-2); flex-wrap: wrap; align-items: center; }
+.world-body { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--sp-4); }
+
+/* Nexus grid */
+.nexus-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--sp-4); }
+
+/* Gallery */
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--sp-3); }
+.gallery-grid--masonry { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+.tile { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; }
+.tile:hover { border-color: var(--green-500); text-decoration: none; }
+.tile--slot { border-style: dashed; }
+.tile__thumb { aspect-ratio: 1; background: linear-gradient(135deg, var(--void-500), var(--void-700)); display: grid; place-items: center; }
+.tile__title { padding: var(--sp-2) var(--sp-3) 0; font-weight: 500; font-size: var(--fs-sm); }
+.tile__meta { padding: 0 var(--sp-3) var(--sp-3); font-size: var(--fs-xs); }
+
+/* Focal (home) */
+.focal { position: relative; border-radius: var(--radius-lg); min-height: 280px; background: radial-gradient(600px 300px at 50% 30%, rgba(79,214,163,0.12), transparent 70%), linear-gradient(180deg, var(--void-700), var(--void-900)); border: 1px solid var(--border); display: grid; place-items: center; overflow: hidden; }
+.focal--sm { min-height: 140px; }
+.focal__halo { position: absolute; width: 220px; height: 220px; border-radius: 50%; border: 2px solid rgba(79,214,163,0.4); box-shadow: var(--glow-green); animation: haloPulse 6s var(--ease) infinite; }
+.focal__caption { position: relative; text-align: center; display: flex; flex-direction: column; gap: var(--sp-2); align-items: center; }
+.focal__title { font-size: var(--fs-3xl); }
+
+/* Object viewer */
+.object-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+.object-preview { aspect-ratio: 4 / 3; display: grid; place-items: center; background: linear-gradient(135deg, var(--void-500), var(--void-700)); border-radius: var(--radius); }
+
+/* Approvals */
+.approval { border: 1px solid var(--border-strong); border-radius: var(--radius); padding: var(--sp-4); margin-bottom: var(--sp-3); }
+.approval__head { display: flex; align-items: center; gap: var(--sp-2); margin-bottom: var(--sp-2); }
+
+/* Timeline */
+.timeline { display: flex; flex-direction: column; gap: var(--sp-2); }
+.timeline__item { padding: var(--sp-2) 0; border-bottom: 1px solid var(--border); }
+.timeline__meta { display: flex; gap: var(--sp-2); align-items: center; flex-wrap: wrap; font-size: var(--fs-xs); }
+.timeline__type { font-family: var(--font-mono); color: var(--green-300); }
+.timeline__actor { color: var(--silver-500); }
+.timeline__time { color: var(--silver-500); margin-left: auto; }
+.timeline--compact li { display: grid; grid-template-columns: auto 1fr auto; gap: var(--sp-2); align-items: baseline; font-size: var(--fs-sm); }
+
+/* Search */
+.search-results, .command-results { display: flex; flex-direction: column; gap: 2px; margin-top: var(--sp-2); }
+.search-result { padding: var(--sp-2); border-radius: var(--radius-sm); }
+.search-result:hover { background: var(--void-600); text-decoration: none; }
+.command-result a { display: grid; grid-template-columns: 1fr auto; gap: var(--sp-1) var(--sp-2); padding: var(--sp-2) var(--sp-3); border-radius: var(--radius-sm); }
+.command-result a:hover, .command-result.is-active a { background: var(--void-600); text-decoration: none; }
+.command-result__kind { font-size: var(--fs-xs); color: var(--silver-500); }
+.command-result__sub { grid-column: 1 / -1; font-size: var(--fs-xs); }
+
+.code-out { font-family: var(--font-mono); font-size: var(--fs-xs); white-space: pre-wrap; background: var(--void-900); padding: var(--sp-3); border-radius: var(--radius-sm); margin-top: var(--sp-3); color: var(--silver-300); max-height: 320px; overflow: auto; }
+
+/* Modal */
+.modal-overlay { position: fixed; inset: 0; background: rgba(3, 5, 9, 0.7); backdrop-filter: blur(3px); display: grid; place-items: center; z-index: var(--z-modal); padding: var(--sp-4); }
+.modal { background: var(--bg-elev); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); width: min(560px, 100%); max-height: 90vh; overflow: auto; box-shadow: var(--shadow-2); }
+.modal__header { display: flex; justify-content: space-between; align-items: center; padding: var(--sp-4) var(--sp-5); border-bottom: 1px solid var(--border); }
+.modal__title { font-size: var(--fs-lg); }
+.modal__body { padding: var(--sp-5); }
+.modal__actions { display: flex; justify-content: flex-end; gap: var(--sp-2); padding: var(--sp-4) var(--sp-5); border-top: 1px solid var(--border); }
+
+/* Toast */
+.toast-root { position: fixed; bottom: var(--sp-5); right: var(--sp-5); display: flex; flex-direction: column; gap: var(--sp-2); z-index: var(--z-toast); }
+.toast { background: var(--void-500); border: 1px solid var(--border-strong); border-left: 3px solid var(--green-400); padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm); box-shadow: var(--shadow-2); max-width: 360px; font-size: var(--fs-sm); animation: toastIn var(--dur) var(--ease); }
+.toast--warn { border-left-color: var(--accent-warn); }
+.toast--ok { border-left-color: var(--green-400); }
+.toast--out { opacity: 0; transform: translateX(20px); transition: all var(--dur) var(--ease); }
+
+/* animations.css — ambient motion. All animations respect reduced motion and
+   pause when the document is hidden (§16). They never block navigation. */
+
+@keyframes haloPulse {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Pause ambient loops when the tab is hidden or reduced motion is requested. */
+:root.is-hidden .focal__halo,
+:root.reduced-motion .focal__halo {
+  animation-play-state: paused;
+}
+:root.reduced-motion .focal__halo { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+
+/* responsive.css — Mac and iPad layouts (§18 Quality). */
+
+/* iPad landscape / narrow desktop: collapse the sidebar to a top bar. */
+@media (max-width: 960px) {
+  .app { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr auto; }
+  .nav {
+    grid-row: auto; position: static; height: auto; flex-direction: row; flex-wrap: wrap;
+    align-items: center; gap: var(--sp-2); overflow-x: auto;
+  }
+  .nav__brand { padding: 0 var(--sp-2) 0 0; }
+  .nav__primary { flex-direction: row; flex-wrap: wrap; }
+  .nav__link { flex-direction: row; gap: var(--sp-1); }
+  .nav__link-hint { display: none; }
+  .nav__section-label { display: none; }
+  .nav__locations { flex-direction: row; flex-wrap: wrap; }
+  .nav__loc-name { display: none; }
+  .nav__command { margin: 0 0 0 auto; }
+  .footer { grid-column: 1; }
+  .kv { grid-template-columns: 1fr; }
+  .object-grid { grid-template-columns: 1fr; }
+}
+
+/* iPad portrait / phones. */
+@media (max-width: 620px) {
+  .content { padding: var(--sp-4); }
+  .world-hero { flex-direction: column; }
+  .focal__title { font-size: var(--fs-2xl); }
+  .status-pill--muted { display: none; }
+}
+
+/* Honour the OS reduced-motion preference by default. */
+@media (prefers-reduced-motion: reduce) {
+  .card--link:hover, .map-node:hover, .world-card:hover { transform: none; }
+}
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#view-root" style="position:absolute;left:-999px;top:0;">Skip to content</a>
+  <div class="app">
+    <aside class="nav" id="nav-root" aria-label="Void Dominion navigation"></aside>
+    <main class="main">
+      <div class="status-root" id="status-root"></div>
+      <div class="content" id="view-root" tabindex="-1" role="region" aria-label="Main view"></div>
+    </main>
+    <footer class="footer">
+      Void Dominion · local-first · Atlas operating environment ·
+      <span class="muted">Standalone build — visual assets, animation and transitions are configurable placeholders awaiting production.</span>
+    </footer>
+  </div>
+  <div class="modal-root" id="modal-root" hidden></div>
+  <div class="toast-root" id="toast-root" aria-live="polite"></div>
+  <script>window.__VD_SEED__ = {"system":{"schemaVersion":"1.0","id":"system-void-dominion","name":"Void Dominion","shell":"Void Dominion","operatingInterface":"Atlas","convergencePoint":"Nexus","tagline":"Local-first operating environment","documentAuthority":"Implementation Brief v3","hierarchy":{"shell":"Void Dominion","map":"Atlas","center":"Nexus","infrastructure":"9 Permanent Locations","projects":"Project Worlds"},"shortcutsContract":["⭐ Chief","⭐ Receptionist","⭐ Morning","⭐ Evening","⭐ Weekly","EXEC • Brain","EXEC • Router","EXEC • Queue","OPS • Calendar","OPS • Reminders","OPS • Health","OPS • Finance","OPS • Home","LIFE • Project & Goals","LIFE • Travel","LIFE • Relationships","LIFE • Shopping","SYS • Files","SYS • JSON","SYS • Messenger","SYS • Logger","SYS • Debug"],"createdAt":"2026-08-01T00:00:00.000Z","updatedAt":"2026-08-01T00:00:00.000Z"},"settings":{"schemaVersion":"1.0","id":"settings-default","theme":"void","reducedMotion":false,"developerMode":false,"pauseAmbientWhenHidden":true,"featureFlags":{"immersiveGalleries":true,"crossWorldDiscovery":true,"chiefPanel":true},"providers":[{"providerId":"local","status":"connected","label":"Local metadata provider","capabilities":{"list":true,"read":true,"preview":true,"create":true,"update":true,"move":false,"delete":true,"commit":false},"lastVerifiedAt":"2026-08-01T00:00:00.000Z","permissionScope":["atlas-metadata"],"error":null},{"providerId":"icloud","status":"mock","label":"iCloud Drive (stub) — requires user-selected files, a local companion, Apple Shortcuts or a native app","capabilities":{"list":false,"read":false,"preview":false,"create":false,"update":false,"move":false,"delete":false,"commit":false},"lastVerifiedAt":"","permissionScope":[],"error":null},{"providerId":"github","status":"mock","label":"GitHub (stub) — repository URLs are read references only; writes need authenticated provider and approval","capabilities":{"list":true,"read":true,"preview":true,"create":false,"update":false,"move":false,"delete":false,"commit":false},"lastVerifiedAt":"","permissionScope":[],"error":null},{"providerId":"chief","status":"mock","label":"Chief (stub) — local mock of Apple Shortcuts reasoning and dispatch","capabilities":{"list":true,"read":true,"preview":true,"create":true,"update":true,"move":false,"delete":false,"commit":false},"lastVerifiedAt":"","permissionScope":[],"error":null},{"providerId":"ai","status":"mock","label":"AI reasoning (stub) — deterministic local placeholder; no external model calls","capabilities":{"list":false,"read":true,"preview":false,"create":true,"update":false,"move":false,"delete":false,"commit":false},"lastVerifiedAt":"","permissionScope":[],"error":null}],"automations":[]},"safetyPolicy":{"schemaVersion":"1.0","id":"safety-policy-default","riskClasses":{"low":{"label":"Routine, reversible","examples":["Open a World","Filter a gallery","Create a local draft","Update a reversible view preference"],"defaultDecision":"allow-with-log","requiresApproval":false,"record":"Activity entry when meaningful"},"moderate":{"label":"Meaningful but reversible","examples":["Create or edit metadata","Change project status","Archive an Object","Create a proposed World record"],"defaultDecision":"allow-with-log","requiresApproval":false,"record":"Before/after state and source"},"high":{"label":"Consequential","examples":["Move or rename files","Publish code","Send a message","Create a calendar commitment","Share private data"],"defaultDecision":"require-approval","requiresApproval":true,"record":"Approval record, exact proposed effect and result"},"critical":{"label":"Destructive or canonical","examples":["Permanent deletion","Spend money","Book or cancel","Overwrite authoritative data","Alter locked canon","Merge/remove a World","Reset system data"],"defaultDecision":"require-approval","requiresApproval":true,"backupFirst":true,"record":"Approval, backup/reference, result and recovery information"}},"actionRisk":{"world.create":"high","world.update":"moderate","world.archive":"moderate","world.restore":"moderate","world.delete":"critical","world.merge":"critical","object.create":"low","object.update":"moderate","object.archive":"moderate","object.delete":"critical","room.create":"low","room.update":"moderate","room.delete":"high","canon.change":"high","canon.finalize":"high","canon.delete":"critical","settings.update":"moderate","provider.enable":"high","file.move":"high","file.rename":"high","file.delete":"critical","message.send":"high","purchase":"critical","booking":"critical","data.reset":"critical","data.import":"moderate","data.migrate":"critical","ui.preference":"low","capture.create":"low"},"alwaysRequireApproval":["Permanent deletion or irreversible replacement","Purchases, payments, subscriptions, bookings or financial commitments","Sending messages, emails or publishing content","Cancelling appointments, travel or commitments","Medical instruction changes or any action presented as diagnosis or treatment","Sharing sensitive or personal information","Creating, merging, renaming or deleting a Project World","Changing established canon or replacing a final approved decision","Writing to or publishing through GitHub","Moving or renaming authoritative files","Enabling a new external integration that can read or write private data"],"invariants":["No external action may be displayed as successful until the responsible provider confirms success.","No permission, connection or data access may be inferred from the presence of a path, URL or account name.","Silence, inactivity, opening a dialog or accepting a different action never counts as approval.","Approval is action-specific, target-specific and time-bounded.","High-risk actions must not be bundled with routine actions behind one approval.","Permanent deletion must remain unavailable when a safe archive or reversible alternative is feasible."]},"locations":[{"schemaVersion":"1.0","id":"machine-oracle","index":1,"name":"Machine Oracle","function":"Chief, reasoning, planning, decisions and system control.","responsibility":"Chief status, reasoning requests, plans, pending approvals, decision history, safety review and provider status.","mustNotBecome":"A general project gallery.","theme":{"accent":"#4fd6a3","icon":"oracle"}},{"schemaVersion":"1.0","id":"memory-vault","index":2,"name":"Memory Vault","function":"Archive, preservation, provenance, version history and restoration.","responsibility":"Global archival access, canonical records, superseded decisions, version history, restore and provenance.","mustNotBecome":"A duplicate file store.","theme":{"accent":"#8fa6c9","icon":"vault"}},{"schemaVersion":"1.0","id":"astral-greenhouse","index":3,"name":"Astral Greenhouse / Gardens","function":"Visual discovery, browsing, inspiration, evolving work and asset selection.","responsibility":"Cross-World visual discovery, work-in-progress review, inspiration boards, asset candidates and links into each World's own immersive gallery.","mustNotBecome":"The only gallery; each World still has its own gallery.","theme":{"accent":"#6fd68a","icon":"greenhouse"}},{"schemaVersion":"1.0","id":"throne-reactor","index":4,"name":"Throne Reactor","function":"System engine, configuration, automation and power controls.","responsibility":"Settings, providers, automations, permissions, feature flags, system state, integration health and controlled maintenance.","mustNotBecome":"A project settings room.","theme":{"accent":"#d6a24f","icon":"reactor"}},{"schemaVersion":"1.0","id":"void-railway","index":5,"name":"Void Railway","function":"Navigation and transport between Project Worlds.","responsibility":"World directory, recent Worlds, route transitions, resume state, deep links and World creation proposals subject to approval.","mustNotBecome":"A file browser.","theme":{"accent":"#9f8fd6","icon":"railway"}},{"schemaVersion":"1.0","id":"observatory","index":6,"name":"Observatory","function":"Overviews, analytics, long-range planning and project status.","responsibility":"Atlas-wide project inventory, progress, activity, deadlines, risks, blockers, stale projects and strategic review.","mustNotBecome":"A separate project World.","theme":{"accent":"#4fb8d6","icon":"observatory"}},{"schemaVersion":"1.0","id":"cosmic-aquarium","index":7,"name":"Cosmic Aquarium","function":"Video, sound and media files that do not yet have a correct dedicated space.","responsibility":"Media index, preview metadata, unplaced media queue and reassignment into a correct World when one is identified.","mustNotBecome":"A replacement for project galleries.","theme":{"accent":"#4f7fd6","icon":"aquarium"}},{"schemaVersion":"1.0","id":"leviathan-spine","index":8,"name":"Leviathan Spine","function":"Structural backbone, infrastructure and foundational systems.","responsibility":"Storage providers, file references, repository links, schemas, indexing, relationship graph, backups, validation and diagnostics.","mustNotBecome":"A decorative environment only.","theme":{"accent":"#c9c9d6","icon":"spine"}},{"schemaVersion":"1.0","id":"eclipse-monastery","index":9,"name":"Eclipse Monastery","function":"Life structures and personal development.","responsibility":"Personal systems, reflection, routines, development plans and the experiential interface to relevant Chief outputs.","mustNotBecome":"Chief itself or a medical decision-maker.","theme":{"accent":"#b48fd6","icon":"monastery"}}],"worlds":[{"schemaVersion":"1.0","id":"world-atlas-impossible","name":"Atlas of the Impossible","symbol":"◈","status":"active","priority":"high","colorIdentity":"#6fd68a","description":"Sample seed World. Immersive cartography of impossible places and speculative worlds.","canon":[{"id":"canon-ai-1","title":"World scope","decision":"Sample record — replace with approved project canon.","stage":"draft","supersedes":null,"createdAt":"2026-08-01T00:00:00.000Z"}],"unresolvedQuestions":["Sample: which regions ship in the first atlas volume?"],"lastAction":"Seed structure created (sample data).","nextAction":"Confirm project canon with Yordan.","futureAction":"Populate immersive gallery with real assets.","roomIds":["room-ai-development","room-ai-assets","room-ai-canon"],"objectIds":["object-ai-cover","object-ai-repo"],"galleryConfig":{"layout":"grid","assetSlots":["cover","background","ambient"]},"sourceRefs":["source-ai-icloud"],"blockers":[],"deadlines":[],"createdAt":"2026-08-01T00:00:00.000Z","updatedAt":"2026-08-01T00:00:00.000Z"},{"schemaVersion":"1.0","id":"world-halo","name":"Halo / Widgy","symbol":"◉","status":"active","priority":"high","colorIdentity":"#4fd6a3","description":"Sample seed World. Widget layouts, halo-clock logic, animation specifications and wallpaper exports.","canon":[{"id":"canon-halo-1","title":"Halo clock behaviour","decision":"Sample record — replace with approved specification.","stage":"draft","supersedes":null,"createdAt":"2026-08-01T00:00:00.000Z"}],"unresolvedQuestions":["Sample: final widget grid dimensions?"],"lastAction":"Seed structure created (sample data).","nextAction":"Import real halo-clock animation notes.","futureAction":"Export approved wallpaper set.","roomIds":["room-halo-development","room-halo-animation","room-halo-code"],"objectIds":["object-halo-cover"],"galleryConfig":{"layout":"grid","assetSlots":["cover","background"]},"sourceRefs":["source-halo-github"],"blockers":[],"deadlines":[],"createdAt":"2026-08-01T00:00:00.000Z","updatedAt":"2026-08-01T00:00:00.000Z"},{"schemaVersion":"1.0","id":"world-archetype-posters","name":"Archetype Posters","symbol":"▲","status":"active","priority":"medium","colorIdentity":"#d6a24f","description":"Sample seed World. Poster series exploring archetypal figures.","canon":[],"unresolvedQuestions":[],"lastAction":"Seed structure created (sample data).","nextAction":"Define poster series list.","futureAction":"","roomIds":["room-arch-assets"],"objectIds":[],"galleryConfig":{"layout":"masonry","assetSlots":["cover"]},"sourceRefs":[],"blockers":[],"deadlines":[],"createdAt":"2026-08-01T00:00:00.000Z","updatedAt":"2026-08-01T00:00:00.000Z"},{"schemaVersion":"1.0","id":"world-prince-ez","name":"Prince Ez","symbol":"♛","status":"active","priority":"medium","colorIdentity":"#9f8fd6","description":"Sample seed World. Character and narrative development.","canon":[],"unresolvedQuestions":[],"lastAction":"Seed structure created (sample data).","nextAction":"Collect reference material.","futureAction":"","roomIds":["room-ez-canon"],"objectIds":[],"galleryConfig":{"layout":"grid","assetSlots":["cover"]},"sourceRefs":[],"blockers":[],"deadlines":[],"createdAt":"2026-08-01T00:00:00.000Z","updatedAt":"2026-08-01T00:00:00.000Z"},{"schemaVersion":"1.0","id":"world-chief","name":"Chief","symbol":"✦","status":"active","priority":"high","colorIdentity":"#4fb8d6","description":"Sample seed World. Chief system design, Shortcuts contract and reasoning architecture (project-side documentation; global reasoning is owned by Machine Oracle).","canon":[{"id":"canon-chief-1","title":"Locked Shortcuts contract","decision":"The 23 Shortcuts components are locked and must not be renamed, merged or split without explicit approval.","stage":"final","supersedes":null,"createdAt":"2026-08-01T00:00:00.000Z"}],"unresolvedQuestions":[],"lastAction":"Seed structure created (sample data).","nextAction":"Document reasoning depth thresholds.","futureAction":"","roomIds":["room-chief-canon","room-chief-code"],"objectIds":[],"galleryConfig":{"layout":"grid","assetSlots":["cover"]},"sourceRefs":[],"blockers":[],"deadlines":[],"createdAt":"2026-08-01T00:00:00.000Z","updatedAt":"2026-08-01T00:00:00.000Z"},{"schemaVersion":"1.0","id":"world-voidos","name":"VoidOS / Void Dominion Development","symbol":"◯","status":"active","priority":"high","colorIdentity":"#8fa6c9","description":"Sample seed World. Development of the Void Dominion / Atlas operating environment itself.","canon":[],"unresolvedQuestions":[],"lastAction":"Foundation build in progress.","nextAction":"Complete Phase review checklist.","futureAction":"Hand off visual production.","roomIds":["room-voidos-development","room-voidos-release"],"objectIds":[],"galleryConfig":{"layout":"grid","assetSlots":["cover"]},"sourceRefs":[],"blockers":[],"deadlines":[],"createdAt":"2026-08-01T00:00:00.000Z","updatedAt":"2026-08-01T00:00:00.000Z"},{"schemaVersion":"1.0","id":"world-apple-devices","name":"Apple / Device Projects","symbol":"◆","status":"active","priority":"low","colorIdentity":"#c9c9d6","description":"Sample seed World. Device configuration, automations and platform projects.","canon":[],"unresolvedQuestions":[],"lastAction":"Seed structure created (sample data).","nextAction":"List active device projects.","futureAction":"","roomIds":[],"objectIds":[],"galleryConfig":{"layout":"grid","assetSlots":["cover"]},"sourceRefs":[],"blockers":[],"deadlines":[],"createdAt":"2026-08-01T00:00:00.000Z","updatedAt":"2026-08-01T00:00:00.000Z"},{"schemaVersion":"1.0","id":"world-coding-projects","name":"Coding Projects","symbol":"⌘","status":"active","priority":"medium","colorIdentity":"#4fd6a3","description":"Sample seed World. General software projects and repositories.","canon":[],"unresolvedQuestions":[],"lastAction":"Seed structure created (sample data).","nextAction":"Link authoritative repositories.","futureAction":"","roomIds":["room-coding-code"],"objectIds":[],"galleryConfig":{"layout":"grid","assetSlots":["cover"]},"sourceRefs":[],"blockers":[],"deadlines":[],"createdAt":"2026-08-01T00:00:00.000Z","updatedAt":"2026-08-01T00:00:00.000Z"},{"schemaVersion":"1.0","id":"world-lola-palace","name":"Lola Palace","symbol":"♜","status":"active","priority":"low","colorIdentity":"#b48fd6","description":"Sample seed World. Space and environment design project.","canon":[],"unresolvedQuestions":[],"lastAction":"Seed structure created (sample data).","nextAction":"Gather reference imagery.","futureAction":"","roomIds":[],"objectIds":[],"galleryConfig":{"layout":"masonry","assetSlots":["cover"]},"sourceRefs":[],"blockers":[],"deadlines":[],"createdAt":"2026-08-01T00:00:00.000Z","updatedAt":"2026-08-01T00:00:00.000Z"},{"schemaVersion":"1.0","id":"world-sacred-realism","name":"Sacred Realism Statue Series","symbol":"⛬","status":"active","priority":"medium","colorIdentity":"#d6a24f","description":"Sample seed World. Statue series blending sacred iconography and realism.","canon":[],"unresolvedQuestions":[],"lastAction":"Seed structure created (sample data).","nextAction":"Define statue subjects.","futureAction":"","roomIds":["room-sacred-assets"],"objectIds":[],"galleryConfig":{"layout":"masonry","assetSlots":["cover"]},"sourceRefs":[],"blockers":[],"deadlines":[],"createdAt":"2026-08-01T00:00:00.000Z","updatedAt":"2026-08-01T00:00:00.000Z"}],"rooms":[{"schemaVersion":"1.0","id":"room-ai-development","worldId":"world-atlas-impossible","name":"Development","type":"development","objectIds":[],"notes":"Sample room."},{"schemaVersion":"1.0","id":"room-ai-assets","worldId":"world-atlas-impossible","name":"Assets","type":"assets","objectIds":["object-ai-cover"],"notes":"Sample room."},{"schemaVersion":"1.0","id":"room-ai-canon","worldId":"world-atlas-impossible","name":"Canon","type":"canon","objectIds":[],"notes":"Sample room."},{"schemaVersion":"1.0","id":"room-halo-development","worldId":"world-halo","name":"Development","type":"development","objectIds":[],"notes":"Sample room."},{"schemaVersion":"1.0","id":"room-halo-animation","worldId":"world-halo","name":"Animation","type":"animation","objectIds":[],"notes":"Halo-clock animation specifications."},{"schemaVersion":"1.0","id":"room-halo-code","worldId":"world-halo","name":"Code","type":"code","objectIds":[],"notes":"Widget layout code references."},{"schemaVersion":"1.0","id":"room-arch-assets","worldId":"world-archetype-posters","name":"Assets","type":"assets","objectIds":[],"notes":"Sample room."},{"schemaVersion":"1.0","id":"room-ez-canon","worldId":"world-prince-ez","name":"Canon","type":"canon","objectIds":[],"notes":"Sample room."},{"schemaVersion":"1.0","id":"room-chief-canon","worldId":"world-chief","name":"Canon","type":"canon","objectIds":[],"notes":"Locked Shortcuts contract."},{"schemaVersion":"1.0","id":"room-chief-code","worldId":"world-chief","name":"Code","type":"code","objectIds":[],"notes":"Sample room."},{"schemaVersion":"1.0","id":"room-voidos-development","worldId":"world-voidos","name":"Development","type":"development","objectIds":[],"notes":"Foundation build."},{"schemaVersion":"1.0","id":"room-voidos-release","worldId":"world-voidos","name":"Release","type":"release","objectIds":[],"notes":"Release readiness."},{"schemaVersion":"1.0","id":"room-coding-code","worldId":"world-coding-projects","name":"Code","type":"code","objectIds":[],"notes":"Sample room."},{"schemaVersion":"1.0","id":"room-sacred-assets","worldId":"world-sacred-realism","name":"Assets","type":"assets","objectIds":[],"notes":"Sample room."}],"objects":[{"schemaVersion":"1.0","id":"object-ai-cover","worldId":"world-atlas-impossible","roomId":"room-ai-assets","title":"Atlas cover (placeholder)","type":"image","stage":"draft","canonical":false,"provider":"local","providerObjectId":"sample-cover-ai","path":"assets/placeholders/world-cover.svg","repositoryUrl":"","externalUrl":"","previewRef":"assets/placeholders/world-cover.svg","tags":["cover","placeholder"],"provenance":{"note":"Sample placeholder object.","importedAt":"2026-08-01T00:00:00.000Z"},"createdAt":"2026-08-01T00:00:00.000Z","updatedAt":"2026-08-01T00:00:00.000Z"},{"schemaVersion":"1.0","id":"object-ai-repo","worldId":"world-atlas-impossible","roomId":"room-ai-development","title":"Reference repository (sample)","type":"repository","stage":"reference","canonical":false,"provider":"github","providerObjectId":"","path":"","repositoryUrl":"https://github.com/example/atlas-of-the-impossible","externalUrl":"https://github.com/example/atlas-of-the-impossible","previewRef":"","tags":["repository","sample"],"provenance":{"note":"Sample read-only reference. GitHub provider is a labelled stub.","importedAt":"2026-08-01T00:00:00.000Z"},"createdAt":"2026-08-01T00:00:00.000Z","updatedAt":"2026-08-01T00:00:00.000Z"},{"schemaVersion":"1.0","id":"object-halo-cover","worldId":"world-halo","roomId":null,"title":"Halo cover (placeholder)","type":"image","stage":"draft","canonical":false,"provider":"icloud","providerObjectId":"","path":"Void Dominion/Halo/cover.png","repositoryUrl":"","externalUrl":"","previewRef":"assets/placeholders/world-cover.svg","tags":["cover","placeholder"],"provenance":{"note":"Sample iCloud reference. iCloud provider is a labelled stub; file is not verified.","importedAt":"2026-08-01T00:00:00.000Z"},"createdAt":"2026-08-01T00:00:00.000Z","updatedAt":"2026-08-01T00:00:00.000Z"}],"sources":[{"schemaVersion":"1.0","id":"source-ai-icloud","worldId":"world-atlas-impossible","provider":"icloud","authority":"primary","path":"Void Dominion/Atlas of the Impossible/","repository":"","branch":"","url":"","contentHash":"","lastVerifiedAt":"","availability":"unknown","writeCapability":"none","notes":"Sample iCloud source. Availability unknown until provider is connected."},{"schemaVersion":"1.0","id":"source-halo-github","worldId":"world-halo","provider":"github","authority":"primary","path":"","repository":"example/halo-widgy","branch":"main","url":"https://github.com/example/halo-widgy","contentHash":"","lastVerifiedAt":"","availability":"unknown","writeCapability":"none","notes":"Sample GitHub source. Read reference only; write requires authenticated provider and approval."}],"activity":[{"schemaVersion":"1.0","id":"activity-seed-1","actor":"system","type":"system.seeded","entityType":"system","entityId":"system-void-dominion","summary":"Void Dominion foundation seeded with sample data.","before":{},"after":{},"approvalId":null,"result":"success","timestamp":"2026-08-01T00:00:00.000Z"}],"chief":{"schemaVersion":"1.0","status":{"provider":"mock","identity":"Chief","connected":false,"label":"Local mock Chief — no live Apple Shortcuts connection."},"queue":[{"id":"job-sample-1","actor":"user","input":"Sample capture: review Halo widget grid dimensions.","reasoningDepth":"brain","status":"queued","risk":"low","createdAt":"2026-08-01T00:00:00.000Z"}],"approvals":[{"schemaVersion":"1.0","id":"approval-sample-1","actionType":"canon_change","risk":"high","summary":"Sample: mark 'Halo clock behaviour' canon as final.","reason":"Demonstrates the approval lifecycle. This is a sample and performs no external action.","before":{"stage":"draft"},"proposedAfter":{"stage":"final"},"affectedEntities":["canon-halo-1"],"rollbackAvailable":true,"status":"pending","createdAt":"2026-08-01T00:00:00.000Z","resolvedAt":null}],"reasoningLevels":[{"level":"brain","label":"EXEC • Brain","use":"Routine classification, extraction, prioritisation and low-risk operational decisions."},{"level":"strategy","label":"Strategy process","use":"Multi-step planning, conflicting priorities, weekly planning and optimisation."},{"level":"oracle","label":"Oracle process","use":"Major life or system decisions, long-range analysis and pattern review. Advisory by default."}]}};</script>
+  <script>(() => {
+  // js/events.js
+  var listeners = /* @__PURE__ */ new Map();
+  function on(type, handler) {
+    if (!listeners.has(type)) listeners.set(type, /* @__PURE__ */ new Set());
+    listeners.get(type).add(handler);
+    return () => off(type, handler);
+  }
+  function off(type, handler) {
+    const set = listeners.get(type);
+    if (set) set.delete(handler);
+  }
+  function emit(type, payload) {
+    const set = listeners.get(type);
+    if (set) {
+      for (const handler of Array.from(set)) {
+        try {
+          handler(payload);
+        } catch (err) {
+          console.error(`[events] listener for "${type}" threw`, err);
+        }
+      }
+    }
+    const wild = listeners.get("*");
+    if (wild) {
+      for (const handler of Array.from(wild)) {
+        try {
+          handler({ type, payload });
+        } catch (err) {
+          console.error("[events] wildcard listener threw", err);
+        }
+      }
+    }
+  }
+
+  // js/persistence.js
+  var DB_NAME = "void-dominion";
+  var DB_VERSION = 1;
+  var STORES = ["worlds", "rooms", "objects", "activity", "approvals", "sources", "chiefJobs", "backups"];
+  function createMemoryAdapter() {
+    const stores = {};
+    const meta = {};
+    const ensure = (s) => {
+      if (!stores[s]) stores[s] = /* @__PURE__ */ new Map();
+      return stores[s];
+    };
+    const copy = (v) => v === void 0 ? void 0 : JSON.parse(JSON.stringify(v));
+    return {
+      async init() {
+        return this;
+      },
+      async getAll(store) {
+        return Array.from(ensure(store).values()).map(copy);
+      },
+      async get(store, id) {
+        return copy(ensure(store).get(id));
+      },
+      async put(store, record) {
+        ensure(store).set(record.id, copy(record));
+        return record;
+      },
+      async bulkPut(store, records) {
+        for (const r of records) ensure(store).set(r.id, copy(r));
+        return records;
+      },
+      async delete(store, id) {
+        ensure(store).delete(id);
+      },
+      async clear(store) {
+        ensure(store).clear();
+      },
+      async getMeta(key) {
+        return copy(meta[key]);
+      },
+      async setMeta(key, value) {
+        meta[key] = copy(value);
+        return value;
+      },
+      async isEmpty() {
+        return !stores.worlds || stores.worlds.size === 0;
+      }
+    };
+  }
+  function createIndexedDBAdapter() {
+    let db2 = null;
+    function open() {
+      return new Promise((resolve2, reject) => {
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = () => {
+          const d = req.result;
+          for (const store of STORES) {
+            if (!d.objectStoreNames.contains(store)) {
+              d.createObjectStore(store, { keyPath: "id" });
+            }
+          }
+          if (!d.objectStoreNames.contains("meta")) {
+            d.createObjectStore("meta", { keyPath: "key" });
+          }
+        };
+        req.onsuccess = () => resolve2(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+    function tx(store, mode) {
+      return db2.transaction(store, mode).objectStore(store);
+    }
+    function toPromise(request) {
+      return new Promise((resolve2, reject) => {
+        request.onsuccess = () => resolve2(request.result);
+        request.onerror = () => reject(request.error);
+      });
+    }
+    return {
+      async init() {
+        db2 = await open();
+        return this;
+      },
+      async getAll(store) {
+        return toPromise(tx(store, "readonly").getAll());
+      },
+      async get(store, id) {
+        return toPromise(tx(store, "readonly").get(id));
+      },
+      async put(store, record) {
+        await toPromise(tx(store, "readwrite").put(record));
+        return record;
+      },
+      async bulkPut(store, records) {
+        const os = tx(store, "readwrite");
+        await Promise.all(records.map((r) => toPromise(os.put(r))));
+        return records;
+      },
+      async delete(store, id) {
+        return toPromise(tx(store, "readwrite").delete(id));
+      },
+      async clear(store) {
+        return toPromise(tx(store, "readwrite").clear());
+      },
+      async getMeta(key) {
+        const row = await toPromise(tx("meta", "readonly").get(key));
+        return row ? row.value : void 0;
+      },
+      async setMeta(key, value) {
+        await toPromise(tx("meta", "readwrite").put({ key, value }));
+        return value;
+      },
+      async isEmpty() {
+        const worlds = await this.getAll("worlds");
+        return !worlds || worlds.length === 0;
+      }
+    };
+  }
+
+  // js/util.js
+  function makeId(prefix = "id") {
+    const rand = typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID().split("-")[0] : Math.random().toString(36).slice(2, 10);
+    return `${prefix}-${rand}`;
+  }
+  function now() {
+    return (/* @__PURE__ */ new Date()).toISOString();
+  }
+  function esc(value) {
+    if (value === null || value === void 0) return "";
+    return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function formatDate(iso) {
+    if (!iso) return "\u2014";
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return esc(iso);
+    return d.toLocaleString(void 0, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  }
+  function clone(obj) {
+    if (typeof structuredClone === "function") return structuredClone(obj);
+    return JSON.parse(JSON.stringify(obj));
+  }
+
+  // js/activity.js
+  function makeActivity({
+    actor = "system",
+    type,
+    entityType = "",
+    entityId = "",
+    summary = "",
+    before = {},
+    after = {},
+    approvalId = null,
+    result = "success"
+  } = {}) {
+    return {
+      schemaVersion: "1.0",
+      id: makeId("activity"),
+      actor,
+      type,
+      entityType,
+      entityId,
+      summary,
+      before,
+      after,
+      approvalId,
+      result,
+      timestamp: now()
+    };
+  }
+
+  // js/validation.js
+  var REQUIRED = {
+    world: ["id", "name", "status"],
+    object: ["id", "worldId", "title", "type"],
+    room: ["id", "worldId", "name"],
+    activity: ["id", "actor", "type", "result", "timestamp"],
+    approval: ["id", "actionType", "risk", "status"],
+    source: ["id", "provider", "authority"]
+  };
+  var ENUMS = {
+    world: { status: ["active", "archived", "proposed", "blocked"] },
+    object: { stage: ["draft", "final", "reference", "superseded"] },
+    activity: { result: ["success", "failure", "partial"] },
+    approval: {
+      risk: ["low", "moderate", "medium", "high", "critical"],
+      status: ["pending", "approved", "rejected", "expired", "executed", "failed"]
+    },
+    source: {
+      authority: ["primary", "mirror", "reference"],
+      availability: ["available", "unavailable", "unknown"],
+      writeCapability: ["none", "proposed", "approved"]
+    }
+  };
+  function validateEntity(type, entity) {
+    const errors = [];
+    if (!entity || typeof entity !== "object") {
+      return { valid: false, errors: [`${type} must be an object`] };
+    }
+    const required = REQUIRED[type];
+    if (!required) {
+      return { valid: false, errors: [`Unknown entity type: ${type}`] };
+    }
+    for (const field of required) {
+      const v = entity[field];
+      if (v === void 0 || v === null || v === "") {
+        errors.push(`${type}.${field} is required`);
+      }
+    }
+    if (!entity.schemaVersion) {
+      errors.push(`${type}.schemaVersion is required`);
+    }
+    const enums = ENUMS[type] || {};
+    for (const [field, allowed] of Object.entries(enums)) {
+      const v = entity[field];
+      if (v !== void 0 && v !== null && v !== "" && !allowed.includes(v)) {
+        errors.push(`${type}.${field} must be one of: ${allowed.join(", ")} (got "${v}")`);
+      }
+    }
+    return { valid: errors.length === 0, errors };
+  }
+  function validateRelationships(data) {
+    const errors = [];
+    const worldIds = new Set((data.worlds || []).map((w) => w.id));
+    const roomIds = new Set((data.rooms || []).map((r) => r.id));
+    for (const obj of data.objects || []) {
+      if (obj.worldId && !worldIds.has(obj.worldId)) {
+        errors.push(`object ${obj.id} references missing world ${obj.worldId}`);
+      }
+      if (obj.roomId && !roomIds.has(obj.roomId)) {
+        errors.push(`object ${obj.id} references missing room ${obj.roomId}`);
+      }
+    }
+    for (const room of data.rooms || []) {
+      if (room.worldId && !worldIds.has(room.worldId)) {
+        errors.push(`room ${room.id} references missing world ${room.worldId}`);
+      }
+    }
+    return { valid: errors.length === 0, errors };
+  }
+  function validateDataset(data) {
+    const errors = [];
+    const collections = {
+      world: data.worlds,
+      room: data.rooms,
+      object: data.objects,
+      activity: data.activity,
+      source: data.sources
+    };
+    for (const [type, list] of Object.entries(collections)) {
+      if (list === void 0) continue;
+      if (!Array.isArray(list)) {
+        errors.push(`${type} collection must be an array`);
+        continue;
+      }
+      list.forEach((entity, i) => {
+        const res = validateEntity(type, entity);
+        if (!res.valid) errors.push(`${type}[${i}]: ${res.errors.join("; ")}`);
+      });
+    }
+    const rel = validateRelationships({
+      worlds: data.worlds || [],
+      rooms: data.rooms || [],
+      objects: data.objects || []
+    });
+    errors.push(...rel.errors);
+    return { valid: errors.length === 0, errors };
+  }
+
+  // js/safety.js
+  var DECISIONS = {
+    ALLOW: "allow",
+    ALLOW_WITH_LOG: "allow-with-log",
+    REQUIRE_APPROVAL: "require-approval",
+    DENY: "deny"
+  };
+  function normaliseRisk(risk) {
+    if (risk === "medium") return "moderate";
+    return risk;
+  }
+  function classify(actionType, policy) {
+    const map = policy && policy.actionRisk || {};
+    return normaliseRisk(map[actionType] || "moderate");
+  }
+  function evaluate(action, policy, providerState2 = {}) {
+    const type = action && action.type;
+    if (!type) {
+      return {
+        decision: DECISIONS.DENY,
+        risk: "critical",
+        requiresApproval: false,
+        backupFirst: false,
+        reason: "No action type supplied; cannot evaluate safety."
+      };
+    }
+    const risk = classify(type, policy);
+    const riskClass = policy && policy.riskClasses && policy.riskClasses[risk] || {};
+    const providerId = action.context && action.context.provider;
+    if (providerId && providerState2[providerId]) {
+      const ps = providerState2[providerId];
+      const writeIntent = /\.(create|update|move|delete|write|commit)$|^file\.|^message\.|purchase|booking/.test(type);
+      if (writeIntent) {
+        const caps = ps.capabilities || {};
+        const canWrite = caps.create || caps.update || caps.move || caps.delete || caps.commit;
+        if (ps.status === "mock" || ps.status === "unavailable" || ps.status === "disconnected" || !canWrite) {
+          return {
+            decision: DECISIONS.DENY,
+            risk,
+            requiresApproval: false,
+            backupFirst: false,
+            reason: `Provider "${providerId}" cannot perform "${type}" (status: ${ps.status}). The action is preserved as a proposal rather than executed.`
+          };
+        }
+      }
+    }
+    const requiresApproval = !!riskClass.requiresApproval;
+    const backupFirst = !!riskClass.backupFirst;
+    let decision;
+    if (requiresApproval) {
+      decision = DECISIONS.REQUIRE_APPROVAL;
+    } else if (risk === "low") {
+      decision = DECISIONS.ALLOW_WITH_LOG;
+    } else {
+      decision = DECISIONS.ALLOW_WITH_LOG;
+    }
+    return {
+      decision,
+      risk,
+      requiresApproval,
+      backupFirst,
+      reason: riskClass.label ? `Classified as ${risk} (${riskClass.label}).` : `Classified as ${risk}.`
+    };
+  }
+  function buildApprovalRequest(action, evaluation, { makeId: makeId2, now: now2 }) {
+    return {
+      schemaVersion: "1.0",
+      id: makeId2("approval"),
+      actionType: mapToApprovalActionType(action.type),
+      risk: evaluation.risk,
+      summary: action.summary || `Proposed ${action.type}`,
+      reason: action.reason || evaluation.reason,
+      before: action.before || {},
+      proposedAfter: action.proposedAfter || {},
+      affectedEntities: action.affectedEntities || (action.entityId ? [action.entityId] : []),
+      rollbackAvailable: action.rollbackAvailable !== void 0 ? action.rollbackAvailable : !evaluation.backupFirst ? true : false,
+      backupFirst: evaluation.backupFirst,
+      status: "pending",
+      createdAt: now2(),
+      resolvedAt: null,
+      // Preserve the original proposed action so it can be executed on approval.
+      _action: action
+    };
+  }
+  function mapToApprovalActionType(type) {
+    if (/delete/.test(type)) return "delete";
+    if (/move|rename/.test(type)) return "move";
+    if (/message|send/.test(type)) return "send";
+    if (/purchase|payment/.test(type)) return "purchase";
+    if (/booking|book/.test(type)) return "book";
+    if (/canon/.test(type)) return "canon_change";
+    return "other";
+  }
+
+  // js/store.js
+  var state = {
+    system: null,
+    settings: null,
+    safetyPolicy: null,
+    locations: [],
+    worlds: [],
+    rooms: [],
+    objects: [],
+    sources: [],
+    activity: [],
+    approvals: [],
+    chiefJobs: [],
+    chief: null,
+    conflicts: [],
+    backups: [],
+    ready: false
+  };
+  var db = null;
+  function getState() {
+    return state;
+  }
+  var COLLECTION_BY_ENTITY = {
+    world: "worlds",
+    object: "objects",
+    room: "rooms",
+    source: "sources"
+  };
+  function find(collection, id) {
+    return state[collection].find((r) => r.id === id);
+  }
+  async function upsertRecord(collection, record) {
+    const idx = state[collection].findIndex((r) => r.id === record.id);
+    if (idx >= 0) state[collection][idx] = record;
+    else state[collection].push(record);
+    if (db) await db.put(collection, clone(record));
+    return record;
+  }
+  async function removeRecord(collection, id) {
+    const idx = state[collection].findIndex((r) => r.id === id);
+    const removed = idx >= 0 ? state[collection][idx] : null;
+    if (idx >= 0) state[collection].splice(idx, 1);
+    if (db) await db.delete(collection, id);
+    return removed;
+  }
+  function providerState() {
+    const map = {};
+    for (const p of state.settings && state.settings.providers || []) {
+      map[p.providerId] = { status: p.status, capabilities: p.capabilities || {} };
+    }
+    return map;
+  }
+  var executors = {
+    "world.create": async (a) => {
+      const entity = a.payload;
+      await upsertRecord("worlds", entity);
+      return { entity, before: {}, after: clone(entity) };
+    },
+    "world.update": async (a) => patchEntity("world", a.entityId, a.payload),
+    "world.archive": async (a) => patchEntity("world", a.entityId, { status: "archived" }),
+    "world.restore": async (a) => patchEntity("world", a.entityId, { status: "active" }),
+    "world.delete": async (a) => {
+      const before = clone(find("worlds", a.entityId));
+      const removed = await removeRecord("worlds", a.entityId);
+      return { entity: removed, before, after: {} };
+    },
+    "object.create": async (a) => {
+      await upsertRecord("objects", a.payload);
+      return { entity: a.payload, before: {}, after: clone(a.payload) };
+    },
+    "object.update": async (a) => patchEntity("object", a.entityId, a.payload),
+    "object.archive": async (a) => patchEntity("object", a.entityId, { stage: "superseded" }),
+    "object.delete": async (a) => {
+      const before = clone(find("objects", a.entityId));
+      const removed = await removeRecord("objects", a.entityId);
+      return { entity: removed, before, after: {} };
+    },
+    "room.create": async (a) => {
+      await upsertRecord("rooms", a.payload);
+      const world = find("worlds", a.payload.worldId);
+      if (world && !world.roomIds.includes(a.payload.id)) {
+        world.roomIds = [...world.roomIds, a.payload.id];
+        await upsertRecord("worlds", world);
+      }
+      return { entity: a.payload, before: {}, after: clone(a.payload) };
+    },
+    "room.update": async (a) => patchEntity("room", a.entityId, a.payload),
+    "room.delete": async (a) => {
+      const before = clone(find("rooms", a.entityId));
+      const removed = await removeRecord("rooms", a.entityId);
+      return { entity: removed, before, after: {} };
+    },
+    "canon.change": async (a) => {
+      const world = find("worlds", a.entityId);
+      const before = clone(world.canon);
+      const item = a.payload;
+      const idx = world.canon.findIndex((c) => c.id === item.id);
+      if (idx >= 0) world.canon[idx] = { ...world.canon[idx], ...item };
+      else world.canon = [...world.canon, item];
+      world.updatedAt = now();
+      await upsertRecord("worlds", world);
+      return { entity: world, before, after: clone(world.canon) };
+    },
+    "canon.finalize": async (a) => {
+      const world = find("worlds", a.entityId);
+      const before = clone(world.canon);
+      const item = world.canon.find((c) => c.id === a.payload.canonId);
+      if (item) item.stage = "final";
+      world.updatedAt = now();
+      await upsertRecord("worlds", world);
+      return { entity: world, before, after: clone(world.canon) };
+    },
+    "settings.update": async (a) => {
+      const before = clone(state.settings);
+      state.settings = { ...state.settings, ...a.payload, updatedAt: now() };
+      if (db) await db.setMeta("settings", clone(state.settings));
+      return { entity: state.settings, before, after: clone(state.settings) };
+    },
+    "provider.enable": async (a) => {
+      const before = clone(state.settings.providers);
+      const p = state.settings.providers.find((x) => x.providerId === a.payload.providerId);
+      if (p) Object.assign(p, a.payload.patch);
+      if (db) await db.setMeta("settings", clone(state.settings));
+      return { entity: p, before, after: clone(state.settings.providers) };
+    },
+    "capture.create": async (a) => {
+      const job = a.payload;
+      state.chiefJobs.push(job);
+      if (db) await db.put("chiefJobs", clone(job));
+      return { entity: job, before: {}, after: clone(job) };
+    },
+    "data.reset": async () => {
+      const before = { worlds: state.worlds.length };
+      for (const col of ["worlds", "rooms", "objects", "activity", "approvals", "sources", "chiefJobs"]) {
+        state[col] = [];
+        if (db) await db.clear(col);
+      }
+      return { entity: null, before, after: { worlds: 0 } };
+    }
+  };
+  async function patchEntity(entityType, id, patch) {
+    const collection = COLLECTION_BY_ENTITY[entityType];
+    const record = find(collection, id);
+    if (!record) throw new Error(`${entityType} ${id} not found`);
+    const before = clone(record);
+    Object.assign(record, patch, { updatedAt: now() });
+    await upsertRecord(collection, record);
+    return { entity: record, before, after: clone(record) };
+  }
+  async function log(entry) {
+    const record = makeActivity(entry);
+    state.activity.unshift(record);
+    if (db) await db.put("activity", clone(record));
+    emit("activity.recorded", record);
+    return record;
+  }
+  async function proposeAction(action) {
+    const ev = evaluate(action, state.safetyPolicy, providerState());
+    if (ev.decision === DECISIONS.DENY) {
+      await log({
+        actor: action.actor || "system",
+        type: action.type,
+        entityType: action.entityType || "",
+        entityId: action.entityId || "",
+        summary: `Blocked: ${action.summary || action.type}. ${ev.reason}`,
+        result: "failure"
+      });
+      const result = { ok: false, denied: true, reason: ev.reason, risk: ev.risk };
+      emit("action.denied", { action, result });
+      return result;
+    }
+    if (ev.decision === DECISIONS.REQUIRE_APPROVAL) {
+      const approval = buildApprovalRequest(action, ev, { makeId, now });
+      approval._action = clone(action);
+      state.approvals.unshift(approval);
+      if (db) await db.put("approvals", clone(approval));
+      await log({
+        actor: action.actor || "user",
+        type: "approval.requested",
+        entityType: action.entityType || "",
+        entityId: action.entityId || "",
+        summary: `Approval requested: ${approval.summary}`,
+        approvalId: approval.id,
+        result: "partial"
+      });
+      emit("approval.requested", approval);
+      emit("state.changed", { reason: "approval.requested" });
+      return { ok: false, requiresApproval: true, approvalId: approval.id, risk: ev.risk };
+    }
+    return executeAction(action, ev, null);
+  }
+  async function executeAction(action, ev, approvalId) {
+    const executor = executors[action.type];
+    if (!executor) {
+      await log({
+        actor: action.actor || "system",
+        type: action.type,
+        summary: `No executor registered for ${action.type}`,
+        result: "failure"
+      });
+      return { ok: false, reason: `No executor for ${action.type}` };
+    }
+    try {
+      const { entity, before, after } = await executor(action);
+      await log({
+        actor: action.actor || "user",
+        type: action.type,
+        entityType: action.entityType || "",
+        entityId: action.entityId || entity && entity.id || "",
+        summary: action.summary || action.type,
+        before: before || {},
+        after: after || {},
+        approvalId,
+        result: "success"
+      });
+      emit("state.changed", { reason: action.type, entity });
+      return { ok: true, entity, risk: ev.risk };
+    } catch (err) {
+      await log({
+        actor: action.actor || "system",
+        type: action.type,
+        entityType: action.entityType || "",
+        entityId: action.entityId || "",
+        summary: `Failed: ${action.summary || action.type} \u2014 ${err.message}`,
+        result: "failure"
+      });
+      return { ok: false, reason: err.message };
+    }
+  }
+  async function resolveApproval(approvalId, decision, { actor = "user" } = {}) {
+    const approval = state.approvals.find((a) => a.id === approvalId);
+    if (!approval) return { ok: false, reason: "Approval not found" };
+    if (approval.status !== "pending") {
+      return { ok: false, reason: `Approval already ${approval.status}` };
+    }
+    if (decision === "reject") {
+      approval.status = "rejected";
+      approval.resolvedAt = now();
+      if (db) await db.put("approvals", clone(approval));
+      await log({
+        actor,
+        type: "approval.rejected",
+        approvalId,
+        summary: `Rejected: ${approval.summary}`,
+        result: "success"
+      });
+      emit("approval.resolved", approval);
+      emit("state.changed", { reason: "approval.rejected" });
+      return { ok: true, status: "rejected" };
+    }
+    if (approval.backupFirst) {
+      await createBackup({ reason: `Pre-execution snapshot for ${approval.id}` });
+    }
+    const result = await executeAction(approval._action, { risk: approval.risk }, approvalId);
+    approval.status = result.ok ? "executed" : "failed";
+    approval.resolvedAt = now();
+    if (db) await db.put("approvals", clone(approval));
+    emit("approval.resolved", approval);
+    emit("state.changed", { reason: "approval.resolved" });
+    return { ok: result.ok, status: approval.status, result };
+  }
+  async function createBackup({ reason = "manual" } = {}) {
+    const snapshot = {
+      id: makeId("backup"),
+      schemaVersion: "1.0",
+      reason,
+      createdAt: now(),
+      data: {
+        worlds: clone(state.worlds),
+        rooms: clone(state.rooms),
+        objects: clone(state.objects),
+        sources: clone(state.sources),
+        activity: clone(state.activity),
+        approvals: clone(state.approvals.map((a) => ({ ...a, _action: void 0 }))),
+        chiefJobs: clone(state.chiefJobs),
+        settings: clone(state.settings)
+      }
+    };
+    state.backups.unshift(snapshot);
+    if (db) await db.put("backups", clone(snapshot));
+    await log({ actor: "system", type: "backup.created", summary: `Backup created (${reason})`, result: "success" });
+    emit("state.changed", { reason: "backup.created" });
+    return snapshot;
+  }
+  async function restoreBackup(backupId) {
+    const backup = state.backups.find((b) => b.id === backupId);
+    if (!backup) return { ok: false, reason: "Backup not found" };
+    const d = backup.data;
+    state.worlds = clone(d.worlds || []);
+    state.rooms = clone(d.rooms || []);
+    state.objects = clone(d.objects || []);
+    state.sources = clone(d.sources || []);
+    state.chiefJobs = clone(d.chiefJobs || []);
+    if (d.settings) state.settings = clone(d.settings);
+    if (db) {
+      for (const col of ["worlds", "rooms", "objects", "sources", "chiefJobs"]) {
+        await db.clear(col);
+        await db.bulkPut(col, clone(state[col]));
+      }
+      await db.setMeta("settings", clone(state.settings));
+    }
+    await log({ actor: "user", type: "backup.restored", summary: `Restored backup ${backupId}`, result: "success" });
+    emit("state.changed", { reason: "backup.restored" });
+    return { ok: true };
+  }
+  async function importDataset(data) {
+    await createBackup({ reason: "Pre-import snapshot" });
+    const cols = { worlds: "worlds", rooms: "rooms", objects: "objects", sources: "sources" };
+    for (const [key, col] of Object.entries(cols)) {
+      if (Array.isArray(data[key])) {
+        state[col] = clone(data[key]);
+        if (db) {
+          await db.clear(col);
+          await db.bulkPut(col, clone(state[col]));
+        }
+      }
+    }
+    if (data.settings) {
+      state.settings = clone(data.settings);
+      if (db) await db.setMeta("settings", clone(state.settings));
+    }
+    await log({ actor: "user", type: "data.import", summary: "Imported Atlas metadata", result: "success" });
+    emit("state.changed", { reason: "data.import" });
+    return { ok: true };
+  }
+  function setConflicts(conflicts) {
+    state.conflicts = conflicts;
+  }
+  async function initStore(adapter, seed) {
+    db = adapter;
+    if (db) await db.init();
+    state.system = db && await db.getMeta("system") || seed.system;
+    state.settings = db && await db.getMeta("settings") || seed.settings;
+    state.safetyPolicy = db && await db.getMeta("safetyPolicy") || seed.safetyPolicy;
+    state.locations = db && await db.getMeta("locations") || seed.locations;
+    state.chief = db && await db.getMeta("chief") || seed.chief;
+    const empty = db ? await db.isEmpty() : true;
+    if (empty) {
+      state.worlds = clone(seed.worlds || []);
+      state.rooms = clone(seed.rooms || []);
+      state.objects = clone(seed.objects || []);
+      state.sources = clone(seed.sources || []);
+      state.activity = clone(seed.activity || []);
+      state.approvals = clone(seed.chief && seed.chief.approvals || []);
+      state.chiefJobs = clone(seed.chief && seed.chief.queue || []);
+      if (db) {
+        await db.bulkPut("worlds", state.worlds);
+        await db.bulkPut("rooms", state.rooms);
+        await db.bulkPut("objects", state.objects);
+        await db.bulkPut("sources", state.sources);
+        await db.bulkPut("activity", state.activity);
+        await db.bulkPut("approvals", state.approvals);
+        await db.bulkPut("chiefJobs", state.chiefJobs);
+        await db.setMeta("system", clone(state.system));
+        await db.setMeta("settings", clone(state.settings));
+        await db.setMeta("safetyPolicy", clone(state.safetyPolicy));
+        await db.setMeta("locations", clone(state.locations));
+        await db.setMeta("chief", clone(state.chief));
+        await db.setMeta("schemaMeta", { version: "1.0", migratedAt: now() });
+      }
+    } else {
+      state.worlds = await db.getAll("worlds");
+      state.rooms = await db.getAll("rooms");
+      state.objects = await db.getAll("objects");
+      state.sources = await db.getAll("sources");
+      state.activity = (await db.getAll("activity")).sort((a, b) => a.timestamp < b.timestamp ? 1 : -1);
+      state.approvals = await db.getAll("approvals");
+      state.chiefJobs = await db.getAll("chiefJobs");
+      state.backups = await db.getAll("backups");
+    }
+    state.ready = true;
+    emit("store.ready", state);
+    return state;
+  }
+  var actions = {
+    createWorld(payload, actor = "user") {
+      const world = {
+        schemaVersion: "1.0",
+        id: makeId("world"),
+        status: "active",
+        priority: "medium",
+        canon: [],
+        unresolvedQuestions: [],
+        lastAction: "",
+        nextAction: "",
+        futureAction: "",
+        roomIds: [],
+        objectIds: [],
+        galleryConfig: { layout: "grid", assetSlots: ["cover"] },
+        sourceRefs: [],
+        blockers: [],
+        deadlines: [],
+        createdAt: now(),
+        updatedAt: now(),
+        ...payload
+      };
+      const v = validateEntity("world", world);
+      if (!v.valid) return Promise.resolve({ ok: false, reason: v.errors.join("; ") });
+      return proposeAction({
+        type: "world.create",
+        actor,
+        entityType: "world",
+        entityId: world.id,
+        summary: `Create World "${world.name}"`,
+        reason: "A new Project World requires explicit approval before creation.",
+        payload: world,
+        proposedAfter: world
+      });
+    },
+    updateWorld(id, patch, actor = "user") {
+      return proposeAction({
+        type: "world.update",
+        actor,
+        entityType: "world",
+        entityId: id,
+        summary: `Update World ${id}`,
+        payload: patch
+      });
+    },
+    archiveWorld(id, actor = "user") {
+      return proposeAction({
+        type: "world.archive",
+        actor,
+        entityType: "world",
+        entityId: id,
+        summary: `Archive World ${id}`
+      });
+    },
+    restoreWorld(id, actor = "user") {
+      return proposeAction({
+        type: "world.restore",
+        actor,
+        entityType: "world",
+        entityId: id,
+        summary: `Restore World ${id}`
+      });
+    },
+    deleteWorld(id, actor = "user") {
+      const w = find("worlds", id);
+      return proposeAction({
+        type: "world.delete",
+        actor,
+        entityType: "world",
+        entityId: id,
+        summary: `Permanently delete World "${w ? w.name : id}"`,
+        reason: "Destructive action. A backup snapshot is taken before execution.",
+        before: clone(w) || {},
+        rollbackAvailable: true
+      });
+    },
+    createObject(payload, actor = "user") {
+      const obj = {
+        schemaVersion: "1.0",
+        id: makeId("object"),
+        roomId: null,
+        stage: "draft",
+        canonical: false,
+        provider: "local",
+        providerObjectId: "",
+        path: "",
+        repositoryUrl: "",
+        externalUrl: "",
+        previewRef: "",
+        tags: [],
+        provenance: {},
+        createdAt: now(),
+        updatedAt: now(),
+        ...payload
+      };
+      const v = validateEntity("object", obj);
+      if (!v.valid) return Promise.resolve({ ok: false, reason: v.errors.join("; ") });
+      return proposeAction({
+        type: "object.create",
+        actor,
+        entityType: "object",
+        entityId: obj.id,
+        summary: `Add object "${obj.title}"`,
+        payload: obj,
+        context: { provider: "local" }
+      });
+    },
+    updateObject(id, patch, actor = "user") {
+      return proposeAction({ type: "object.update", actor, entityType: "object", entityId: id, summary: `Update object ${id}`, payload: patch });
+    },
+    deleteObject(id, actor = "user") {
+      const o = find("objects", id);
+      return proposeAction({
+        type: "object.delete",
+        actor,
+        entityType: "object",
+        entityId: id,
+        summary: `Permanently delete object "${o ? o.title : id}"`,
+        reason: "Destructive action. A backup snapshot is taken before execution.",
+        before: clone(o) || {}
+      });
+    },
+    createRoom(payload, actor = "user") {
+      const room = { schemaVersion: "1.0", id: makeId("room"), type: "section", objectIds: [], notes: "", ...payload };
+      const v = validateEntity("room", room);
+      if (!v.valid) return Promise.resolve({ ok: false, reason: v.errors.join("; ") });
+      return proposeAction({ type: "room.create", actor, entityType: "room", entityId: room.id, summary: `Create room "${room.name}"`, payload: room });
+    },
+    addCanon(worldId, item, actor = "user") {
+      const canonItem = { id: makeId("canon"), stage: "draft", supersedes: null, createdAt: now(), ...item };
+      return proposeAction({
+        type: "canon.change",
+        actor,
+        entityType: "world",
+        entityId: worldId,
+        summary: `Change canon for ${worldId}: "${canonItem.title}"`,
+        reason: "Changing established canon requires a recorded proposal and approval.",
+        payload: canonItem,
+        proposedAfter: canonItem
+      });
+    },
+    finalizeCanon(worldId, canonId, actor = "user") {
+      return proposeAction({
+        type: "canon.finalize",
+        actor,
+        entityType: "world",
+        entityId: worldId,
+        summary: `Finalize canon ${canonId}`,
+        reason: "Marking canon as final is a consequential change requiring approval.",
+        payload: { canonId },
+        affectedEntities: [canonId]
+      });
+    },
+    updateSettings(patch, actor = "user") {
+      return proposeAction({ type: "settings.update", actor, entityType: "settings", entityId: "settings", summary: "Update settings", payload: patch });
+    },
+    capture(input, reasoningDepth = "brain", actor = "user") {
+      const job = { id: makeId("job"), actor, input, reasoningDepth, status: "queued", risk: "low", createdAt: now() };
+      return proposeAction({ type: "capture.create", actor, entityType: "chiefJob", entityId: job.id, summary: "Chief capture", payload: job, context: { provider: "chief" } });
+    },
+    resetData(actor = "user") {
+      return proposeAction({
+        type: "data.reset",
+        actor,
+        entityType: "system",
+        entityId: "system",
+        summary: "Reset all Atlas data",
+        reason: "Destructive system reset. Backup is taken before execution."
+      });
+    }
+  };
+
+  // js/source-resolver.js
+  function detectConflicts(objects) {
+    const byKey = /* @__PURE__ */ new Map();
+    for (const o of objects || []) {
+      const key = (o.title || "").trim().toLowerCase();
+      if (!key) continue;
+      if (!byKey.has(key)) byKey.set(key, []);
+      byKey.get(key).push(o);
+    }
+    const conflicts = [];
+    for (const [key, group] of byKey) {
+      const canonical = group.filter((o) => o.canonical);
+      if (group.length > 1 && canonical.length !== 1) {
+        conflicts.push({
+          key,
+          objectIds: group.map((o) => o.id),
+          providers: [...new Set(group.map((o) => o.provider))],
+          reason: canonical.length === 0 ? "Same asset in multiple providers with no authoritative copy marked." : "Multiple copies marked authoritative."
+        });
+      }
+    }
+    return conflicts;
+  }
+  function resolveAuthority(object, sources) {
+    if (object.canonical) return { authority: "object.canonical", source: object };
+    const worldSources = (sources || []).filter((s) => s.worldId === object.worldId);
+    const primary = worldSources.find((s) => s.authority === "primary" && s.provider === object.provider);
+    if (primary) return { authority: "source.primary", source: primary };
+    return { authority: "unresolved", source: null };
+  }
+  function availabilityLabel(source) {
+    if (!source) return "No source record";
+    switch (source.availability) {
+      case "available":
+        return "Available";
+      case "unavailable":
+        return "Unavailable \u2014 offer relink";
+      default:
+        return "Unverified \u2014 not confirmed as current";
+    }
+  }
+
+  // js/import-export.js
+  function exportData() {
+    const s = getState();
+    return {
+      format: "void-dominion-export",
+      schemaVersion: "1.0",
+      exportedAt: now(),
+      note: "Atlas metadata and references only. External source files are not included.",
+      system: s.system,
+      settings: s.settings,
+      locations: s.locations,
+      worlds: s.worlds,
+      rooms: s.rooms,
+      objects: s.objects,
+      sources: s.sources,
+      activity: s.activity,
+      chief: s.chief
+    };
+  }
+  function exportToBlob() {
+    const json = JSON.stringify(exportData(), null, 2);
+    return new Blob([json], { type: "application/json" });
+  }
+  function previewImport(data) {
+    const result = validateDataset(data);
+    const counts = {
+      worlds: (data.worlds || []).length,
+      rooms: (data.rooms || []).length,
+      objects: (data.objects || []).length,
+      sources: (data.sources || []).length
+    };
+    return { ...result, counts };
+  }
+
+  // js/ui.js
+  var modalRoot = null;
+  var toastRoot = null;
+  function initUI() {
+    modalRoot = document.getElementById("modal-root");
+    toastRoot = document.getElementById("toast-root");
+  }
+  function openModal({ title, bodyHtml, actionsHtml = "", onMount } = {}) {
+    const overlay = document.createElement("div");
+    overlay.className = "modal-overlay";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-label", title || "Dialog");
+    overlay.innerHTML = `
+    <div class="modal" role="document">
+      <header class="modal__header">
+        <h2 class="modal__title">${esc(title || "")}</h2>
+        <button class="btn btn--icon" data-modal-close aria-label="Close dialog">\u2715</button>
+      </header>
+      <div class="modal__body">${bodyHtml || ""}</div>
+      <footer class="modal__actions">${actionsHtml}</footer>
+    </div>`;
+    modalRoot.appendChild(overlay);
+    modalRoot.hidden = false;
+    const close = () => {
+      overlay.remove();
+      if (!modalRoot.children.length) modalRoot.hidden = true;
+    };
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay || e.target.closest("[data-modal-close]")) close();
+    });
+    document.addEventListener("keydown", function onEsc(e) {
+      if (e.key === "Escape") {
+        close();
+        document.removeEventListener("keydown", onEsc);
+      }
+    });
+    const focusable = overlay.querySelector("input, textarea, select, button:not([data-modal-close])");
+    if (focusable) focusable.focus();
+    if (onMount) onMount(overlay, close);
+    return { close, overlay };
+  }
+  function confirmDialog({ title, message, confirmLabel = "Confirm", danger = false } = {}) {
+    return new Promise((resolve2) => {
+      const { close } = openModal({
+        title,
+        bodyHtml: `<p>${esc(message)}</p>`,
+        actionsHtml: `
+        <button class="btn" data-choice="cancel">Cancel</button>
+        <button class="btn ${danger ? "btn--danger" : "btn--primary"}" data-choice="confirm">${esc(confirmLabel)}</button>`,
+        onMount: (overlay, closeFn) => {
+          overlay.addEventListener("click", (e) => {
+            const choice = e.target.closest("[data-choice]");
+            if (!choice) return;
+            const val = choice.dataset.choice === "confirm";
+            closeFn();
+            resolve2(val);
+          });
+          overlay.addEventListener("click", (e) => {
+            if (e.target === overlay || e.target.closest("[data-modal-close]")) resolve2(false);
+          });
+        }
+      });
+    });
+  }
+  function toast(message, { kind = "info", timeout = 3200 } = {}) {
+    const el = document.createElement("div");
+    el.className = `toast toast--${kind}`;
+    el.setAttribute("role", "status");
+    el.textContent = message;
+    toastRoot.appendChild(el);
+    setTimeout(() => {
+      el.classList.add("toast--out");
+      setTimeout(() => el.remove(), 300);
+    }, timeout);
+  }
+
+  // js/router.js
+  var routes = [];
+  function defineRoute(pattern, handler, meta = {}) {
+    const keys = [];
+    const regexStr = "^" + pattern.split("/").map((seg) => {
+      if (seg.startsWith(":")) {
+        keys.push(seg.slice(1));
+        return "([^/]+)";
+      }
+      return seg.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }).join("/") + "$";
+    routes.push({ pattern, regex: new RegExp(regexStr), keys, handler, meta });
+  }
+  function match(hash) {
+    const clean = hash || "#/dominion";
+    for (const route of routes) {
+      const m = clean.match(route.regex);
+      if (m) {
+        const params = {};
+        route.keys.forEach((k, i) => {
+          params[k] = decodeURIComponent(m[i + 1]);
+        });
+        return { route, params };
+      }
+    }
+    return null;
+  }
+  var currentGuard = null;
+  var onNavigate = () => {
+  };
+  function onRoute(fn) {
+    onNavigate = fn;
+  }
+  async function resolve() {
+    const hash = window.location.hash || "#/dominion";
+    const found = match(hash);
+    if (!found) {
+      onNavigate({ notFound: true, hash });
+      return;
+    }
+    if (currentGuard) {
+      const ok = await currentGuard(found);
+      if (!ok) return;
+    }
+    onNavigate({ ...found, hash });
+  }
+  function navigate(hash) {
+    if (window.location.hash === hash) resolve();
+    else window.location.hash = hash;
+  }
+  function start() {
+    window.addEventListener("hashchange", resolve);
+    resolve();
+  }
+
+  // js/providers/provider-registry.js
+  var registry = /* @__PURE__ */ new Map();
+  function register(provider) {
+    registry.set(provider.providerId, provider);
+    return provider;
+  }
+  function can(providerId, capability) {
+    const p = registry.get(providerId);
+    if (!p) return false;
+    if (p.status === "unavailable" || p.status === "disconnected") return false;
+    return !!(p.capabilities && p.capabilities[capability]);
+  }
+
+  // js/providers/storage-provider.js
+  var NotSupportedError = class extends Error {
+    constructor(providerId, method) {
+      super(`Provider "${providerId}" does not support "${method}".`);
+      this.name = "NotSupportedError";
+      this.notSupported = true;
+    }
+  };
+  var StorageProvider = class {
+    constructor({ providerId, status = "mock", label = "", capabilities = {} }) {
+      this.providerId = providerId;
+      this.status = status;
+      this.label = label;
+      this.capabilities = capabilities;
+    }
+    requireCapability(method, cap) {
+      if (this.status === "unavailable" || this.status === "disconnected") {
+        throw new NotSupportedError(this.providerId, `${method} (status: ${this.status})`);
+      }
+      if (!this.capabilities[cap]) throw new NotSupportedError(this.providerId, method);
+    }
+    async connect() {
+      throw new NotSupportedError(this.providerId, "connect");
+    }
+    async list() {
+      this.requireCapability("list", "list");
+      return [];
+    }
+    async getMetadata() {
+      this.requireCapability("getMetadata", "read");
+      return null;
+    }
+    async read() {
+      this.requireCapability("read", "read");
+      return null;
+    }
+    async write() {
+      this.requireCapability("write", "update");
+    }
+    async move() {
+      this.requireCapability("move", "move");
+    }
+    async archive() {
+      this.requireCapability("archive", "update");
+    }
+    describe() {
+      return { providerId: this.providerId, status: this.status, label: this.label, capabilities: this.capabilities };
+    }
+  };
+
+  // js/providers/local-provider.js
+  var LocalProvider = class extends StorageProvider {
+    constructor() {
+      super({
+        providerId: "local",
+        status: "connected",
+        label: "Local metadata provider",
+        capabilities: { list: true, read: true, preview: true, create: true, update: true, move: false, delete: true, commit: false }
+      });
+    }
+    async connect() {
+      this.status = "connected";
+      return true;
+    }
+    async getMetadata(ref) {
+      return { ref, provider: "local", available: true };
+    }
+    async read(ref) {
+      return { ref, provider: "local", content: null, note: "Local provider stores references, not external bytes." };
+    }
+  };
+
+  // js/providers/icloud-provider.stub.js
+  var ICloudProviderStub = class extends StorageProvider {
+    constructor() {
+      super({
+        providerId: "icloud",
+        status: "mock",
+        label: "iCloud Drive (stub) \u2014 requires user-selected files, a local companion, Apple Shortcuts or a native app",
+        capabilities: { list: false, read: false, preview: false, create: false, update: false, move: false, delete: false, commit: false }
+      });
+      this.setupRequirements = [
+        "User-selected files via the File System Access API, or",
+        "A local companion process exposing an authorised endpoint, or",
+        "Apple Shortcuts writing to a shared JSON bridge, or",
+        "A future native macOS / iPadOS application."
+      ];
+    }
+    async connect() {
+      throw new NotSupportedError("icloud", "connect (no browser integration configured)");
+    }
+  };
+
+  // js/providers/github-provider.stub.js
+  var GithubProviderStub = class extends StorageProvider {
+    constructor() {
+      super({
+        providerId: "github",
+        status: "mock",
+        label: "GitHub (stub) \u2014 repository URLs are read references only; writes need authenticated provider and approval",
+        capabilities: { list: true, read: true, preview: true, create: false, update: false, move: false, delete: false, commit: false }
+      });
+    }
+    // Repository contract methods (read-only reference behaviour).
+    async listRepositories() {
+      return [];
+    }
+    async getRepository(ref) {
+      return { ref, provider: "github", writeAuthority: false };
+    }
+    async listIssues() {
+      return [];
+    }
+    async getStatus() {
+      return { available: "unknown", note: "Not verified without authenticated provider." };
+    }
+    async write() {
+      throw new NotSupportedError("github", "write (requires authenticated provider + approval)");
+    }
+    async commit() {
+      throw new NotSupportedError("github", "commit (requires authenticated provider + approval)");
+    }
+  };
+
+  // js/providers/chief-provider.stub.js
+  var ChiefProviderStub = class {
+    constructor() {
+      this.providerId = "chief";
+      this.status = "mock";
+      this.label = "Chief (stub) \u2014 local mock of Apple Shortcuts reasoning and dispatch";
+      this.capabilities = { list: true, read: true, preview: true, create: true, update: true, move: false, delete: false, commit: false };
+    }
+    // Choose a reasoning depth from simple heuristics on the input.
+    suggestDepth(input) {
+      const text = String(input || "").toLowerCase();
+      if (/(delete|buy|pay|book|cancel|send|legal|medical|merge|overwrite|reset)/.test(text)) return "oracle";
+      if (/(plan|schedule|weekly|conflict|travel|sequence|budget|deadline)/.test(text)) return "strategy";
+      return "brain";
+    }
+    // Produce a validated-shaped reasoning result (deterministic placeholder).
+    async requestReasoning(job) {
+      const depth = job.reasoningDepth || this.suggestDepth(job.input);
+      const risky = depth === "oracle";
+      return {
+        schemaVersion: "1.0",
+        reasoningDepth: depth,
+        verifiedFacts: [],
+        inferences: [`Local mock interpretation of: "${job.input}"`],
+        missingInformation: ["Live context (calendar, reminders, files) not connected in browser build."],
+        confidence: 0.4,
+        risk: risky ? "high" : "low",
+        requiresApproval: risky,
+        recommendation: risky ? "This appears consequential. Prepared as a proposal requiring explicit approval." : "Low-risk item captured for follow-up.",
+        jobs: [],
+        selfCheck: { sourceConfirmed: false, conflictsChecked: true, duplicateChecked: true, safestReversibleOptionPreferred: true }
+      };
+    }
+  };
+
+  // js/providers/ai-provider.stub.js
+  var AIProviderStub = class {
+    constructor() {
+      this.providerId = "ai";
+      this.status = "mock";
+      this.label = "AI reasoning (stub) \u2014 deterministic local placeholder; no external model calls";
+      this.capabilities = { list: false, read: true, preview: false, create: true, update: false, move: false, delete: false, commit: false };
+    }
+    async classify(input) {
+      return { label: "uncategorised", confidence: 0.3, note: "Local stub classification." };
+    }
+    async plan() {
+      return { steps: [], note: "Local stub plan. Connect a real provider for genuine planning." };
+    }
+    async reviewSafety(proposedJobs, policy) {
+      return { approved: false, note: "Stub defers all execution to the safety evaluator and explicit approval." };
+    }
+  };
+
+  // js/components/app-shell.js
+  var PRIMARY_NAV = [
+    { hash: "#/dominion", label: "Void Dominion", hint: "Shell & system status" },
+    { hash: "#/atlas", label: "Atlas", hint: "Operating map" },
+    { hash: "#/nexus", label: "Nexus", hint: "Operating centre" },
+    { hash: "#/worlds", label: "Worlds", hint: "Project directory" },
+    { hash: "#/approvals", label: "Approvals", hint: "Pending actions" },
+    { hash: "#/activity", label: "Activity", hint: "Audit log" },
+    { hash: "#/settings", label: "Throne Reactor", hint: "Settings" }
+  ];
+  function renderNav(state2, activeHash) {
+    const locations = state2.locations.map((l) => `
+    <a class="nav__loc" href="#/location/${esc(l.id)}"
+       ${activeHash === `#/location/${l.id}` ? 'aria-current="page"' : ""}>
+      <span class="nav__loc-index" aria-hidden="true">${esc(l.index)}</span>
+      <span class="nav__loc-name">${esc(l.name)}</span>
+    </a>`).join("");
+    const primary = PRIMARY_NAV.map((n) => `
+    <a class="nav__link" href="${esc(n.hash)}"
+       ${activeHash === n.hash ? 'aria-current="page"' : ""}>
+      <span class="nav__link-label">${esc(n.label)}</span>
+      <span class="nav__link-hint">${esc(n.hint)}</span>
+    </a>`).join("");
+    return `
+    <div class="nav__brand">
+      <span class="nav__glyph" aria-hidden="true">\u25C7</span>
+      <span class="nav__title">Void Dominion</span>
+    </div>
+    <nav class="nav__primary" aria-label="Primary">${primary}</nav>
+    <div class="nav__section-label">Nine Permanent Locations</div>
+    <nav class="nav__locations" aria-label="Permanent Locations">${locations}</nav>
+    <button class="btn btn--ghost nav__command" data-action="open-command-bar" title="Command bar (Ctrl/Cmd+K)">
+      \u2318 Command bar
+    </button>`;
+  }
+  function renderStatusStrip(state2) {
+    const pending = state2.approvals.filter((a) => a.status === "pending").length;
+    const providers = state2.settings.providers || [];
+    const live = providers.filter((p) => p.status === "connected").length;
+    const mock = providers.filter((p) => p.status === "mock").length;
+    return `
+    <div class="status-strip" role="status">
+      <span class="status-pill status-pill--ok" title="Persistence layer">\u25CF IndexedDB persistence</span>
+      <span class="status-pill">Worlds: ${esc(state2.worlds.length)}</span>
+      <span class="status-pill ${pending ? "status-pill--warn" : ""}">Pending approvals: ${esc(pending)}</span>
+      <span class="status-pill">Providers: ${esc(live)} live / ${esc(mock)} mock</span>
+      <span class="status-pill status-pill--muted">Local-first \xB7 offline-capable</span>
+    </div>`;
+  }
+
+  // js/components/dominion-home.js
+  function render(_params, state2) {
+    const pending = state2.approvals.filter((a) => a.status === "pending").length;
+    const activeWorlds = state2.worlds.filter((w) => w.status === "active").length;
+    const contract = state2.system.shortcutsContract || [];
+    return `
+  <section class="view view--dominion">
+    <div class="focal" data-asset-slot="dominion-home" aria-label="Void Dominion focal composition placeholder">
+      <div class="focal__halo" aria-hidden="true"></div>
+      <div class="focal__caption">
+        <span class="badge badge--placeholder">Placeholder slot</span>
+        <h1 class="focal__title">Void Dominion</h1>
+        <p class="focal__sub">Void Lord &amp; halo focal composition to be supplied during visual production.</p>
+      </div>
+    </div>
+
+    <div class="cards">
+      <a class="card card--link" href="#/atlas">
+        <h3>Enter Atlas</h3>
+        <p>Operating map, Nexus, nine Locations and Project Worlds.</p>
+      </a>
+      <a class="card card--link" href="#/nexus">
+        <h3>Nexus</h3>
+        <p>What changed, what matters now, what needs approval.</p>
+      </a>
+      <a class="card card--link" href="#/worlds">
+        <h3>Project Worlds</h3>
+        <p>${esc(activeWorlds)} active of ${esc(state2.worlds.length)} total.</p>
+      </a>
+    </div>
+
+    <div class="panel">
+      <h2 class="panel__title">System status</h2>
+      <dl class="kv">
+        <div><dt>Shell</dt><dd>${esc(state2.system.shell)}</dd></div>
+        <div><dt>Operating interface</dt><dd>${esc(state2.system.operatingInterface)}</dd></div>
+        <div><dt>Convergence point</dt><dd>${esc(state2.system.convergencePoint)} <span class="muted">(not a tenth Location)</span></dd></div>
+        <div><dt>Permanent Locations</dt><dd>${esc(state2.locations.length)} <span class="muted">(canonical \u2014 no tenth)</span></dd></div>
+        <div><dt>Pending approvals</dt><dd>${esc(pending)}</dd></div>
+        <div><dt>Document authority</dt><dd>${esc(state2.system.documentAuthority)}</dd></div>
+      </dl>
+    </div>
+
+    <div class="panel">
+      <h2 class="panel__title">Locked Chief Shortcuts contract</h2>
+      <p class="muted">These components are locked. They must not be renamed, merged or split without explicit approval.</p>
+      <ul class="chips">
+        ${contract.map((c) => `<li class="chip">${esc(c)}</li>`).join("")}
+      </ul>
+    </div>
+  </section>`;
+  }
+
+  // js/components/atlas-view.js
+  function render2(_params, state2) {
+    const locations = state2.locations.map((l) => `
+    <a class="map-node map-node--location" href="#/location/${esc(l.id)}" style="--accent:${esc(l.theme && l.theme.accent || "#6fd68a")}">
+      <span class="map-node__index">${esc(l.index)}</span>
+      <span class="map-node__name">${esc(l.name)}</span>
+      <span class="map-node__fn">${esc(l.function)}</span>
+    </a>`).join("");
+    const worlds = state2.worlds.filter((w) => w.status !== "archived").map((w) => `
+    <a class="map-node map-node--world" href="#/world/${esc(w.id)}" style="--accent:${esc(w.colorIdentity || "#6fd68a")}">
+      <span class="map-node__symbol" aria-hidden="true">${esc(w.symbol || "\u25C7")}</span>
+      <span class="map-node__name">${esc(w.name)}</span>
+      <span class="map-node__fn">${esc(w.status)} \xB7 ${esc(w.priority)}</span>
+    </a>`).join("");
+    return `
+  <section class="view view--atlas">
+    <header class="view__header">
+      <h1>Atlas</h1>
+      <p class="muted">The visible operating map and interface for the whole system.</p>
+    </header>
+
+    <div class="map-tier">
+      <a class="map-node map-node--nexus" href="#/nexus">
+        <span class="map-node__name">Nexus</span>
+        <span class="map-node__fn">Central convergence &amp; operating centre</span>
+      </a>
+    </div>
+
+    <h2 class="tier-label">Nine permanent Locations \u2014 system infrastructure</h2>
+    <div class="map-grid">${locations}</div>
+
+    <h2 class="tier-label">Project Worlds</h2>
+    <div class="map-grid">${worlds}
+      <button class="map-node map-node--add" data-action="new-world">
+        <span class="map-node__symbol" aria-hidden="true">\uFF0B</span>
+        <span class="map-node__name">Propose new World</span>
+        <span class="map-node__fn">Requires approval</span>
+      </button>
+    </div>
+  </section>`;
+  }
+
+  // js/components/nexus-view.js
+  function render3(_params, state2) {
+    const pending = state2.approvals.filter((a) => a.status === "pending");
+    const recent = state2.activity.slice(0, 8);
+    const attention = state2.worlds.filter((w) => w.status === "blocked" || w.blockers && w.blockers.length);
+    const stale = state2.worlds.filter((w) => w.status === "active" && !w.nextAction);
+    const priorityWorld = state2.worlds.find((w) => w.priority === "high" && w.status === "active");
+    const providers = state2.settings.providers || [];
+    const providerHealth = providers.map((p) => `
+    <li class="dot-row">
+      <span class="dot dot--${p.status === "connected" ? "ok" : p.status === "mock" ? "warn" : "bad"}" aria-hidden="true"></span>
+      <span>${esc(p.providerId)}</span>
+      <span class="muted">${esc(p.status)}</span>
+    </li>`).join("");
+    return `
+  <section class="view view--nexus">
+    <header class="view__header">
+      <h1>Nexus</h1>
+      <p class="muted">Central convergence point and operating centre.</p>
+    </header>
+
+    <div class="nexus-grid">
+      <div class="panel panel--focus">
+        <h2 class="panel__title">Current priority &amp; next action</h2>
+        ${priorityWorld ? `
+          <p class="lead"><a href="#/world/${esc(priorityWorld.id)}">${esc(priorityWorld.name)}</a></p>
+          <p><strong>Next:</strong> ${esc(priorityWorld.nextAction || "Not set")}</p>
+          <p class="muted"><strong>Future:</strong> ${esc(priorityWorld.futureAction || "\u2014")}</p>
+        ` : `<p class="muted">No high-priority active World.</p>`}
+        <div class="row">
+          <button class="btn btn--primary" data-action="quick-capture">Quick capture</button>
+          ${recent[0] ? `<a class="btn" href="${esc(routeForActivity(recent[0]))}">Resume last activity</a>` : ""}
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 class="panel__title">Pending approvals (${esc(pending.length)})</h2>
+        ${pending.length ? `<ul class="list">
+          ${pending.slice(0, 5).map((a) => `<li>
+            <a href="#/approvals">${esc(a.summary)}</a>
+            <span class="tag tag--${esc(a.risk)}">${esc(a.risk)}</span>
+          </li>`).join("")}
+        </ul>` : `<p class="muted">Nothing awaiting approval.</p>`}
+      </div>
+
+      <div class="panel">
+        <h2 class="panel__title">Worlds requiring attention</h2>
+        ${attention.length ? `<ul class="list">${attention.map((w) => `<li><a href="#/world/${esc(w.id)}">${esc(w.name)}</a> <span class="tag tag--high">blocked</span></li>`).join("")}</ul>` : ""}
+        ${stale.length ? `<p class="muted">Stale (no next action): ${stale.map((w) => `<a href="#/world/${esc(w.id)}">${esc(w.name)}</a>`).join(", ")}</p>` : ""}
+        ${!attention.length && !stale.length ? `<p class="muted">All active Worlds have a next action.</p>` : ""}
+      </div>
+
+      <div class="panel">
+        <h2 class="panel__title">Recent activity</h2>
+        <ul class="timeline timeline--compact">
+          ${recent.map((a) => `<li>
+            <span class="timeline__type">${esc(a.type)}</span>
+            <span class="timeline__summary">${esc(a.summary)}</span>
+            <span class="timeline__time">${esc(formatDate(a.timestamp))}</span>
+          </li>`).join("")}
+        </ul>
+        <a class="link" href="#/activity">Full activity log \u2192</a>
+      </div>
+
+      <div class="panel">
+        <h2 class="panel__title">Chief status &amp; queue</h2>
+        <p><span class="tag tag--mock">${esc(state2.chief.status.label)}</span></p>
+        <p class="muted">Queued items: ${esc(state2.chiefJobs.filter((j) => j.status === "queued").length)}</p>
+        <a class="link" href="#/location/machine-oracle">Open Machine Oracle \u2192</a>
+      </div>
+
+      <div class="panel">
+        <h2 class="panel__title">Storage &amp; provider health</h2>
+        <ul class="list list--dots">${providerHealth}</ul>
+        <a class="link" href="#/location/leviathan-spine">Diagnostics \u2192</a>
+      </div>
+    </div>
+  </section>`;
+  }
+  function routeForActivity(a) {
+    if (a.entityType === "world" && a.entityId) return `#/world/${a.entityId}`;
+    if (a.entityType === "object" && a.entityId) return `#/object/${a.entityId}`;
+    return "#/activity";
+  }
+
+  // js/components/storage-status.js
+  function renderStorageStatus(state2) {
+    const providers = state2.settings.providers || [];
+    const providerRows = providers.map((p) => {
+      const caps = Object.entries(p.capabilities || {}).filter(([, v]) => v).map(([k]) => k);
+      return `<tr>
+      <td>${esc(p.providerId)}</td>
+      <td><span class="tag tag--${statusTag(p.status)}">${esc(p.status)}</span></td>
+      <td class="muted">${esc(caps.join(", ") || "none")}</td>
+      <td class="muted">${esc(p.label)}</td>
+    </tr>`;
+    }).join("");
+    const sources = state2.sources || [];
+    const sourceRows = sources.map((s) => `<tr>
+    <td>${esc(s.provider)}</td>
+    <td>${esc(s.authority)}</td>
+    <td class="muted">${esc(s.repository || s.path || s.url || "\u2014")}</td>
+    <td>${esc(availabilityLabel(s))}</td>
+    <td class="muted">${s.lastVerifiedAt ? esc(formatDate(s.lastVerifiedAt)) : "never"}</td>
+  </tr>`).join("");
+    const conflicts = state2.conflicts || [];
+    return `
+    <div class="panel">
+      <h2 class="panel__title">Storage providers</h2>
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>Provider</th><th>Status</th><th>Capabilities</th><th>Notes</th></tr></thead>
+          <tbody>${providerRows}</tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel">
+      <h2 class="panel__title">Source registry</h2>
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>Provider</th><th>Authority</th><th>Reference</th><th>Availability</th><th>Verified</th></tr></thead>
+          <tbody>${sourceRows || '<tr><td colspan="5" class="muted">No sources registered.</td></tr>'}</tbody>
+        </table>
+      </div>
+      ${conflicts.length ? `<p class="callout callout--warn">Source conflicts detected: ${conflicts.length}. Conflicting authoritative sources are reported, not auto-resolved.</p>` : ""}
+    </div>`;
+  }
+  function statusTag(status) {
+    if (status === "connected") return "low";
+    if (status === "mock") return "mock";
+    return "high";
+  }
+
+  // js/components/settings-view.js
+  function render4(_params, state2) {
+    const s = state2.settings;
+    const flags = Object.entries(s.featureFlags || {});
+    const providers = s.providers || [];
+    return `
+    <h1>Throne Reactor</h1>
+    <p class="muted">System engine, configuration, automation and power controls.</p>
+
+    <div class="panel">
+      <h2 class="panel__title">Preferences</h2>
+      <label class="toggle">
+        <input type="checkbox" data-action="toggle-setting" data-key="reducedMotion" ${s.reducedMotion ? "checked" : ""}>
+        Reduced motion
+      </label>
+      <label class="toggle">
+        <input type="checkbox" data-action="toggle-setting" data-key="developerMode" ${s.developerMode ? "checked" : ""}>
+        Developer mode
+      </label>
+      <label class="toggle">
+        <input type="checkbox" data-action="toggle-setting" data-key="pauseAmbientWhenHidden" ${s.pauseAmbientWhenHidden ? "checked" : ""}>
+        Pause ambient loops when hidden
+      </label>
+    </div>
+
+    <div class="panel">
+      <h2 class="panel__title">Feature flags</h2>
+      ${flags.map(([k, v]) => `<label class="toggle">
+        <input type="checkbox" data-action="toggle-flag" data-key="${esc(k)}" ${v ? "checked" : ""}> ${esc(k)}
+      </label>`).join("")}
+    </div>
+
+    <div class="panel">
+      <h2 class="panel__title">Providers &amp; integration health</h2>
+      <ul class="list">
+        ${providers.map((p) => `<li>
+          <strong>${esc(p.providerId)}</strong> \u2014 <span class="tag tag--${p.status === "connected" ? "low" : p.status === "mock" ? "mock" : "high"}">${esc(p.status)}</span>
+          <div class="muted">${esc(p.label)}</div>
+        </li>`).join("")}
+      </ul>
+      <p class="muted">Enabling a new external integration that can read or write private data requires explicit approval.</p>
+    </div>
+
+    <div class="panel">
+      <h2 class="panel__title">Data &amp; maintenance</h2>
+      <div class="row">
+        <button class="btn" data-action="export-data">Export metadata</button>
+        <button class="btn" data-action="import-data">Import metadata</button>
+        <button class="btn" data-action="create-backup">Create backup</button>
+        <button class="btn btn--danger" data-action="reset-data">Reset all data</button>
+      </div>
+    </div>`;
+  }
+
+  // js/components/location-view.js
+  function render5(params, state2) {
+    const loc = state2.locations.find((l) => l.id === params.locationId);
+    if (!loc) return notFound(params.locationId);
+    const header = `
+    <header class="view__header view__header--location" style="--accent:${esc(loc.theme && loc.theme.accent || "#6fd68a")}">
+      <span class="loc-index">${esc(loc.index)}</span>
+      <div>
+        <h1>${esc(loc.name)}</h1>
+        <p class="muted">${esc(loc.function)}</p>
+      </div>
+    </header>
+    <p class="callout callout--boundary">Must not become: ${esc(loc.mustNotBecome)}</p>`;
+    return `<section class="view view--location">${header}${bodyFor(loc, state2)}</section>`;
+  }
+  function bodyFor(loc, state2) {
+    switch (loc.id) {
+      case "machine-oracle":
+        return machineOracle(state2);
+      case "memory-vault":
+        return memoryVault(state2);
+      case "astral-greenhouse":
+        return astralGreenhouse(state2);
+      case "throne-reactor":
+        return `<div class="panel">${render4({}, state2)}</div>`;
+      case "void-railway":
+        return voidRailway(state2);
+      case "observatory":
+        return observatory(state2);
+      case "cosmic-aquarium":
+        return cosmicAquarium(state2);
+      case "leviathan-spine":
+        return leviathanSpine(state2);
+      case "eclipse-monastery":
+        return eclipseMonastery(state2);
+      default:
+        return `<div class="panel"><p>${esc(loc.responsibility)}</p></div>`;
+    }
+  }
+  function machineOracle(state2) {
+    const pending = state2.approvals.filter((a) => a.status === "pending");
+    const decisions = state2.activity.filter((a) => /approval|canon/.test(a.type)).slice(0, 10);
+    const levels = state2.chief.reasoningLevels || [];
+    return `
+    <div class="panel">
+      <h2 class="panel__title">Chief status</h2>
+      <p><span class="tag tag--mock">${esc(state2.chief.status.label)}</span></p>
+      <button class="btn btn--primary" data-action="quick-capture">Send to Chief (capture)</button>
+    </div>
+    <div class="panel">
+      <h2 class="panel__title">Reasoning depth</h2>
+      <ul class="list">${levels.map((l) => `<li><strong>${esc(l.label)}</strong> \u2014 <span class="muted">${esc(l.use)}</span></li>`).join("")}</ul>
+    </div>
+    <div class="panel">
+      <h2 class="panel__title">Pending approvals (${esc(pending.length)})</h2>
+      ${pending.length ? `<ul class="list">${pending.map((a) => `<li><a href="#/approvals">${esc(a.summary)}</a> <span class="tag tag--${esc(a.risk)}">${esc(a.risk)}</span></li>`).join("")}</ul>` : '<p class="muted">None.</p>'}
+    </div>
+    <div class="panel">
+      <h2 class="panel__title">Decision history</h2>
+      <ul class="timeline timeline--compact">${decisions.map((a) => `<li><span class="timeline__type">${esc(a.type)}</span><span class="timeline__summary">${esc(a.summary)}</span><span class="timeline__time">${esc(formatDate(a.timestamp))}</span></li>`).join("") || '<li class="muted">No decisions recorded yet.</li>'}</ul>
+    </div>`;
+  }
+  function memoryVault(state2) {
+    const archivedWorlds = state2.worlds.filter((w) => w.status === "archived");
+    const superseded = state2.worlds.flatMap((w) => (w.canon || []).filter((c) => c.stage === "superseded").map((c) => ({ ...c, world: w.name })));
+    const backups = state2.backups || [];
+    return `
+    <div class="panel">
+      <h2 class="panel__title">Archived Worlds (${esc(archivedWorlds.length)})</h2>
+      ${archivedWorlds.length ? `<ul class="list">${archivedWorlds.map((w) => `<li><a href="#/world/${esc(w.id)}">${esc(w.name)}</a> <button class="btn btn--sm" data-action="restore-world" data-id="${esc(w.id)}">Restore</button></li>`).join("")}</ul>` : '<p class="muted">No archived Worlds. Archive precedes deletion wherever practical.</p>'}
+    </div>
+    <div class="panel">
+      <h2 class="panel__title">Superseded decisions</h2>
+      ${superseded.length ? `<ul class="list">${superseded.map((c) => `<li>${esc(c.world)}: ${esc(c.title)}</li>`).join("")}</ul>` : '<p class="muted">None.</p>'}
+    </div>
+    <div class="panel">
+      <h2 class="panel__title">Backups &amp; restore</h2>
+      <div class="row"><button class="btn" data-action="create-backup">Create backup snapshot</button></div>
+      ${backups.length ? `<ul class="list">${backups.map((b) => `<li>${esc(formatDate(b.createdAt))} \u2014 ${esc(b.reason)} <button class="btn btn--sm" data-action="restore-backup" data-id="${esc(b.id)}">Restore</button></li>`).join("")}</ul>` : '<p class="muted">No backups yet.</p>'}
+    </div>`;
+  }
+  function astralGreenhouse(state2) {
+    const candidates = state2.objects.filter((o) => o.type === "image" || o.stage === "draft");
+    return `
+    <div class="panel">
+      <h2 class="panel__title">Cross-World visual discovery</h2>
+      <p class="muted">References assets across Worlds. Each World still owns its own immersive gallery.</p>
+      <div class="gallery-grid">
+        ${candidates.map((o) => {
+      const world = state2.worlds.find((w) => w.id === o.worldId);
+      return `<a class="tile" href="#/object/${esc(o.id)}">
+            <span class="tile__thumb" data-asset-slot="thumb"><span class="badge badge--placeholder">${esc(o.type)}</span></span>
+            <span class="tile__title">${esc(o.title)}</span>
+            <span class="tile__meta">${esc(world ? world.name : "Unknown World")} \xB7 ${esc(o.stage)}</span>
+          </a>`;
+    }).join("") || '<p class="muted">No asset candidates yet.</p>'}
+      </div>
+    </div>`;
+  }
+  function voidRailway(state2) {
+    const worlds = state2.worlds.filter((w) => w.status !== "archived");
+    return `
+    <div class="panel">
+      <h2 class="panel__title">World directory</h2>
+      <ul class="list">${worlds.map((w) => `<li><a href="#/world/${esc(w.id)}">${esc(w.symbol || "\u25C7")} ${esc(w.name)}</a> <span class="muted">${esc(w.priority)}</span></li>`).join("")}</ul>
+      <button class="btn btn--primary" data-action="new-world">Propose new World</button>
+      <p class="muted">World creation is a proposal that requires explicit approval before a World is created.</p>
+    </div>`;
+  }
+  function observatory(state2) {
+    const byStatus = groupCount(state2.worlds, "status");
+    const byPriority = groupCount(state2.worlds, "priority");
+    const stale = state2.worlds.filter((w) => w.status === "active" && !w.nextAction);
+    return `
+    <div class="panel">
+      <h2 class="panel__title">Project inventory</h2>
+      <dl class="kv">
+        <div><dt>Total Worlds</dt><dd>${esc(state2.worlds.length)}</dd></div>
+        <div><dt>By status</dt><dd>${esc(JSON.stringify(byStatus))}</dd></div>
+        <div><dt>By priority</dt><dd>${esc(JSON.stringify(byPriority))}</dd></div>
+        <div><dt>Objects</dt><dd>${esc(state2.objects.length)}</dd></div>
+        <div><dt>Activity records</dt><dd>${esc(state2.activity.length)}</dd></div>
+      </dl>
+    </div>
+    <div class="panel">
+      <h2 class="panel__title">Risks, blockers &amp; stale work</h2>
+      ${stale.length ? `<ul class="list">${stale.map((w) => `<li><a href="#/world/${esc(w.id)}">${esc(w.name)}</a> \u2014 no next action</li>`).join("")}</ul>` : '<p class="muted">No stale active Worlds.</p>'}
+    </div>`;
+  }
+  function cosmicAquarium(state2) {
+    const media = state2.objects.filter((o) => o.type === "video" || o.type === "audio");
+    const unplaced = media.filter((o) => !o.worldId);
+    return `
+    <div class="panel">
+      <h2 class="panel__title">Media index</h2>
+      ${media.length ? `<ul class="list">${media.map((o) => `<li><a href="#/object/${esc(o.id)}">${esc(o.title)}</a> <span class="muted">${esc(o.type)}</span></li>`).join("")}</ul>` : '<p class="muted">No media indexed. This Location holds media that has no correct dedicated World yet.</p>'}
+    </div>
+    <div class="panel">
+      <h2 class="panel__title">Unplaced media queue (${esc(unplaced.length)})</h2>
+      <p class="muted">Reassignment into a correct World preserves original provenance.</p>
+    </div>`;
+  }
+  function leviathanSpine(state2) {
+    return `
+    ${renderStorageStatus(state2)}
+    <div class="panel">
+      <h2 class="panel__title">Diagnostics</h2>
+      <div class="row">
+        <button class="btn" data-action="run-validation">Run validation</button>
+        <button class="btn" data-action="create-backup">Create backup</button>
+        <button class="btn" data-action="export-data">Export metadata</button>
+        <button class="btn" data-action="import-data">Import metadata</button>
+      </div>
+      <div id="diagnostics-output" class="code-out" aria-live="polite"></div>
+    </div>`;
+  }
+  function eclipseMonastery(state2) {
+    return `
+    <div class="panel">
+      <h2 class="panel__title">Life structures &amp; personal development</h2>
+      <p class="muted">Personal systems, reflection, routines and development plans. This Location organises records and questions; it must not diagnose, prescribe or override medical advice.</p>
+      <div class="focal focal--sm" data-asset-slot="monastery" aria-label="Eclipse Monastery environment placeholder">
+        <span class="badge badge--placeholder">Environment placeholder</span>
+      </div>
+    </div>`;
+  }
+  function groupCount(list, key) {
+    const out = {};
+    for (const item of list) out[item[key]] = (out[item[key]] || 0) + 1;
+    return out;
+  }
+  function notFound(id) {
+    return `<section class="view"><div class="panel"><h1>Location not found</h1><p class="muted">No permanent Location with id "${esc(id)}". There are exactly nine.</p><a class="link" href="#/atlas">Back to Atlas</a></div></section>`;
+  }
+
+  // js/components/world-view.js
+  function renderIndex(_params, state2) {
+    const active = state2.worlds.filter((w) => w.status !== "archived");
+    const archived = state2.worlds.filter((w) => w.status === "archived");
+    return `
+  <section class="view view--worlds">
+    <header class="view__header">
+      <h1>Project Worlds</h1>
+      <button class="btn btn--primary" data-action="new-world">Propose new World</button>
+    </header>
+    <div class="world-grid">
+      ${active.map((w) => worldCard(w, state2)).join("")}
+    </div>
+    ${archived.length ? `<h2 class="tier-label">Archived</h2><div class="world-grid">${archived.map((w) => worldCard(w, state2)).join("")}</div>` : ""}
+  </section>`;
+  }
+  function worldCard(w, state2) {
+    const objects = state2.objects.filter((o) => o.worldId === w.id).length;
+    return `
+  <article class="world-card" style="--accent:${esc(w.colorIdentity || "#6fd68a")}">
+    <a class="world-card__cover" href="#/world/${esc(w.id)}" data-asset-slot="world-cover">
+      <span class="world-card__symbol" aria-hidden="true">${esc(w.symbol || "\u25C7")}</span>
+      <span class="badge badge--placeholder">Cover placeholder</span>
+    </a>
+    <div class="world-card__body">
+      <h3><a href="#/world/${esc(w.id)}">${esc(w.name)}</a></h3>
+      <p class="muted">${esc(w.description || "")}</p>
+      <div class="world-card__meta">
+        <span class="tag tag--${esc(w.priority)}">${esc(w.priority)}</span>
+        <span class="tag">${esc(w.status)}</span>
+        <span class="muted">${esc(objects)} objects</span>
+      </div>
+    </div>
+  </article>`;
+  }
+  function renderWorld(params, state2) {
+    const w = state2.worlds.find((x) => x.id === params.worldId);
+    if (!w) return notFound2(params.worldId);
+    const rooms = state2.rooms.filter((r) => r.worldId === w.id);
+    const objects = state2.objects.filter((o) => o.worldId === w.id);
+    const finalCanon = (w.canon || []).filter((c) => c.stage === "final");
+    const draftCanon = (w.canon || []).filter((c) => c.stage !== "final" && c.stage !== "superseded");
+    return `
+  <section class="view view--world" style="--accent:${esc(w.colorIdentity || "#6fd68a")}">
+    <header class="world-hero" data-asset-slot="world-background">
+      <div class="world-hero__id">
+        <span class="world-hero__symbol" aria-hidden="true">${esc(w.symbol || "\u25C7")}</span>
+        <div>
+          <h1>${esc(w.name)}</h1>
+          <p class="muted">${esc(w.description || "")}</p>
+        </div>
+      </div>
+      <div class="world-hero__actions">
+        <a class="btn btn--primary" href="#/world/${esc(w.id)}/gallery">Immersive gallery</a>
+        <button class="btn" data-action="edit-world" data-id="${esc(w.id)}">Edit</button>
+        ${w.status === "archived" ? `<button class="btn" data-action="restore-world" data-id="${esc(w.id)}">Restore</button>` : `<button class="btn" data-action="archive-world" data-id="${esc(w.id)}">Archive</button>`}
+        <button class="btn btn--danger" data-action="delete-world" data-id="${esc(w.id)}">Delete</button>
+      </div>
+    </header>
+
+    <div class="world-body">
+      <div class="panel">
+        <h2 class="panel__title">Control panel</h2>
+        <dl class="kv">
+          <div><dt>Status</dt><dd>${esc(w.status)}</dd></div>
+          <div><dt>Priority</dt><dd>${esc(w.priority)}</dd></div>
+          <div><dt>Last action</dt><dd>${esc(w.lastAction || "\u2014")}</dd></div>
+          <div><dt>Next action</dt><dd>${esc(w.nextAction || "\u2014")}</dd></div>
+          <div><dt>Future action</dt><dd>${esc(w.futureAction || "\u2014")}</dd></div>
+          <div><dt>Updated</dt><dd>${esc(formatDate(w.updatedAt))}</dd></div>
+        </dl>
+      </div>
+
+      <div class="panel">
+        <h2 class="panel__title">Canon chamber</h2>
+        <div class="row"><button class="btn btn--sm" data-action="add-canon" data-id="${esc(w.id)}">Propose canon change</button></div>
+        <h3 class="sub">Final decisions</h3>
+        ${finalCanon.length ? `<ul class="list">${finalCanon.map((c) => `<li><span class="tag tag--final">final</span> ${esc(c.title)} \u2014 <span class="muted">${esc(c.decision)}</span></li>`).join("")}</ul>` : '<p class="muted">No final decisions yet.</p>'}
+        <h3 class="sub">Drafts &amp; proposals</h3>
+        ${draftCanon.length ? `<ul class="list">${draftCanon.map((c) => `<li><span class="tag">draft</span> ${esc(c.title)} <button class="btn btn--sm" data-action="finalize-canon" data-world="${esc(w.id)}" data-canon="${esc(c.id)}">Finalize</button></li>`).join("")}</ul>` : '<p class="muted">No drafts.</p>'}
+        ${(w.unresolvedQuestions || []).length ? `<h3 class="sub">Unresolved questions</h3><ul class="list">${w.unresolvedQuestions.map((q) => `<li class="muted">${esc(q)}</li>`).join("")}</ul>` : ""}
+      </div>
+
+      <div class="panel">
+        <h2 class="panel__title">Rooms</h2>
+        <div class="row"><button class="btn btn--sm" data-action="add-room" data-id="${esc(w.id)}">Add room</button></div>
+        ${rooms.length ? `<ul class="list">${rooms.map((r) => `<li><a href="#/world/${esc(w.id)}/room/${esc(r.id)}">${esc(r.name)}</a> <span class="muted">${esc(r.type)}</span></li>`).join("")}</ul>` : '<p class="muted">No rooms yet.</p>'}
+      </div>
+
+      <div class="panel">
+        <h2 class="panel__title">Files &amp; objects (${esc(objects.length)})</h2>
+        <div class="row"><button class="btn btn--sm" data-action="add-object" data-id="${esc(w.id)}">Add object reference</button></div>
+        ${objects.length ? `<ul class="list">${objects.map((o) => `<li><a href="#/object/${esc(o.id)}">${esc(o.title)}</a> <span class="tag tag--mock">${esc(o.provider)}</span> <span class="muted">${esc(o.stage)}</span></li>`).join("")}</ul>` : '<p class="muted">No object references.</p>'}
+      </div>
+
+      <div class="panel">
+        <h2 class="panel__title">Project search</h2>
+        <input class="input" type="search" placeholder="Search within this World\u2026" data-action="world-search" data-world="${esc(w.id)}" aria-label="Search within this World">
+        <div id="world-search-results" class="search-results"></div>
+      </div>
+    </div>
+  </section>`;
+  }
+  function renderRoom(params, state2) {
+    const w = state2.worlds.find((x) => x.id === params.worldId);
+    const r = state2.rooms.find((x) => x.id === params.roomId);
+    if (!w || !r) return notFound2(params.roomId);
+    const objects = state2.objects.filter((o) => o.roomId === r.id);
+    return `
+  <section class="view view--room" style="--accent:${esc(w.colorIdentity || "#6fd68a")}">
+    <header class="view__header">
+      <p class="crumb"><a href="#/world/${esc(w.id)}">${esc(w.name)}</a> / Room</p>
+      <h1>${esc(r.name)}</h1>
+      <p class="muted">${esc(r.type)} \u2014 ${esc(r.notes || "")}</p>
+    </header>
+    <div class="panel">
+      <h2 class="panel__title">Objects in this room (${esc(objects.length)})</h2>
+      <button class="btn btn--sm" data-action="add-object" data-id="${esc(w.id)}" data-room="${esc(r.id)}">Add object</button>
+      ${objects.length ? `<ul class="list">${objects.map((o) => `<li><a href="#/object/${esc(o.id)}">${esc(o.title)}</a></li>`).join("")}</ul>` : '<p class="muted">No objects in this room.</p>'}
+    </div>
+  </section>`;
+  }
+  function notFound2(id) {
+    return `<section class="view"><div class="panel"><h1>Not found</h1><p class="muted">No record for "${esc(id)}".</p><a class="link" href="#/worlds">Back to Worlds</a></div></section>`;
+  }
+
+  // js/components/world-gallery.js
+  function render6(params, state2) {
+    const w = state2.worlds.find((x) => x.id === params.worldId);
+    if (!w) return `<section class="view"><div class="panel"><h1>World not found</h1></div></section>`;
+    const objects = state2.objects.filter((o) => o.worldId === w.id);
+    const cfg = w.galleryConfig || { layout: "grid", assetSlots: ["cover"] };
+    const slots = (cfg.assetSlots || []).map((slot) => `
+    <div class="tile tile--slot" data-asset-slot="${esc(slot)}">
+      <span class="tile__thumb"><span class="badge badge--placeholder">${esc(slot)} slot</span></span>
+      <span class="tile__title">${esc(slot)}</span>
+      <span class="tile__meta muted">Awaiting asset</span>
+    </div>`).join("");
+    const tiles = objects.map((o) => `
+    <a class="tile" href="#/object/${esc(o.id)}">
+      <span class="tile__thumb" data-asset-slot="thumb"><span class="badge badge--placeholder">${esc(o.type)}</span></span>
+      <span class="tile__title">${esc(o.title)}</span>
+      <span class="tile__meta muted">${esc(o.stage)} \xB7 ${esc(o.provider)}</span>
+    </a>`).join("");
+    return `
+  <section class="view view--gallery" style="--accent:${esc(w.colorIdentity || "#6fd68a")}">
+    <header class="view__header">
+      <p class="crumb"><a href="#/world/${esc(w.id)}">${esc(w.name)}</a> / Gallery</p>
+      <h1>${esc(w.name)} \u2014 Immersive gallery</h1>
+      <p class="muted">Layout: ${esc(cfg.layout)}. Project-specific gallery; not a global gallery.</p>
+    </header>
+    <div class="gallery-grid gallery-grid--${esc(cfg.layout)}">
+      ${tiles}
+      ${slots}
+    </div>
+    <p class="muted">Transition hooks, ambient loops and curated sequences are configurable and left for visual production.</p>
+  </section>`;
+  }
+
+  // js/components/object-viewer.js
+  function render7(params, state2) {
+    const o = state2.objects.find((x) => x.id === params.objectId);
+    if (!o) return `<section class="view"><div class="panel"><h1>Object not found</h1><a class="link" href="#/worlds">Back</a></div></section>`;
+    const world = state2.worlds.find((w) => w.id === o.worldId);
+    const authority = resolveAuthority(o, state2.sources);
+    const provider = (state2.settings.providers || []).find((p) => p.providerId === o.provider);
+    const canOpen = can(o.provider, "read");
+    return `
+  <section class="view view--object">
+    <header class="view__header">
+      ${world ? `<p class="crumb"><a href="#/world/${esc(world.id)}">${esc(world.name)}</a> / Object</p>` : ""}
+      <h1>${esc(o.title)}</h1>
+    </header>
+    <div class="object-grid">
+      <div class="panel">
+        <div class="object-preview" data-asset-slot="object-preview">
+          <span class="badge badge--placeholder">${esc(o.type)} preview</span>
+        </div>
+      </div>
+      <div class="panel">
+        <h2 class="panel__title">Source references</h2>
+        <dl class="kv">
+          <div><dt>Provider</dt><dd><span class="tag tag--mock">${esc(o.provider)}</span> ${provider ? `<span class="muted">${esc(provider.status)}</span>` : ""}</dd></div>
+          <div><dt>Canonical</dt><dd>${o.canonical ? "Yes" : "No"}</dd></div>
+          <div><dt>Authority</dt><dd>${esc(authority.authority)}</dd></div>
+          <div><dt>Path</dt><dd class="mono">${esc(o.path || "\u2014")}</dd></div>
+          <div><dt>Repository</dt><dd class="mono">${o.repositoryUrl ? `<a href="${esc(o.repositoryUrl)}" target="_blank" rel="noopener">${esc(o.repositoryUrl)}</a>` : "\u2014"}</dd></div>
+          <div><dt>Stage</dt><dd>${esc(o.stage)}</dd></div>
+          <div><dt>Tags</dt><dd>${(o.tags || []).map((t) => `<span class="chip">${esc(t)}</span>`).join(" ") || "\u2014"}</dd></div>
+          <div><dt>Updated</dt><dd>${esc(formatDate(o.updatedAt))}</dd></div>
+        </dl>
+        <div class="row">
+          <button class="btn" data-action="open-source" data-id="${esc(o.id)}" ${canOpen ? "" : "disabled"} title="${canOpen ? "Open via provider" : "Provider cannot open this reference"}">
+            ${canOpen ? "Open source" : "Open source (unavailable)"}
+          </button>
+          <button class="btn" data-action="edit-object" data-id="${esc(o.id)}">Edit metadata</button>
+          <button class="btn btn--danger" data-action="delete-object" data-id="${esc(o.id)}">Delete</button>
+        </div>
+        ${!canOpen ? `<p class="callout callout--warn">This provider is a labelled stub and cannot open the file. The reference is preserved; the action is not faked.</p>` : ""}
+      </div>
+    </div>
+  </section>`;
+  }
+
+  // js/components/approval-dialog.js
+  function render8(_params, state2) {
+    const pending = state2.approvals.filter((a) => a.status === "pending");
+    const resolved = state2.approvals.filter((a) => a.status !== "pending").slice(0, 20);
+    return `
+  <section class="view view--approvals">
+    <header class="view__header">
+      <h1>Approvals</h1>
+      <p class="muted">Consequential and destructive actions require explicit approval immediately before execution.</p>
+    </header>
+
+    <div class="panel">
+      <h2 class="panel__title">Pending (${esc(pending.length)})</h2>
+      ${pending.length ? pending.map((a) => card(a)).join("") : '<p class="muted">Nothing awaiting approval.</p>'}
+    </div>
+
+    <div class="panel">
+      <h2 class="panel__title">History</h2>
+      ${resolved.length ? `<ul class="list">${resolved.map((a) => `<li>
+        <span class="tag tag--${esc(a.status === "executed" ? "final" : a.status === "rejected" ? "high" : "mock")}">${esc(a.status)}</span>
+        ${esc(a.summary)} <span class="muted">${esc(formatDate(a.resolvedAt))}</span>
+      </li>`).join("")}</ul>` : '<p class="muted">No resolved approvals yet.</p>'}
+    </div>
+  </section>`;
+  }
+  function card(a) {
+    const affected = (a.affectedEntities || []).map((e) => `<code>${esc(e)}</code>`).join(", ") || "\u2014";
+    return `
+  <article class="approval">
+    <div class="approval__head">
+      <span class="tag tag--${esc(a.risk)}">${esc(a.risk)}</span>
+      <h3>${esc(a.summary)}</h3>
+    </div>
+    <p>${esc(a.reason)}</p>
+    <dl class="kv kv--tight">
+      <div><dt>Action type</dt><dd>${esc(a.actionType)}</dd></div>
+      <div><dt>Affected</dt><dd>${affected}</dd></div>
+      <div><dt>Reversible</dt><dd>${a.rollbackAvailable ? "Yes" : "No"}</dd></div>
+      ${a.backupFirst ? "<div><dt>Backup</dt><dd>A snapshot is taken before execution.</dd></div>" : ""}
+      <div><dt>Requested</dt><dd>${esc(formatDate(a.createdAt))}</dd></div>
+    </dl>
+    <div class="row">
+      <button class="btn btn--danger" data-action="reject-approval" data-id="${esc(a.id)}">Reject</button>
+      <button class="btn btn--primary" data-action="approve-approval" data-id="${esc(a.id)}">Approve &amp; execute</button>
+    </div>
+  </article>`;
+  }
+
+  // js/components/activity-timeline.js
+  function render9(_params, state2) {
+    const items = state2.activity.slice(0, 200);
+    return `
+  <section class="view view--activity">
+    <header class="view__header">
+      <h1>Activity</h1>
+      <p class="muted">Auditable record of important mutations. Append-oriented; protected from casual editing.</p>
+    </header>
+    <div class="panel">
+      <ul class="timeline">
+        ${items.map((a) => `<li class="timeline__item timeline__item--${esc(a.result)}">
+          <div class="timeline__meta">
+            <span class="timeline__type">${esc(a.type)}</span>
+            <span class="tag tag--${a.result === "success" ? "low" : a.result === "failure" ? "high" : "mock"}">${esc(a.result)}</span>
+            <span class="timeline__actor">${esc(a.actor)}</span>
+            <span class="timeline__time">${esc(formatDate(a.timestamp))}</span>
+          </div>
+          <div class="timeline__summary">${esc(a.summary)}</div>
+          ${a.entityId ? `<div class="muted mono">${esc(a.entityType)}:${esc(a.entityId)}</div>` : ""}
+        </li>`).join("") || '<li class="muted">No activity yet.</li>'}
+      </ul>
+    </div>
+  </section>`;
+  }
+
+  // js/search.js
+  function tokenize(text) {
+    return String(text || "").toLowerCase().split(/[^a-z0-9]+/i).filter(Boolean);
+  }
+  function buildIndex(state2) {
+    const records = [];
+    for (const w of state2.worlds || []) {
+      records.push({
+        id: w.id,
+        kind: "world",
+        worldId: w.id,
+        title: w.name,
+        subtitle: w.description || "",
+        route: `#/world/${w.id}`,
+        text: [w.name, w.description, w.status, w.nextAction, (w.canon || []).map((c) => c.title).join(" ")].join(" ")
+      });
+    }
+    for (const o of state2.objects || []) {
+      records.push({
+        id: o.id,
+        kind: "object",
+        worldId: o.worldId,
+        title: o.title,
+        subtitle: `${o.type} \xB7 ${o.provider}`,
+        route: `#/object/${o.id}`,
+        text: [o.title, o.type, o.provider, (o.tags || []).join(" "), o.path, o.repositoryUrl].join(" ")
+      });
+    }
+    for (const r of state2.rooms || []) {
+      records.push({
+        id: r.id,
+        kind: "room",
+        worldId: r.worldId,
+        title: r.name,
+        subtitle: `Room \xB7 ${r.type || "section"}`,
+        route: `#/world/${r.worldId}/room/${r.id}`,
+        text: [r.name, r.type, r.notes].join(" ")
+      });
+    }
+    for (const l of state2.locations || []) {
+      records.push({
+        id: l.id,
+        kind: "location",
+        worldId: null,
+        title: l.name,
+        subtitle: "Permanent Location",
+        route: `#/location/${l.id}`,
+        text: [l.name, l.function, l.responsibility].join(" ")
+      });
+    }
+    return records;
+  }
+  function query(index, term, { worldId = null, limit = 50 } = {}) {
+    const tokens = tokenize(term);
+    if (!tokens.length) return [];
+    let pool = index;
+    if (worldId) pool = index.filter((r) => r.worldId === worldId);
+    const scored = [];
+    for (const rec of pool) {
+      const haystack = rec.text.toLowerCase();
+      let score = 0;
+      for (const t of tokens) {
+        if (haystack.includes(t)) score += 1;
+        if (rec.title && rec.title.toLowerCase().includes(t)) score += 2;
+      }
+      if (score > 0) scored.push({ ...rec, score });
+    }
+    scored.sort((a, b) => b.score - a.score);
+    return scored.slice(0, limit);
+  }
+
+  // js/components/command-bar.js
+  function openCommandBar(state2) {
+    const index = buildIndex(state2);
+    const { overlay, close } = openModal({
+      title: "Command bar",
+      bodyHtml: `
+      <input class="input input--lg" type="search" id="command-input" placeholder="Search Worlds, Objects, Rooms, Locations\u2026" aria-label="Search" autocomplete="off">
+      <ul class="command-results" id="command-results"></ul>
+      <p class="muted">Tip: press Enter to open the top result.</p>`
+    });
+    const input = overlay.querySelector("#command-input");
+    const results = overlay.querySelector("#command-results");
+    let current = [];
+    function renderResults(list) {
+      current = list;
+      results.innerHTML = list.map((r, i) => `
+      <li class="command-result ${i === 0 ? "is-active" : ""}">
+        <a href="${esc(r.route)}" data-close-command>
+          <span class="command-result__title">${esc(r.title)}</span>
+          <span class="command-result__kind">${esc(r.kind)}</span>
+          <span class="command-result__sub muted">${esc(r.subtitle)}</span>
+        </a>
+      </li>`).join("") || '<li class="muted">No matches.</li>';
+    }
+    input.addEventListener("input", () => renderResults(query(index, input.value, { limit: 12 })));
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && current[0]) {
+        close();
+        navigate(current[0].route);
+      }
+    });
+    overlay.addEventListener("click", (e) => {
+      if (e.target.closest("[data-close-command]")) close();
+    });
+    input.focus();
+  }
+
+  // js/app.js
+  var els = {};
+  var currentRender = null;
+  async function loadSeed() {
+    if (typeof window !== "undefined" && window.__VD_SEED__) return window.__VD_SEED__;
+    const files = ["system", "settings", "safety-policy", "locations", "worlds", "rooms", "objects", "sources", "activity", "chief"];
+    const loaded = {};
+    await Promise.all(files.map(async (f) => {
+      const res = await fetch(`data/${f}.json`);
+      if (!res.ok) throw new Error(`Failed to load data/${f}.json (${res.status})`);
+      loaded[f] = await res.json();
+    }));
+    return {
+      system: loaded.system,
+      settings: loaded.settings,
+      safetyPolicy: loaded["safety-policy"],
+      locations: loaded.locations,
+      worlds: loaded.worlds,
+      rooms: loaded.rooms,
+      objects: loaded.objects,
+      sources: loaded.sources,
+      activity: loaded.activity,
+      chief: loaded.chief
+    };
+  }
+  function registerProviders() {
+    register(new LocalProvider());
+    register(new ICloudProviderStub());
+    register(new GithubProviderStub());
+    register(new ChiefProviderStub());
+    register(new AIProviderStub());
+  }
+  function defineRoutes() {
+    defineRoute("#/dominion", render);
+    defineRoute("#/atlas", render2);
+    defineRoute("#/nexus", render3);
+    defineRoute("#/worlds", renderIndex);
+    defineRoute("#/world/:worldId", renderWorld);
+    defineRoute("#/world/:worldId/gallery", render6);
+    defineRoute("#/world/:worldId/room/:roomId", renderRoom);
+    defineRoute("#/location/:locationId", render5);
+    defineRoute("#/object/:objectId", render7);
+    defineRoute("#/approvals", render8);
+    defineRoute("#/activity", render9);
+    defineRoute("#/settings", render4);
+  }
+  function renderView(match2) {
+    const state2 = getState();
+    const hash = match2.hash || window.location.hash;
+    els.nav.innerHTML = renderNav(state2, hash);
+    els.status.innerHTML = renderStatusStrip(state2);
+    if (match2.notFound || !match2.route) {
+      els.view.innerHTML = `<section class="view"><div class="panel"><h1>Route not found</h1><a class="link" href="#/dominion">Return to Void Dominion</a></div></section>`;
+      return;
+    }
+    currentRender = () => renderView({ ...match2, hash: window.location.hash });
+    els.view.innerHTML = match2.route.handler(match2.params, state2);
+    els.view.focus();
+    document.title = `Void Dominion \u2014 ${hash.replace("#/", "") || "home"}`;
+  }
+  function rerender() {
+    if (currentRender) currentRender();
+  }
+  var handlers = {
+    "open-command-bar": () => openCommandBar(getState()),
+    "new-world": () => formNewWorld(),
+    "edit-world": (el) => formEditWorld(el.dataset.id),
+    "archive-world": async (el) => {
+      await actions.archiveWorld(el.dataset.id);
+      toast("World archived");
+    },
+    "restore-world": async (el) => {
+      await actions.restoreWorld(el.dataset.id);
+      toast("World restored");
+    },
+    "delete-world": async (el) => {
+      const ok = await confirmDialog({ title: "Delete World", message: "This is destructive. A backup snapshot is taken and the deletion is routed through approval. Continue?", confirmLabel: "Propose deletion", danger: true });
+      if (!ok) return;
+      const r = await actions.deleteWorld(el.dataset.id);
+      reportResult(r, "Deletion");
+    },
+    "add-room": (el) => formAddRoom(el.dataset.id),
+    "add-object": (el) => formAddObject(el.dataset.id, el.dataset.room || null),
+    "edit-object": (el) => formEditObject(el.dataset.id),
+    "delete-object": async (el) => {
+      const ok = await confirmDialog({ title: "Delete object", message: "Destructive. Routed through approval with a backup snapshot. Continue?", confirmLabel: "Propose deletion", danger: true });
+      if (!ok) return;
+      reportResult(await actions.deleteObject(el.dataset.id), "Deletion");
+    },
+    "add-canon": (el) => formAddCanon(el.dataset.id),
+    "finalize-canon": async (el) => reportResult(await actions.finalizeCanon(el.dataset.world, el.dataset.canon), "Finalize canon"),
+    "quick-capture": () => formCapture(),
+    "approve-approval": async (el) => {
+      const ok = await confirmDialog({ title: "Approve action", message: "Approve and execute this action immediately? This confirms you intend the exact effect described.", confirmLabel: "Approve & execute" });
+      if (!ok) return;
+      const r = await resolveApproval(el.dataset.id, "approve");
+      toast(r.ok ? "Approved and executed" : `Not executed: ${r.reason || r.status}`, { kind: r.ok ? "ok" : "warn" });
+    },
+    "reject-approval": async (el) => {
+      await resolveApproval(el.dataset.id, "reject");
+      toast("Rejected \u2014 no action taken");
+    },
+    "toggle-setting": async (el) => {
+      await actions.updateSettings({ [el.dataset.key]: el.checked });
+      applyPreferences();
+    },
+    "toggle-flag": async (el) => {
+      const flags = { ...getState().settings.featureFlags, [el.dataset.key]: el.checked };
+      await actions.updateSettings({ featureFlags: flags });
+    },
+    "create-backup": async () => {
+      await createBackup({ reason: "Manual snapshot" });
+      toast("Backup created");
+    },
+    "restore-backup": async (el) => {
+      const ok = await confirmDialog({ title: "Restore backup", message: "Replace current metadata with this snapshot?", confirmLabel: "Restore" });
+      if (!ok) return;
+      await restoreBackup(el.dataset.id);
+      toast("Backup restored");
+    },
+    "export-data": () => exportData2(),
+    "import-data": () => formImport(),
+    "reset-data": async () => {
+      const ok = await confirmDialog({ title: "Reset all data", message: "This permanently clears all Worlds, Objects and activity. A backup is taken and the reset is routed through approval. Continue?", confirmLabel: "Propose reset", danger: true });
+      if (!ok) return;
+      reportResult(await actions.resetData(), "Reset");
+    },
+    "run-validation": () => runValidation(),
+    "open-source": (el) => toast("Provider is a labelled stub; open is not available. Reference preserved.", { kind: "warn" })
+  };
+  function reportResult(r, label) {
+    if (!r) return;
+    if (r.ok) toast(`${label} executed`, { kind: "ok" });
+    else if (r.requiresApproval) toast(`${label} sent to Approvals for confirmation`, { kind: "warn" });
+    else if (r.denied) toast(`${label} blocked: ${r.reason}`, { kind: "warn" });
+    else toast(`${label} failed: ${r.reason || "unknown"}`, { kind: "warn" });
+  }
+  function formField(label, name, { value = "", type = "text", textarea = false, options = null, placeholder = "" } = {}) {
+    if (options) {
+      return `<label class="field"><span>${esc(label)}</span>
+      <select name="${esc(name)}">${options.map((o) => `<option value="${esc(o.value)}" ${o.value === value ? "selected" : ""}>${esc(o.label)}</option>`).join("")}</select></label>`;
+    }
+    if (textarea) {
+      return `<label class="field"><span>${esc(label)}</span><textarea name="${esc(name)}" placeholder="${esc(placeholder)}">${esc(value)}</textarea></label>`;
+    }
+    return `<label class="field"><span>${esc(label)}</span><input name="${esc(name)}" type="${esc(type)}" value="${esc(value)}" placeholder="${esc(placeholder)}"></label>`;
+  }
+  function collectForm(overlay) {
+    const data = {};
+    overlay.querySelectorAll("[name]").forEach((el) => {
+      data[el.name] = el.value;
+    });
+    return data;
+  }
+  function formNewWorld() {
+    const body = `
+    <p class="muted">Prepare a World proposal. Creation requires explicit approval (\xA723.3).</p>
+    ${formField("Name", "name", { placeholder: "Project name" })}
+    ${formField("Symbol", "symbol", { placeholder: "\u25C7" })}
+    ${formField("Colour identity", "colorIdentity", { value: "#6fd68a", type: "text" })}
+    ${formField("Priority", "priority", { value: "medium", options: [{ value: "high", label: "High" }, { value: "medium", label: "Medium" }, { value: "low", label: "Low" }] })}
+    ${formField("Description / reason it cannot belong to an existing World", "description", { textarea: true })}`;
+    openModal({
+      title: "Propose new World",
+      bodyHtml: body,
+      actionsHtml: `<button class="btn" data-modal-close>Cancel</button><button class="btn btn--primary" data-submit>Propose (requires approval)</button>`,
+      onMount: (overlay, close) => wireSubmit(overlay, close, async (d) => {
+        if (!d.name) {
+          toast("Name is required", { kind: "warn" });
+          return false;
+        }
+        reportResult(await actions.createWorld(d), "World creation");
+        return true;
+      })
+    });
+  }
+  function formEditWorld(id) {
+    const w = getState().worlds.find((x) => x.id === id);
+    if (!w) return;
+    const body = `
+    ${formField("Name", "name", { value: w.name })}
+    ${formField("Priority", "priority", { value: w.priority, options: [{ value: "high", label: "High" }, { value: "medium", label: "Medium" }, { value: "low", label: "Low" }] })}
+    ${formField("Last action", "lastAction", { value: w.lastAction })}
+    ${formField("Next action", "nextAction", { value: w.nextAction })}
+    ${formField("Future action", "futureAction", { value: w.futureAction })}
+    ${formField("Description", "description", { value: w.description, textarea: true })}`;
+    openModal({
+      title: `Edit ${w.name}`,
+      bodyHtml: body,
+      actionsHtml: `<button class="btn" data-modal-close>Cancel</button><button class="btn btn--primary" data-submit>Save</button>`,
+      onMount: (overlay, close) => wireSubmit(overlay, close, async (d) => {
+        reportResult(await actions.updateWorld(id, d), "World update");
+        return true;
+      })
+    });
+  }
+  function formAddRoom(worldId) {
+    const body = `${formField("Room name", "name", { placeholder: "e.g. Development" })}
+    ${formField("Type", "type", { value: "section", options: ["development", "assets", "canon", "animation", "code", "research", "release", "section"].map((t) => ({ value: t, label: t })) })}`;
+    openModal({
+      title: "Add room",
+      bodyHtml: body,
+      actionsHtml: `<button class="btn" data-modal-close>Cancel</button><button class="btn btn--primary" data-submit>Add</button>`,
+      onMount: (overlay, close) => wireSubmit(overlay, close, async (d) => {
+        if (!d.name) {
+          toast("Name required", { kind: "warn" });
+          return false;
+        }
+        reportResult(await actions.createRoom({ ...d, worldId }), "Add room");
+        return true;
+      })
+    });
+  }
+  function formAddObject(worldId, roomId) {
+    const body = `
+    ${formField("Title", "title")}
+    ${formField("Type", "type", { value: "image", options: ["image", "video", "audio", "document", "code", "repository", "link"].map((t) => ({ value: t, label: t })) })}
+    ${formField("Provider", "provider", { value: "local", options: getState().settings.providers.map((p) => ({ value: p.providerId, label: `${p.providerId} (${p.status})` })) })}
+    ${formField("Path", "path", { placeholder: "relative or provider path" })}
+    ${formField("Repository / URL", "repositoryUrl", { placeholder: "https://\u2026" })}
+    ${formField("Tags (comma separated)", "tags")}`;
+    openModal({
+      title: "Add object reference",
+      bodyHtml: body,
+      actionsHtml: `<button class="btn" data-modal-close>Cancel</button><button class="btn btn--primary" data-submit>Add</button>`,
+      onMount: (overlay, close) => wireSubmit(overlay, close, async (d) => {
+        if (!d.title) {
+          toast("Title required", { kind: "warn" });
+          return false;
+        }
+        const payload = { ...d, worldId, roomId: roomId || null, tags: d.tags ? d.tags.split(",").map((t) => t.trim()).filter(Boolean) : [] };
+        reportResult(await actions.createObject(payload), "Add object");
+        return true;
+      })
+    });
+  }
+  function formEditObject(id) {
+    const o = getState().objects.find((x) => x.id === id);
+    if (!o) return;
+    const body = `${formField("Title", "title", { value: o.title })}
+    ${formField("Stage", "stage", { value: o.stage, options: ["draft", "final", "reference", "superseded"].map((s) => ({ value: s, label: s })) })}
+    ${formField("Path", "path", { value: o.path })}
+    ${formField("Repository / URL", "repositoryUrl", { value: o.repositoryUrl })}`;
+    openModal({
+      title: "Edit object",
+      bodyHtml: body,
+      actionsHtml: `<button class="btn" data-modal-close>Cancel</button><button class="btn btn--primary" data-submit>Save</button>`,
+      onMount: (overlay, close) => wireSubmit(overlay, close, async (d) => {
+        reportResult(await actions.updateObject(id, d), "Object update");
+        return true;
+      })
+    });
+  }
+  function formAddCanon(worldId) {
+    const body = `<p class="muted">Changing canon requires a recorded proposal and approval.</p>
+    ${formField("Title", "title")}
+    ${formField("Decision", "decision", { textarea: true })}`;
+    openModal({
+      title: "Propose canon change",
+      bodyHtml: body,
+      actionsHtml: `<button class="btn" data-modal-close>Cancel</button><button class="btn btn--primary" data-submit>Propose (requires approval)</button>`,
+      onMount: (overlay, close) => wireSubmit(overlay, close, async (d) => {
+        if (!d.title) {
+          toast("Title required", { kind: "warn" });
+          return false;
+        }
+        reportResult(await actions.addCanon(worldId, d), "Canon change");
+        return true;
+      })
+    });
+  }
+  function formCapture() {
+    const body = `${formField("Capture for Chief", "input", { textarea: true, placeholder: "What should Chief handle?" })}
+    ${formField("Reasoning depth", "reasoningDepth", { value: "brain", options: [{ value: "brain", label: "Brain (routine)" }, { value: "strategy", label: "Strategy (planning)" }, { value: "oracle", label: "Oracle (deep, advisory)" }] })}`;
+    openModal({
+      title: "Quick capture",
+      bodyHtml: body,
+      actionsHtml: `<button class="btn" data-modal-close>Cancel</button><button class="btn btn--primary" data-submit>Capture</button>`,
+      onMount: (overlay, close) => wireSubmit(overlay, close, async (d) => {
+        if (!d.input) {
+          toast("Nothing to capture", { kind: "warn" });
+          return false;
+        }
+        reportResult(await actions.capture(d.input, d.reasoningDepth), "Capture");
+        return true;
+      })
+    });
+  }
+  function formImport() {
+    const body = `<p class="muted">Paste an exported Atlas metadata JSON. It is validated and a backup is taken before applying.</p>
+    <textarea name="payload" class="input" rows="10" placeholder='{"worlds":[\u2026]}'></textarea>
+    <div id="import-preview" class="code-out"></div>`;
+    openModal({
+      title: "Import metadata",
+      bodyHtml: body,
+      actionsHtml: `<button class="btn" data-modal-close>Cancel</button><button class="btn" data-preview>Validate</button><button class="btn btn--primary" data-submit disabled>Apply import</button>`,
+      onMount: (overlay, close) => {
+        const preview = overlay.querySelector("#import-preview");
+        const applyBtn = overlay.querySelector("[data-submit]");
+        let parsed = null;
+        overlay.querySelector("[data-preview]").addEventListener("click", () => {
+          try {
+            parsed = JSON.parse(overlay.querySelector("[name=payload]").value);
+          } catch (e) {
+            preview.textContent = `Invalid JSON: ${e.message}`;
+            applyBtn.disabled = true;
+            return;
+          }
+          const res = previewImport(parsed);
+          preview.textContent = res.valid ? `Valid. Worlds: ${res.counts.worlds}, Rooms: ${res.counts.rooms}, Objects: ${res.counts.objects}, Sources: ${res.counts.sources}.` : `Invalid:
+- ${res.errors.join("\n- ")}`;
+          applyBtn.disabled = !res.valid;
+        });
+        applyBtn.addEventListener("click", async () => {
+          if (!parsed) return;
+          await importDataset(parsed);
+          recomputeConflicts();
+          toast("Import applied");
+          close();
+        });
+      }
+    });
+  }
+  function wireSubmit(overlay, close, onSubmit) {
+    const submit = overlay.querySelector("[data-submit]");
+    if (!submit) return;
+    submit.addEventListener("click", async () => {
+      const ok = await onSubmit(collectForm(overlay));
+      if (ok !== false) close();
+    });
+  }
+  function exportData2() {
+    const blob = exportToBlob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `void-dominion-export-${now().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast("Export downloaded");
+  }
+  function runValidation() {
+    const state2 = getState();
+    const res = validateDataset({ worlds: state2.worlds, rooms: state2.rooms, objects: state2.objects, sources: state2.sources });
+    const out = document.getElementById("diagnostics-output");
+    if (out) {
+      out.textContent = res.valid ? `Validation passed. ${state2.worlds.length} worlds, ${state2.rooms.length} rooms, ${state2.objects.length} objects.` : `Validation errors:
+- ${res.errors.join("\n- ")}`;
+    }
+  }
+  function recomputeConflicts() {
+    setConflicts(detectConflicts(getState().objects));
+  }
+  function handleWorldSearch(el) {
+    const state2 = getState();
+    const index = buildIndex(state2);
+    const results = query(index, el.value, { worldId: el.dataset.world, limit: 10 });
+    const box = document.getElementById("world-search-results");
+    if (box) {
+      box.innerHTML = results.map((r) => `<a class="search-result" href="${esc(r.route)}">${esc(r.title)} <span class="muted">${esc(r.kind)}</span></a>`).join("") || '<p class="muted">No matches.</p>';
+    }
+  }
+  function applyPreferences() {
+    const s = getState().settings;
+    document.documentElement.classList.toggle("reduced-motion", !!s.reducedMotion);
+    document.documentElement.classList.toggle("dev-mode", !!s.developerMode);
+    try {
+      localStorage.setItem("vd:reducedMotion", s.reducedMotion ? "1" : "0");
+    } catch (_) {
+    }
+  }
+  async function boot() {
+    els.nav = document.getElementById("nav-root");
+    els.status = document.getElementById("status-root");
+    els.view = document.getElementById("view-root");
+    initUI();
+    els.view.innerHTML = '<div class="panel"><p>Loading Void Dominion\u2026</p></div>';
+    try {
+      registerProviders();
+      const seed = await loadSeed();
+      let adapter = createIndexedDBAdapter();
+      try {
+        await initStore(adapter, seed);
+      } catch (dbErr) {
+        console.warn("[boot] IndexedDB unavailable, using in-memory storage", dbErr);
+        adapter = createMemoryAdapter();
+        await initStore(adapter, seed);
+        setTimeout(() => toast("Running in memory-only mode \u2014 changes will not persist across reloads in this browser.", { kind: "warn", timeout: 6e3 }), 800);
+      }
+      recomputeConflicts();
+      applyPreferences();
+      defineRoutes();
+      onRoute(renderView);
+      on("state.changed", rerender);
+      on("approval.requested", rerender);
+      on("approval.resolved", rerender);
+      document.body.addEventListener("click", (e) => {
+        const el = e.target.closest("[data-action]");
+        if (!el || el.tagName === "INPUT") return;
+        const handler = handlers[el.dataset.action];
+        if (handler) {
+          e.preventDefault();
+          handler(el);
+        }
+      });
+      document.body.addEventListener("change", (e) => {
+        const el = e.target.closest("[data-action]");
+        if (!el || el.tagName !== "INPUT") return;
+        const handler = handlers[el.dataset.action];
+        if (handler) handler(el);
+      });
+      document.body.addEventListener("input", (e) => {
+        const el = e.target.closest('[data-action="world-search"]');
+        if (el) handleWorldSearch(el);
+      });
+      document.addEventListener("keydown", (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+          e.preventDefault();
+          openCommandBar(getState());
+        }
+      });
+      document.addEventListener("visibilitychange", () => {
+        document.documentElement.classList.toggle("is-hidden", document.hidden && getState().settings.pauseAmbientWhenHidden);
+      });
+      start();
+    } catch (err) {
+      console.error("[boot] failed", err);
+      els.view.innerHTML = `<div class="panel"><h1>Startup error</h1><p class="callout callout--warn">${esc(err.message)}</p><p class="muted">Serve the app over a local HTTP server (see README) so data files and ES modules load correctly.</p></div>`;
+    }
+  }
+  document.addEventListener("DOMContentLoaded", boot);
+})();
+</script>
+</body>
+</html>

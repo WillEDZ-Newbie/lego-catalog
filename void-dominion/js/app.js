@@ -3,7 +3,7 @@
 // defines routes and wires global event delegation.
 
 import { on } from './events.js';
-import { createIndexedDBAdapter } from './persistence.js';
+import { createIndexedDBAdapter, createMemoryAdapter } from './persistence.js';
 import * as store from './store.js';
 import { actions, getState } from './store.js';
 import { detectConflicts } from './source-resolver.js';
@@ -38,6 +38,9 @@ const els = {};
 let currentRender = null;
 
 async function loadSeed() {
+  // Standalone single-file build embeds the seed on window.__VD_SEED__ so the
+  // app runs with no server and no fetch. Hosted build fetches the JSON files.
+  if (typeof window !== 'undefined' && window.__VD_SEED__) return window.__VD_SEED__;
   const files = ['system', 'settings', 'safety-policy', 'locations', 'worlds', 'rooms', 'objects', 'sources', 'activity', 'chief'];
   const loaded = {};
   await Promise.all(files.map(async (f) => {
@@ -406,8 +409,18 @@ async function boot() {
   try {
     registerProviders();
     const seed = await loadSeed();
-    const adapter = createIndexedDBAdapter();
-    await store.initStore(adapter, seed);
+    // Prefer durable IndexedDB; fall back to in-memory if it is unavailable
+    // (e.g. blocked in some file:// contexts) so the app always runs.
+    let adapter = createIndexedDBAdapter();
+    try {
+      await store.initStore(adapter, seed);
+    } catch (dbErr) {
+      // eslint-disable-next-line no-console
+      console.warn('[boot] IndexedDB unavailable, using in-memory storage', dbErr);
+      adapter = createMemoryAdapter();
+      await store.initStore(adapter, seed);
+      setTimeout(() => toast('Running in memory-only mode — changes will not persist across reloads in this browser.', { kind: 'warn', timeout: 6000 }), 800);
+    }
     recomputeConflicts();
     applyPreferences();
 
