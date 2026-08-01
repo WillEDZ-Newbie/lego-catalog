@@ -1,0 +1,12 @@
+# Void Dominion — one-command local run.
+#   docker compose up        (then open http://localhost:8080/)
+#   docker compose down      (stop)
+
+services:
+  void-dominion:
+    build: .
+    image: void-dominion:latest
+    container_name: void-dominion
+    ports:
+      - "8080:80"
+    restart: unless-stopped

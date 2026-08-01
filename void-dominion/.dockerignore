@@ -1,0 +1,8 @@
+# Keep the image lean — dev-only files are not needed to serve the static app.
+Dockerfile
+.dockerignore
+docker-compose.yml
+build-standalone.mjs
+node_modules
+.git
+*.log

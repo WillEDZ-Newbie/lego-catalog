@@ -31,6 +31,24 @@ python3 -m http.server 8080      # or: npm run serve
 After the first load the app is offline-capable: seed data is copied into
 IndexedDB and served locally.
 
+### Run it with Docker
+
+If you prefer a container (full persistence, always at `localhost:8080`):
+
+```bash
+cd void-dominion
+docker compose up          # then open http://localhost:8080/
+docker compose down        # stop
+```
+
+Requires Docker Desktop. The image is just nginx serving the static app.
+
+### Run it with zero setup (standalone file)
+
+`void-dominion-standalone.html` is the whole app bundled into one file — open it
+by double-clicking, no server or install required. Regenerate it with
+`node build-standalone.mjs`.
+
 ## Test it
 
 ```bash
