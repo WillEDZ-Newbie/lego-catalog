@@ -256,10 +256,24 @@ export const STAGES: StageDef[] = [
     input: "none",
     params: [
       { key: "notes", label: "Describe the statue", control: "textarea", default: "a standing figure, three-quarter view" },
-      { key: "width", label: "Width", control: "select", default: "768", advanced: true,
-        options: ["512", "640", "768", "896", "1024"].map((v) => ({ value: v, label: `${v}px` })) },
-      { key: "height", label: "Height", control: "select", default: "1024", advanced: true,
-        options: ["512", "640", "768", "896", "1024", "1216"].map((v) => ({ value: v, label: `${v}px` })) },
+      // Defaults stay inside the Horde free allowance (<=576) so anonymous
+      // users aren't rejected for lacking kudos; larger sizes need a free key.
+      { key: "width", label: "Width", control: "select", default: "512", advanced: true,
+        options: [
+          { value: "512", label: "512px" },
+          { value: "576", label: "576px" },
+          { value: "640", label: "640px (needs a key)" },
+          { value: "768", label: "768px (needs a key)" },
+          { value: "1024", label: "1024px (needs a key)" },
+        ] },
+      { key: "height", label: "Height", control: "select", default: "576", advanced: true,
+        options: [
+          { value: "512", label: "512px" },
+          { value: "576", label: "576px" },
+          { value: "640", label: "640px (needs a key)" },
+          { value: "768", label: "768px (needs a key)" },
+          { value: "1024", label: "1024px (needs a key)" },
+        ] },
       keepArtistParam,
       interpretationParam,
       effortParam,
@@ -269,8 +283,8 @@ export const STAGES: StageDef[] = [
       prompt: withNegative(composePrompt(ctx, "a marble sculpture", str(values.notes)), STONE_NEGATIVE),
       params: {
         ...baseParams(values),
-        width: Number(str(values.width) || "768"),
-        height: Number(str(values.height) || "1024"),
+        width: Number(str(values.width) || "512"),
+        height: Number(str(values.height) || "576"),
         seed: seedFor(values, ctx),
       },
       ...modelField(ctx),

@@ -394,3 +394,6 @@
 
 /* Done screen image */
 .done-image { max-width: 320px; width: 100%; border-radius: var(--radius-sm); box-shadow: var(--bevel); }
+
+/* Free-tier explainer in Settings */
+.free-note { border-left: 2px solid var(--bronze); padding-left: var(--space-3); }

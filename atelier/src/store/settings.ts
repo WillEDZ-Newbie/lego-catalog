@@ -13,27 +13,32 @@ const LS_KEY = "atelier.settings.v1";
 
 export interface Settings {
   apiKey: string;
+  /** Share results to the Horde commons to earn kudos (bigger/faster jobs). */
+  shareOutputs: boolean;
 }
 
 interface SettingsState extends Settings {
   hasRealKey: () => boolean;
   setApiKey: (key: string) => void;
   clearApiKey: () => void;
+  setShareOutputs: (v: boolean) => void;
 }
 
 function load(): Settings {
+  const base: Settings = { apiKey: ANON_KEY, shareOutputs: false };
   try {
     const raw = localStorage.getItem(LS_KEY);
-    if (raw) return { apiKey: ANON_KEY, ...(JSON.parse(raw) as Partial<Settings>) };
+    if (raw) return { ...base, ...(JSON.parse(raw) as Partial<Settings>) };
   } catch {
     /* ignore corrupt storage */
   }
-  return { apiKey: ANON_KEY };
+  return base;
 }
 
-function persist(s: Settings) {
+function persist(get: () => Settings) {
   try {
-    localStorage.setItem(LS_KEY, JSON.stringify(s));
+    const { apiKey, shareOutputs } = get();
+    localStorage.setItem(LS_KEY, JSON.stringify({ apiKey, shareOutputs }));
   } catch {
     /* private mode / quota — non-fatal */
   }
@@ -46,12 +51,15 @@ export const useSettings = create<SettingsState>((set, get) => ({
     return k.length > 0 && k !== ANON_KEY;
   },
   setApiKey: (key) => {
-    const apiKey = key.trim() || ANON_KEY;
-    persist({ apiKey });
-    set({ apiKey });
+    set({ apiKey: key.trim() || ANON_KEY });
+    persist(get);
   },
   clearApiKey: () => {
-    persist({ apiKey: ANON_KEY });
     set({ apiKey: ANON_KEY });
+    persist(get);
+  },
+  setShareOutputs: (shareOutputs) => {
+    set({ shareOutputs });
+    persist(get);
   },
 }));

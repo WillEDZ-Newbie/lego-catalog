@@ -19,7 +19,7 @@ const HOUSE_FIELDS: Array<{ key: keyof HouseStyle; label: string }> = [
 ];
 
 export function Settings({ onClose }: { onClose: () => void }) {
-  const { apiKey, setApiKey, hasRealKey } = useSettings();
+  const { apiKey, setApiKey, hasRealKey, shareOutputs, setShareOutputs } = useSettings();
   const { houseStyle, setHouseStyle, defaultModel, setDefaultModel } = useProject();
   const { models, loadModels } = useRun();
 
@@ -54,6 +54,30 @@ export function Settings({ onClose }: { onClose: () => void }) {
             </a>{" "}
             queues faster.
           </p>
+
+          {!hasRealKey() && (
+            <p className="control-help free-note">
+              Without a key, the volunteer network only accepts smaller work, so
+              ATELIER keeps images at 576px and effort at 50 or less. A free key
+              lifts that — same price: nothing.
+            </p>
+          )}
+
+          <label className="toggle">
+            <input
+              type="checkbox"
+              checked={shareOutputs}
+              onChange={(e) => setShareOutputs(e.target.checked)}
+            />
+            <span className="toggle-track" aria-hidden="true" />
+            <span className="toggle-text">
+              Share results with the network
+              <span className="control-help">
+                Lets the volunteers use your images to improve the service, and
+                earns credit for bigger, faster work. Off by default.
+              </span>
+            </span>
+          </label>
         </section>
 
         <section className="modal-section">

@@ -7,9 +7,10 @@
  * re-point.
  */
 import { create } from "zustand";
-import type { GenerateProgress, HordeActiveModel } from "@/horde";
-import { HordeUserError } from "@/horde";
+import type { GenerateProgress, HordeActiveModel, HordeGenerationInput } from "@/horde";
+import { HordeUserError, clampToFreeTier } from "@/horde";
 import { horde } from "@/horde/instance";
+import { useSettings } from "@/store/settings";
 import {
   type ParamValue,
   type Preset,
@@ -131,6 +132,25 @@ function currentStageDef(s: Session): StageDef | undefined {
   return inst ? getStage(inst.stageId) : undefined;
 }
 
+/**
+ * Apply user/account policy to a built payload: opt-in sharing (earns kudos),
+ * and — for anonymous users with no kudos — clamp to the free tier so the job
+ * isn't rejected for lacking kudos.
+ */
+function finalizePayload(payload: HordeGenerationInput): HordeGenerationInput {
+  const settings = useSettings.getState();
+  const withShare: HordeGenerationInput = {
+    ...payload,
+    shared: settings.shareOutputs ? true : undefined,
+  };
+  return settings.hasRealKey() ? withShare : clampToFreeTier(withShare);
+}
+
+/** Upload cap: full size for keyed users, free-tier size for anonymous. */
+function uploadMaxEdge(): number {
+  return useSettings.getState().hasRealKey() ? 1024 : 576;
+}
+
 function freshSession(): Session {
   return {
     id: makeId("session"),
@@ -184,7 +204,7 @@ export const useRun = create<RunState>((set, get) => ({
   },
 
   newFromImage: async (file) => {
-    const enc = await encodeForHorde(file);
+    const enc = await encodeForHorde(file, uploadMaxEdge());
     const s = freshSession();
     s.sourceImageB64 = enc.b64;
     const key = `${s.id}/source`;
@@ -228,7 +248,7 @@ export const useRun = create<RunState>((set, get) => ({
   setSourceImage: async (file) => {
     const s = get().session;
     if (!s) return;
-    const enc = await encodeForHorde(file);
+    const enc = await encodeForHorde(file, uploadMaxEdge());
     await putBlob(`${s.id}/source`, enc.blob);
     set({ session: { ...s, sourceImageB64: enc.b64 } });
   },
@@ -369,7 +389,7 @@ export const useRun = create<RunState>((set, get) => ({
         seed: s.lockedSeed, // stable across the strip so only strength varies
       },
     };
-    const { blobs } = await horde.generate(preview, { signal });
+    const { blobs } = await horde.generate(finalizePayload(preview), { signal });
     if (!blobs[0]) throw new Error("No preview produced");
     return blobs[0];
   },
@@ -398,7 +418,7 @@ export const useRun = create<RunState>((set, get) => ({
     inflight = new AbortController();
     set({ phase: "queued", progress: null, error: null });
     try {
-      const { status, blobs } = await horde.generate(payload, {
+      const { status, blobs } = await horde.generate(finalizePayload(payload), {
         signal: inflight.signal,
         onSubmitted: (r) => set({ kudos: r.kudos ?? null }),
         onProgress: (p) => set({ progress: p }),

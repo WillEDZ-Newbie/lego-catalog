@@ -121,6 +121,16 @@ export class HordeClient {
       } catch {
         /* ignore */
       }
+      // The Horde gates large or long jobs behind pre-existing kudos. Anonymous
+      // users have none, so translate that into guidance, not raw API text.
+      if (/kudos/i.test(detail)) {
+        throw new HordeUserError(
+          "This one is too big for the free allowance. Make it smaller or less " +
+            "careful, or add a free Horde key in Settings to unlock larger work.",
+          "rejected",
+          res.status,
+        );
+      }
       throw new HordeUserError(
         detail || `The service replied with an error (${res.status}).`,
         res.status >= 500 ? "server" : "rejected",
