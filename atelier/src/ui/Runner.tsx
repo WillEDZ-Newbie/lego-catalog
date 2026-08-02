@@ -6,9 +6,12 @@
  * The compare gesture, A/B slider and marble-frieze filmstrip get their polish
  * in Milestone 4; this milestone proves the loop and the four actions.
  */
+import { useEffect, useState } from "react";
 import { useRun } from "@/store/run";
 import { getStage } from "@/stages";
 import { AutoPanel } from "./controls/AutoPanel";
+import type { PanelContext } from "./controls/panelContext";
+import { MaskPainter } from "./hero/MaskPainter";
 import { BlobImage } from "./BlobImage";
 
 export function Runner() {
@@ -50,17 +53,78 @@ function RunnerBar() {
 }
 
 function StagePanel() {
-  const { session, currentValues, setValue, carve } = useRun();
+  const {
+    session,
+    currentValues,
+    setValue,
+    carve,
+    resolveInput,
+    previewStrength,
+    recallSeed,
+    maskB64,
+    setMask,
+  } = useRun();
+  const [inputImageB64, setInputImageB64] = useState<string | undefined>();
+  const [painting, setPainting] = useState(false);
+
+  const pointer = session?.pointer ?? 0;
+  useEffect(() => {
+    let live = true;
+    resolveInput().then((b64) => live && setInputImageB64(b64));
+    return () => {
+      live = false;
+    };
+  }, [resolveInput, pointer]);
+
   if (!session) return null;
   const def = getStage(session.pipeline[session.pointer].stageId);
   if (!def) return null;
+
+  const ctx: PanelContext = {
+    inputImageB64,
+    frames: session.frames.map((f) => ({ blobKey: f.blobKey, seed: f.seed })),
+    currentSeed: session.lockedSeed,
+    onRecallSeed: recallSeed,
+    previewStrength,
+  };
+
+  const maskReady = !def.needsMask || Boolean(maskB64);
+
   return (
     <div className="stage-panel">
       <p className="stage-blurb">{def.blurb}</p>
-      <AutoPanel params={def.params} values={currentValues} onChange={setValue} />
-      <button className="primary-btn carve-btn" onClick={() => void carve()}>
+
+      {def.needsMask && (
+        <div className="mask-row">
+          <span className={`mask-status ${maskB64 ? "ready" : ""}`}>
+            {maskB64 ? "Area painted ✓" : "Paint the area to work on first."}
+          </span>
+          <button
+            className="ghost-btn"
+            onClick={() => setPainting(true)}
+            disabled={!inputImageB64}
+          >
+            {maskB64 ? "Repaint area" : "Paint the area"}
+          </button>
+        </div>
+      )}
+
+      <AutoPanel params={def.params} values={currentValues} onChange={setValue} ctx={ctx} />
+
+      <button className="primary-btn carve-btn" onClick={() => void carve()} disabled={!maskReady}>
         Carve
       </button>
+
+      {painting && inputImageB64 && (
+        <MaskPainter
+          imageB64={inputImageB64}
+          onDone={(m) => {
+            setMask(m);
+            setPainting(false);
+          }}
+          onCancel={() => setPainting(false)}
+        />
+      )}
     </div>
   );
 }

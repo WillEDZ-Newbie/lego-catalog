@@ -7,15 +7,35 @@ product brief — it is the source of truth for scope and design.
 
 100% static SPA · no backend · no paid APIs · free forever.
 
-## Status — Milestone 2
+## Status — Milestone 3
 
 Build order (from the brief), and where we are:
 
 1. **Horde client + types + proof-of-loop test bench** — ✅ done.
-2. **Stage registry + auto-generated panels + Builder + Runner + IndexedDB history** — ✅ this milestone.
-3. Hero controls: Mask Painter, Ghost Strip, Artist Lock, See-It Picker.
+2. **Stage registry + auto-generated panels + Builder + Runner + IndexedDB history** — ✅ done.
+3. **Hero controls: Mask Painter, Ghost Strip, Artist Lock, See-It Picker** — ✅ this milestone.
 4. Judgement screen polish: compare gestures, filmstrip/frieze, fork.
 5. Projects, presets, house style, export/share, PWA install, design pass.
+
+What Milestone 3 ships (`src/ui/hero/`):
+
+- **Mask Painter** — full-screen canvas over the input image: brush size,
+  softness (feather), eraser, invert, clear, pinch zoom/pan, Apple Pencil
+  pressure → opacity (`PointerEvent` / `touch-action: none`). Exports a B/W PNG
+  mask at source resolution. **Unlocks the repair/inpainting stages** (eye
+  repair, detail repair, background cleanup) — no longer gated.
+- **Ghost Strip** — denoise as five on-demand preview thumbnails
+  (0.2/0.35/0.5/0.65/0.8), generated sequentially and cached per input image;
+  tap one to snap the strength.
+- **Artist Lock** — 🔒 Same artist / 🎲 New artist, with a rail of previous
+  results; tap one to recall its seed. Seeds never shown as numbers.
+- **See-It Picker** — ControlNet type as cards; "Follow the outlines" shows a
+  live client-side edge (Sobel) preview of the input image. The three
+  Milestone-2 composition-lock stages are now **one** "Composition lock" stage
+  driven by this picker (catalog is 12 stages; the lock offers 3 modes).
+
+Pointer/pinch/Pencil behaviour is written to spec but can only be tuned on a
+real iPad/desktop, not in CI.
 
 What Milestone 2 ships (the real Home → Builder → Runner flow):
 
@@ -90,8 +110,10 @@ txt2img, polls the queue, downloads the R2 result, and renders it. Requires a
 browser with network access to `stablehorde.net` (not available inside the
 CI/build sandbox).
 
-## Icons TODO
+## Backlog / ideas
 
-`vite.config.ts` references `public/icon-192.png` and `public/icon-512.png` for
-the PWA manifest; only `favicon.svg` exists so far. Add raster icons before the
-Milestone 5 PWA-install pass.
+- **Prompt library** — the artist has many image prompts written for ChatGPT.
+  Import them (paste / file), browse and search, and either drop one straight
+  into a Fresh-generation stage to run it through the Horde pipeline, or keep
+  them as reusable presets. Fits naturally into the Milestone-5 projects/presets
+  work.

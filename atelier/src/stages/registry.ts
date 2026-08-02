@@ -41,6 +41,8 @@ export const CATEGORY_LABELS: Record<StageCategory, string> = {
 export interface BuildContext {
   /** Previous accepted output (or the source image) as bare base64. */
   inputImageB64?: string;
+  /** Painted inpainting mask (bare base64), for stages with `needsMask`. */
+  maskB64?: string;
   houseStyle: HouseStyle;
   /** Selected model name, or undefined to let the Horde choose. */
   model?: string;
@@ -107,11 +109,11 @@ const samplerParam: ParamDef = {
   options: SAMPLERS.map((s) => ({ value: s, label: s })),
 };
 
-/** Denoise, framed for the artist. Becomes the Ghost Strip in Milestone 3. */
+/** Denoise, framed for the artist — rendered as the Ghost Strip (Milestone 3). */
 const strengthParam = (def: number): ParamDef => ({
   key: "strength",
   label: "How much to change it",
-  control: "slider",
+  control: "ghost-strip",
   default: def,
   min: 0.1,
   max: 0.9,
@@ -120,12 +122,12 @@ const strengthParam = (def: number): ParamDef => ({
   rightLabel: "Reimagine it",
 });
 
-/** Seed lock, framed for the artist. Becomes the Artist Lock in Milestone 3. */
+/** Seed lock, framed for the artist — rendered as the Artist Lock (Milestone 3). */
 const keepArtistParam: ParamDef = {
   key: "keepArtist",
   label: "Same artist",
   help: "Keep the same hand and character across steps.",
-  control: "toggle",
+  control: "artist-lock",
   default: true,
 };
 
@@ -195,38 +197,52 @@ function materialStage(
   };
 }
 
-/* ---- structure (ControlNet) stages --------------------------------------- */
+/* ---- structure (ControlNet) stage ---------------------------------------- */
 
-function structureStage(id: string, name: string, control: ControlType, follow: string): StageDef {
-  return {
-    id,
-    name,
-    blurb: `Keep the ${follow} of your image while everything else is redrawn.`,
-    category: "structure",
-    input: "image",
-    params: [
-      { key: "notes", label: "Describe the result", control: "textarea", default: "" },
-      strengthParam(0.7),
-      keepArtistParam,
-      interpretationParam,
-      effortParam,
-      samplerParam,
-    ],
-    buildPayload: (values, ctx) => ({
-      prompt: withNegative(composePrompt(ctx, "", str(values.notes)), STONE_NEGATIVE),
-      source_image: ctx.inputImageB64,
-      source_processing: "img2img",
-      params: {
-        ...baseParams(values),
-        denoising_strength: num(values.strength, 0.7),
-        control_type: control,
-        image_is_control: false,
-        seed: seedFor(values, ctx),
-      },
-      ...modelField(ctx),
-    }),
-  };
-}
+/**
+ * One "Composition lock" stage whose control type is chosen with the See-It
+ * Picker (outlines / depth / pose shown as visual cards) — the hero control
+ * subsumes what were three separate stages in Milestone 2.
+ */
+const compLockStage: StageDef = {
+  id: "comp-lock",
+  name: "Composition lock",
+  blurb: "Keep the shape of your image while everything else is re-carved.",
+  category: "structure",
+  input: "image",
+  params: [
+    {
+      key: "controlType",
+      label: "What to follow",
+      control: "see-it",
+      default: "canny",
+      options: [
+        { value: "canny", label: "Follow the outlines" },
+        { value: "depth", label: "Follow the depth" },
+        { value: "openpose", label: "Follow the pose" },
+      ],
+    },
+    { key: "notes", label: "Describe the result", control: "textarea", default: "" },
+    strengthParam(0.7),
+    keepArtistParam,
+    interpretationParam,
+    effortParam,
+    samplerParam,
+  ],
+  buildPayload: (values, ctx) => ({
+    prompt: withNegative(composePrompt(ctx, "", str(values.notes)), STONE_NEGATIVE),
+    source_image: ctx.inputImageB64,
+    source_processing: "img2img",
+    params: {
+      ...baseParams(values),
+      denoising_strength: num(values.strength, 0.7),
+      control_type: (str(values.controlType) || "canny") as ControlType,
+      image_is_control: false,
+      seed: seedFor(values, ctx),
+    },
+    ...modelField(ctx),
+  }),
+};
 
 /* ---- the registry --------------------------------------------------------- */
 
@@ -262,9 +278,7 @@ export const STAGES: StageDef[] = [
   },
 
   // structure
-  structureStage("comp-lock-line", "Composition lock (line)", "canny", "outlines"),
-  structureStage("comp-lock-depth", "Composition lock (depth)", "depth", "depth"),
-  structureStage("comp-lock-pose", "Composition lock (pose)", "openpose", "pose"),
+  compLockStage,
 
   // material
   materialStage("marble-pass", "Marble pass", "Turn it into carved marble.", "material", 0.45),
@@ -287,6 +301,7 @@ export const STAGES: StageDef[] = [
     buildPayload: (values, ctx) => ({
       prompt: withNegative(composePrompt(ctx, EYE_REPAIR_POSITIVE), EYE_REPAIR_NEGATIVE),
       source_image: ctx.inputImageB64,
+      source_mask: ctx.maskB64,
       source_processing: "inpainting",
       params: {
         ...baseParams(values),
@@ -312,6 +327,7 @@ export const STAGES: StageDef[] = [
     buildPayload: (values, ctx) => ({
       prompt: withNegative(composePrompt(ctx, "", str(values.notes)), STONE_NEGATIVE),
       source_image: ctx.inputImageB64,
+      source_mask: ctx.maskB64,
       source_processing: "inpainting",
       params: {
         ...baseParams(values),
@@ -336,6 +352,7 @@ export const STAGES: StageDef[] = [
     buildPayload: (values, ctx) => ({
       prompt: withNegative(composePrompt(ctx, str(values.notes)), STONE_NEGATIVE),
       source_image: ctx.inputImageB64,
+      source_mask: ctx.maskB64,
       source_processing: "inpainting",
       params: {
         ...baseParams(values),

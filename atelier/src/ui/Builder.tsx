@@ -50,22 +50,18 @@ export function Builder() {
             <div key={category} className="catalog-group">
               <h3 className="section-title">{CATEGORY_LABELS[category]}</h3>
               <div className="stage-cards">
-                {stages.map((stage) => {
-                  const gated = Boolean(stage.needsMask);
-                  return (
-                    <button
-                      key={stage.id}
-                      className={`stage-card ${gated ? "gated" : ""}`}
-                      onClick={() => !gated && addStage(stage.id)}
-                      disabled={gated}
-                      title={gated ? "Needs the mask painter — coming in the next update" : stage.blurb}
-                    >
-                      <span className="stage-card-name">{stage.name}</span>
-                      <span className="stage-card-blurb">{stage.blurb}</span>
-                      {gated && <span className="stage-card-flag">Coming soon</span>}
-                    </button>
-                  );
-                })}
+                {stages.map((stage) => (
+                  <button
+                    key={stage.id}
+                    className="stage-card"
+                    onClick={() => addStage(stage.id)}
+                    title={stage.blurb}
+                  >
+                    <span className="stage-card-name">{stage.name}</span>
+                    <span className="stage-card-blurb">{stage.blurb}</span>
+                    {stage.needsMask && <span className="stage-card-flag">You'll paint an area</span>}
+                  </button>
+                ))}
               </div>
             </div>
           ))}
@@ -115,9 +111,7 @@ export function Builder() {
             <p className="tray-hint">
               {getStage(session.pipeline[0].stageId)?.input === "image" && !hasSource
                 ? "Your first stage needs an image. Start a session from an image, or begin with a fresh generation."
-                : session.pipeline.some((p) => getStage(p.stageId)?.needsMask)
-                  ? "Remove the repair stage for now — mask painting arrives in the next update."
-                  : ""}
+                : ""}
             </p>
           )}
 

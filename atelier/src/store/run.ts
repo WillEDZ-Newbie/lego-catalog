@@ -66,6 +66,8 @@ interface RunState {
   currentValues: Record<string, ParamValue>;
   attempts: Attempt[];
   pending: Attempt | null; // output awaiting judgement
+  /** Painted inpainting mask for the current step (bare base64). */
+  maskB64: string | null;
 
   models: HordeActiveModel[];
   modelsLoaded: boolean;
@@ -86,6 +88,12 @@ interface RunState {
 
   // runner
   setValue: (key: string, value: ParamValue) => void;
+  setMask: (maskB64: string | null) => void;
+  recallSeed: (seed: string) => void;
+  /** Ghost Strip: render a small preview of the current stage at a given strength. */
+  previewStrength: (strength: number, signal: AbortSignal) => Promise<Blob>;
+  /** Resolve the current step's input image (previous frame or source) as base64. */
+  resolveInput: () => Promise<string | undefined>;
   carve: () => Promise<void>;
   stopCarve: () => void;
   accept: () => Promise<void>;
@@ -131,6 +139,7 @@ export const useRun = create<RunState>((set, get) => ({
   currentValues: {},
   attempts: [],
   pending: null,
+  maskB64: null,
   models: [],
   modelsLoaded: false,
 
@@ -202,8 +211,6 @@ export const useRun = create<RunState>((set, get) => ({
     if (!first) return false;
     // First stage must either generate from scratch or have a source image.
     if (first.input === "image" && !s.sourceImageB64) return false;
-    // Mask-only stages can't run yet (no Mask Painter until Milestone 3).
-    if (s.pipeline.some((p) => getStage(p.stageId)?.needsMask)) return false;
     return true;
   },
 
@@ -218,11 +225,67 @@ export const useRun = create<RunState>((set, get) => ({
       currentValues: { ...s.pipeline[0].values, ...defaultsFor(def.params) },
       attempts: [],
       pending: null,
+      maskB64: null,
       error: null,
     });
   },
 
   setValue: (key, value) => set((st) => ({ currentValues: { ...st.currentValues, [key]: value } })),
+
+  setMask: (maskB64) => set({ maskB64 }),
+
+  recallSeed: (seed) => {
+    const s = get().session;
+    if (!s) return;
+    set({
+      session: { ...s, lockedSeed: seed },
+      currentValues: { ...get().currentValues, keepArtist: true },
+    });
+  },
+
+  resolveInput: async () => {
+    const s = get().session;
+    if (!s) return undefined;
+    const def = currentStageDef(s);
+    if (s.pointer > 0) {
+      const prev = s.frames[s.pointer - 1];
+      const blob = prev ? await getBlob(prev.blobKey) : undefined;
+      return blob ? blobToBase64(blob) : undefined;
+    }
+    return def?.input === "image" ? s.sourceImageB64 : undefined;
+  },
+
+  previewStrength: async (strength, signal) => {
+    const s = get().session;
+    if (!s) throw new Error("No session");
+    const def = currentStageDef(s);
+    if (!def) throw new Error("No stage");
+    const inputImageB64 = await get().resolveInput();
+    const base = def.buildPayload(get().currentValues, {
+      inputImageB64,
+      maskB64: get().maskB64 ?? undefined,
+      houseStyle: DEFAULT_HOUSE_STYLE,
+      model: s.model,
+      lockedSeed: s.lockedSeed,
+    });
+    // Small, cheap preview: fixed strength, low steps/size, single image, no post.
+    const preview = {
+      ...base,
+      params: {
+        ...base.params,
+        denoising_strength: strength,
+        steps: 8,
+        n: 1,
+        width: 384,
+        height: 384,
+        post_processing: undefined,
+        seed: s.lockedSeed, // stable across the strip so only strength varies
+      },
+    };
+    const { blobs } = await horde.generate(preview, { signal });
+    if (!blobs[0]) throw new Error("No preview produced");
+    return blobs[0];
+  },
 
   carve: async () => {
     const s = get().session;
@@ -230,18 +293,16 @@ export const useRun = create<RunState>((set, get) => ({
     const def = currentStageDef(s);
     if (!def) return;
 
-    // Resolve the input image: previous accepted frame, or the source image.
-    let inputImageB64: string | undefined;
-    if (s.pointer > 0) {
-      const prev = s.frames[s.pointer - 1];
-      const blob = prev ? await getBlob(prev.blobKey) : undefined;
-      if (blob) inputImageB64 = await blobToBase64(blob);
-    } else if (def.input === "image") {
-      inputImageB64 = s.sourceImageB64;
+    // Mask-based stages need a painted mask before they can run.
+    if (def.needsMask && !get().maskB64) {
+      set({ phase: "error", error: "Paint the area to work on first." });
+      return;
     }
 
+    const inputImageB64 = await get().resolveInput();
     const payload = def.buildPayload(get().currentValues, {
       inputImageB64,
+      maskB64: get().maskB64 ?? undefined,
       houseStyle: DEFAULT_HOUSE_STYLE,
       model: s.model,
       lockedSeed: s.lockedSeed,
@@ -303,7 +364,7 @@ export const useRun = create<RunState>((set, get) => ({
     });
 
     if (nextPointer >= s.pipeline.length) {
-      set({ phase: "done", pending: null, attempts: [] });
+      set({ phase: "done", pending: null, attempts: [], maskB64: null });
       return;
     }
     const nextDef = getStage(s.pipeline[nextPointer].stageId)!;
@@ -311,6 +372,7 @@ export const useRun = create<RunState>((set, get) => ({
       phase: "panel",
       pending: null,
       attempts: [],
+      maskB64: null, // mask is per-step
       currentValues: { ...s.pipeline[nextPointer].values, ...defaultsFor(nextDef.params) },
     });
   },

@@ -8,7 +8,16 @@
  */
 export type ParamValue = string | number | boolean;
 
-export type ControlKind = "slider" | "toggle" | "text" | "textarea" | "select";
+export type ControlKind =
+  | "slider"
+  | "toggle"
+  | "text"
+  | "textarea"
+  | "select"
+  // hero controls (Milestone 3) — richer renderers for specific params:
+  | "ghost-strip" // denoise strength, with live preview thumbnails
+  | "artist-lock" // seed lock + recall rail
+  | "see-it"; // ControlNet type, as visual cards
 
 export interface SelectOption {
   value: string;

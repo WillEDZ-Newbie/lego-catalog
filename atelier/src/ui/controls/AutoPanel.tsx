@@ -6,15 +6,20 @@
  */
 import { useState } from "react";
 import type { ParamDef, ParamValue } from "@/stages";
+import type { PanelContext } from "./panelContext";
+import { GhostStrip } from "../hero/GhostStrip";
+import { ArtistLock } from "../hero/ArtistLock";
+import { SeeItPicker } from "../hero/SeeItPicker";
 
 interface Props {
   params: ParamDef[];
   values: Record<string, ParamValue>;
   onChange: (key: string, value: ParamValue) => void;
   disabled?: boolean;
+  ctx?: PanelContext;
 }
 
-export function AutoPanel({ params, values, onChange, disabled }: Props) {
+export function AutoPanel({ params, values, onChange, disabled, ctx }: Props) {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const primary = params.filter((p) => !p.advanced);
   const advanced = params.filter((p) => p.advanced);
@@ -22,7 +27,7 @@ export function AutoPanel({ params, values, onChange, disabled }: Props) {
   return (
     <div className="panel">
       {primary.map((p) => (
-        <Control key={p.key} def={p} value={values[p.key]} onChange={onChange} disabled={disabled} />
+        <Control key={p.key} def={p} value={values[p.key]} onChange={onChange} disabled={disabled} ctx={ctx} />
       ))}
 
       {advanced.length > 0 && (
@@ -38,7 +43,7 @@ export function AutoPanel({ params, values, onChange, disabled }: Props) {
           {showAdvanced && (
             <div className="advanced-body">
               {advanced.map((p) => (
-                <Control key={p.key} def={p} value={values[p.key]} onChange={onChange} disabled={disabled} />
+                <Control key={p.key} def={p} value={values[p.key]} onChange={onChange} disabled={disabled} ctx={ctx} />
               ))}
             </div>
           )}
@@ -53,23 +58,60 @@ function Control({
   value,
   onChange,
   disabled,
+  ctx,
 }: {
   def: ParamDef;
   value: ParamValue;
   onChange: (key: string, value: ParamValue) => void;
   disabled?: boolean;
+  ctx?: PanelContext;
 }) {
   const id = `ctl-${def.key}`;
+
+  // Hero controls (Milestone 3) — need PanelContext; fall back to basics without it.
+  if (def.control === "ghost-strip" && ctx) {
+    return (
+      <div className="control">
+        <label className="control-label">
+          {def.label}
+          {def.help && <span className="control-help">{def.help}</span>}
+        </label>
+        <GhostStrip def={def} value={Number(value)} onChange={(v) => onChange(def.key, v)} ctx={ctx} />
+      </div>
+    );
+  }
+  if (def.control === "artist-lock" && ctx) {
+    return (
+      <div className="control">
+        <ArtistLock def={def} value={value === true} onChange={(v) => onChange(def.key, v)} ctx={ctx} />
+      </div>
+    );
+  }
+  if (def.control === "see-it" && ctx) {
+    return (
+      <div className="control">
+        <label className="control-label">{def.label}</label>
+        <SeeItPicker def={def} value={String(value ?? "")} onChange={(v) => onChange(def.key, v)} ctx={ctx} />
+      </div>
+    );
+  }
+
+  const kind =
+    def.control === "ghost-strip" ? "slider"
+    : def.control === "artist-lock" ? "toggle"
+    : def.control === "see-it" ? "select"
+    : def.control;
+
   return (
     <div className="control">
-      {def.control !== "toggle" && (
+      {kind !== "toggle" && (
         <label className="control-label" htmlFor={id}>
           {def.label}
           {def.help && <span className="control-help">{def.help}</span>}
         </label>
       )}
 
-      {def.control === "slider" && (
+      {kind === "slider" && (
         <div className="slider-wrap">
           <input
             id={id}
@@ -89,7 +131,7 @@ function Control({
         </div>
       )}
 
-      {def.control === "toggle" && (
+      {kind === "toggle" && (
         <label className="toggle" htmlFor={id}>
           <input
             id={id}
@@ -106,7 +148,7 @@ function Control({
         </label>
       )}
 
-      {def.control === "text" && (
+      {kind === "text" && (
         <input
           id={id}
           type="text"
@@ -117,7 +159,7 @@ function Control({
         />
       )}
 
-      {def.control === "textarea" && (
+      {kind === "textarea" && (
         <textarea
           id={id}
           className="text-input textarea"
@@ -127,7 +169,7 @@ function Control({
         />
       )}
 
-      {def.control === "select" && (
+      {kind === "select" && (
         <select
           id={id}
           className="select-input"
