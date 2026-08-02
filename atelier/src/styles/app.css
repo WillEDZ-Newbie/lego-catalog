@@ -351,3 +351,46 @@
 .frieze-frame.lit { border-color: var(--bronze);
   box-shadow: inset 0 2px 0 rgba(237,232,223,0.14), 0 0 0 1px var(--bronze), var(--bevel); }
 .frieze-frame.picked { border-color: var(--marble); }
+
+/* --- Milestone 5: projects, presets, settings, export --------------------- */
+
+/* Home additions */
+.home-head { position: relative; }
+.home-settings { position: absolute; top: 0; right: 0; }
+.presets { margin-bottom: var(--space-6); }
+.preset-row { display: flex; gap: var(--space-3); overflow-x: auto; padding-bottom: var(--space-2); }
+.preset-card { flex: 0 0 auto; width: 220px; text-align: left; display: flex; flex-direction: column;
+  gap: 4px; padding: var(--space-4); background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--radius); color: var(--marble); }
+.preset-card:hover:not(:disabled) { border-color: var(--bronze); }
+.preset-name { font-weight: 600; }
+.preset-blurb { color: var(--limestone); font-size: 13px; }
+.preset-from { color: var(--bronze-bright); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+.home-foot { display: flex; gap: var(--space-3); align-items: center; justify-content: center; flex-wrap: wrap; }
+.foot-note { color: var(--limestone); font-size: 13px; }
+
+/* Settings modal */
+.modal-scrim { position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,0.6);
+  display: grid; place-items: start center; overflow-y: auto; padding: var(--space-5) var(--space-4); }
+.modal { width: 100%; max-width: 560px; background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--radius); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-5); }
+.modal-head { display: flex; align-items: center; justify-content: space-between; }
+.modal-head .inscription { font-size: 22px; }
+.modal-section { display: flex; flex-direction: column; gap: var(--space-3); }
+.modal-section .control { gap: var(--space-1); }
+.house-preview { font-style: italic; }
+
+/* Source row change/add button */
+.source-btn { margin-left: auto; }
+
+/* House style base layer + prompt peek in the stage panel */
+.house-layer { display: flex; flex-direction: column; gap: var(--space-2);
+  padding: var(--space-3); background: var(--ground-sunken); border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm); }
+.house-locked { color: var(--limestone); font-size: 12px; font-style: italic; }
+.prompt-peek summary { color: var(--bronze-bright); font-size: 13px; cursor: pointer; }
+.prompt-text { color: var(--marble-dim); font-size: 13px; margin: var(--space-2) 0 0;
+  font-family: var(--font-mono); word-break: break-word; }
+
+/* Done screen image */
+.done-image { max-width: 320px; width: 100%; border-radius: var(--radius-sm); box-shadow: var(--bevel); }

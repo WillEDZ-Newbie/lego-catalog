@@ -11,14 +11,16 @@ import type { GenerateProgress, HordeActiveModel } from "@/horde";
 import { HordeUserError } from "@/horde";
 import { horde } from "@/horde/instance";
 import {
-  DEFAULT_HOUSE_STYLE,
   type ParamValue,
+  type Preset,
   type StageDef,
   defaultsFor,
   getStage,
 } from "@/stages";
+import { useProject } from "@/store/project";
 import { blobToBase64, encodeForHorde } from "@/lib/image";
 import { getBlob, putBlob, saveSession } from "@/lib/db";
+import type { Recipe } from "@/lib/export";
 
 export type View = "home" | "builder" | "runner";
 export type RunPhase = "panel" | "queued" | "judging" | "done" | "error";
@@ -76,9 +78,19 @@ interface RunState {
   goHome: () => void;
   newFromPrompt: () => void;
   newFromImage: (file: Blob) => Promise<void>;
+  /** Start a session pre-filled from a preset (does not require an image yet). */
+  startPreset: (preset: Preset) => void;
+  /** Start a session from an imported recipe. */
+  startRecipe: (recipe: Recipe) => void;
 
   // builder
   addStage: (stageId: string) => void;
+  /** Set or replace the source image on the current session. */
+  setSourceImage: (file: Blob) => Promise<void>;
+  /** Save the current pipeline as a named preset (in the project). */
+  saveAsPreset: (name: string) => void;
+  /** Serialise the current session to a Recipe. */
+  toRecipe: () => Recipe | null;
   removeStage: (instanceId: string) => void;
   moveStage: (instanceId: string, dir: -1 | 1) => void;
   setModel: (name: string | undefined) => void;
@@ -125,10 +137,26 @@ function freshSession(): Session {
     createdAt: Date.now(),
     title: "Untitled session",
     pipeline: [],
+    model: useProject.getState().defaultModel,
     lockedSeed: String(Math.floor(1_000_000 + (performance.now() % 1) * 8_000_000)),
     frames: [],
     pointer: 0,
   };
+}
+
+/** Instantiate preset stages into pipeline instances with merged defaults. */
+function stagesFromPreset(preset: Preset): PipelineStage[] {
+  return preset.stages
+    .map((ps) => {
+      const def = getStage(ps.stageId);
+      if (!def) return null;
+      return {
+        instanceId: makeId("stg"),
+        stageId: ps.stageId,
+        values: { ...defaultsFor(def.params), ...(ps.values ?? {}) },
+      } satisfies PipelineStage;
+    })
+    .filter((x): x is PipelineStage => x !== null);
 }
 
 export const useRun = create<RunState>((set, get) => ({
@@ -165,12 +193,69 @@ export const useRun = create<RunState>((set, get) => ({
     void get().loadModels();
   },
 
+  startPreset: (preset) => {
+    const s = freshSession();
+    s.pipeline = stagesFromPreset(preset);
+    s.title = preset.name;
+    set({ view: "builder", session: s, error: null });
+    void get().loadModels();
+  },
+
+  startRecipe: (recipe) => {
+    const s = freshSession();
+    s.pipeline = stagesFromPreset({
+      id: "recipe",
+      name: "Recipe",
+      blurb: "",
+      from: recipe.from,
+      stages: recipe.stages,
+    });
+    if (recipe.model) s.model = recipe.model;
+    s.title = "From a recipe";
+    if (recipe.houseStyle) useProject.getState().setHouseStyle(recipe.houseStyle);
+    set({ view: "builder", session: s, error: null });
+    void get().loadModels();
+  },
+
   addStage: (stageId) => {
     const s = get().session;
     const def = getStage(stageId);
     if (!s || !def) return;
     const inst: PipelineStage = { instanceId: makeId("stg"), stageId, values: defaultsFor(def.params) };
     set({ session: { ...s, pipeline: [...s.pipeline, inst] } });
+  },
+
+  setSourceImage: async (file) => {
+    const s = get().session;
+    if (!s) return;
+    const enc = await encodeForHorde(file);
+    await putBlob(`${s.id}/source`, enc.blob);
+    set({ session: { ...s, sourceImageB64: enc.b64 } });
+  },
+
+  saveAsPreset: (name) => {
+    const s = get().session;
+    if (!s || s.pipeline.length === 0) return;
+    useProject.getState().addPreset({
+      id: makeId("preset"),
+      name: name.trim() || "My preset",
+      blurb: "Saved pipeline.",
+      from: s.sourceImageB64 ? "image" : "prompt",
+      stages: s.pipeline.map((p) => ({ stageId: p.stageId, values: p.values })),
+    });
+  },
+
+  toRecipe: () => {
+    const s = get().session;
+    if (!s) return null;
+    return {
+      app: "atelier",
+      version: 1,
+      from: s.sourceImageB64 ? "image" : "prompt",
+      model: s.model,
+      houseStyle: useProject.getState().houseStyle,
+      stages: s.pipeline.map((p) => ({ stageId: p.stageId, values: p.values })),
+    };
   },
 
   removeStage: (instanceId) => {
@@ -266,7 +351,7 @@ export const useRun = create<RunState>((set, get) => ({
     const base = def.buildPayload(get().currentValues, {
       inputImageB64,
       maskB64: get().maskB64 ?? undefined,
-      houseStyle: DEFAULT_HOUSE_STYLE,
+      houseStyle: useProject.getState().houseStyle,
       model: s.model,
       lockedSeed: s.lockedSeed,
     });
@@ -305,7 +390,7 @@ export const useRun = create<RunState>((set, get) => ({
     const payload = def.buildPayload(get().currentValues, {
       inputImageB64,
       maskB64: get().maskB64 ?? undefined,
-      houseStyle: DEFAULT_HOUSE_STYLE,
+      houseStyle: useProject.getState().houseStyle,
       model: s.model,
       lockedSeed: s.lockedSeed,
     });

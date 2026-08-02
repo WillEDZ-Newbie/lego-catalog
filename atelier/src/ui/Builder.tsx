@@ -2,6 +2,7 @@
  * Builder: tick a list of stages (grouped by category) into an ordered
  * pipeline tray. Reorder / remove within the tray, pick a model, then Start.
  */
+import { useRef } from "react";
 import { useRun } from "@/store/run";
 import {
   CATEGORY_LABELS,
@@ -18,14 +19,31 @@ export function Builder() {
     removeStage,
     moveStage,
     setModel,
+    setSourceImage,
+    saveAsPreset,
     canStart,
     beginRun,
     goHome,
   } = useRun();
+  const fileRef = useRef<HTMLInputElement>(null);
 
   if (!session) return null;
   const groups = stagesByCategory();
   const hasSource = Boolean(session.sourceImageB64);
+
+  const onImage = async (file: File | undefined) => {
+    if (!file) return;
+    try {
+      await setSourceImage(file);
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "Couldn't open that image.");
+    }
+  };
+
+  const onSavePreset = () => {
+    const name = window.prompt("Name this preset");
+    if (name) saveAsPreset(name);
+  };
 
   return (
     <div className="builder">
@@ -39,12 +57,20 @@ export function Builder() {
 
       <div className="builder-grid">
         <section className="stage-catalog">
-          {hasSource && (
-            <div className="source-preview">
-              <BlobImage blobKey={`${session.id}/source`} alt="Your source image" className="source-thumb" />
-              <span>Working from your image.</span>
-            </div>
-          )}
+          <div className="source-preview">
+            {hasSource ? (
+              <>
+                <BlobImage blobKey={`${session.id}/source`} alt="Your source image" className="source-thumb" />
+                <span>Working from your image.</span>
+              </>
+            ) : (
+              <span>No source image — begin with a fresh generation, or add one.</span>
+            )}
+            <button className="ghost-btn source-btn" onClick={() => fileRef.current?.click()}>
+              {hasSource ? "Change image" : "Add an image"}
+            </button>
+            <input ref={fileRef} type="file" accept="image/*" hidden onChange={(e) => onImage(e.target.files?.[0])} />
+          </div>
 
           {groups.map(({ category, stages }) => (
             <div key={category} className="catalog-group">
@@ -118,6 +144,9 @@ export function Builder() {
           <button className="primary-btn start-btn" onClick={beginRun} disabled={!canStart()}>
             Start carving →
           </button>
+          {session.pipeline.length > 0 && (
+            <button className="ghost-btn" onClick={onSavePreset}>Save as preset</button>
+          )}
         </aside>
       </div>
     </div>

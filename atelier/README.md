@@ -7,15 +7,41 @@ product brief — it is the source of truth for scope and design.
 
 100% static SPA · no backend · no paid APIs · free forever.
 
-## Status — Milestone 4
+## Status — Milestone 5 (v1 build order complete)
 
 Build order (from the brief), and where we are:
 
 1. **Horde client + types + proof-of-loop test bench** — ✅ done.
 2. **Stage registry + auto-generated panels + Builder + Runner + IndexedDB history** — ✅ done.
 3. **Hero controls: Mask Painter, Ghost Strip, Artist Lock, See-It Picker** — ✅ done.
-4. **Judgement screen polish: compare gestures, filmstrip/frieze, fork** — ✅ this milestone.
-5. Projects, presets, house style, export/share, PWA install, design pass.
+4. **Judgement screen polish: compare gestures, filmstrip/frieze, fork** — ✅ done.
+5. **Projects, presets, house style, export/share, PWA install, design pass** — ✅ this milestone.
+
+What Milestone 5 ships:
+
+- **Project store** (`src/store/project.ts`, localStorage) — House Style,
+  default model, and saved presets.
+- **Settings** (`src/ui/Settings.tsx`) — the Horde key (entered once) and a
+  **House Style editor** (material / finish / lighting / camera / era), composed
+  into every prompt as the locked base layer.
+- **Presets** (`src/stages/presets.ts`) — "Fix the eyes", "Statue treatment",
+  and "From a description" built-ins, plus **Save as preset** from any pipeline;
+  presets are just saved pipelines.
+- **Export / share** (`src/lib/export.ts`) — **Save image** (iPad share sheet
+  via `navigator.share`, download on desktop) and **Save recipe** (re-importable
+  pipeline JSON); "Open a recipe" on Home.
+- **PWA install** (`src/lib/pwa.ts`) — Install button on Chromium; an
+  Add-to-Home-Screen hint on iOS.
+- **Design pass** — House Style shown as a greyed locked layer with a "peek at
+  the final prompt" disclosure; consistent stonemason styling throughout.
+
+The v1 definition of done is met end to end (paste a key once; drop in a statue;
+run "Fix the eyes"; run "Statue treatment" approving each step; retry via the
+Ghost Strip; undo; fork; export image + recipe) — all client-side and free.
+
+> The whole flow is written and typechecked but has **not been exercised against
+> the live Horde or on a real iPad from CI**. First real-device testing is the
+> next step; expect small tuning (mask-painter pointer feel, model defaults).
 
 What Milestone 4 ships:
 

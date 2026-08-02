@@ -8,7 +8,10 @@
  */
 import { useEffect, useState } from "react";
 import { useRun } from "@/store/run";
-import { getStage } from "@/stages";
+import { useProject } from "@/store/project";
+import { composeHouseStyle, getStage } from "@/stages";
+import { getBlob } from "@/lib/db";
+import { saveImage, saveRecipe } from "@/lib/export";
 import { AutoPanel } from "./controls/AutoPanel";
 import type { PanelContext } from "./controls/panelContext";
 import { MaskPainter } from "./hero/MaskPainter";
@@ -65,6 +68,7 @@ function StagePanel() {
     maskB64,
     setMask,
   } = useRun();
+  const houseStyle = useProject((s) => s.houseStyle);
   const [inputImageB64, setInputImageB64] = useState<string | undefined>();
   const [painting, setPainting] = useState(false);
 
@@ -90,6 +94,12 @@ function StagePanel() {
   };
 
   const maskReady = !def.needsMask || Boolean(maskB64);
+  const hasPrompt = def.params.some((p) => p.control === "text" || p.control === "textarea");
+  const finalPrompt = def.buildPayload(currentValues, {
+    houseStyle,
+    lockedSeed: session.lockedSeed,
+    model: session.model,
+  }).prompt;
 
   return (
     <div className="stage-panel">
@@ -111,6 +121,16 @@ function StagePanel() {
       )}
 
       <AutoPanel params={def.params} values={currentValues} onChange={setValue} ctx={ctx} />
+
+      {hasPrompt && (
+        <div className="house-layer">
+          <span className="house-locked">Locked style: {composeHouseStyle(houseStyle)}</span>
+          <details className="prompt-peek">
+            <summary>Peek at the final prompt</summary>
+            <p className="prompt-text">{finalPrompt}</p>
+          </details>
+        </div>
+      )}
 
       <button className="primary-btn carve-btn" onClick={() => void carve()} disabled={!maskReady}>
         Carve
@@ -197,13 +217,28 @@ function ErrorCard() {
 }
 
 function DoneCard() {
-  const { newFromPrompt, goHome } = useRun();
+  const { session, newFromPrompt, goHome, toRecipe } = useRun();
+  const lastFrame = session?.frames[session.frames.length - 1];
+
+  const onSaveImage = async () => {
+    if (!lastFrame) return;
+    const blob = await getBlob(lastFrame.blobKey);
+    if (blob) await saveImage(blob, "atelier-statue.webp");
+  };
+  const onSaveRecipe = () => {
+    const recipe = toRecipe();
+    if (recipe) saveRecipe(recipe);
+  };
+
   return (
     <div className="done-card">
       <h2 className="inscription">Carved</h2>
-      <p>Every accepted step is in the filmstrip below.</p>
+      {lastFrame && <BlobImage blobKey={lastFrame.blobKey} alt="Final result" className="done-image" />}
+      <p>Save the image, or save the recipe to run this treatment again later.</p>
       <div className="judge-actions">
-        <button className="primary-btn" onClick={goHome}>Home</button>
+        <button className="primary-btn" onClick={() => void onSaveImage()} disabled={!lastFrame}>Save image</button>
+        <button className="ghost-btn" onClick={onSaveRecipe}>Save recipe</button>
+        <button className="ghost-btn" onClick={goHome}>Home</button>
         <button className="ghost-btn" onClick={newFromPrompt}>New session</button>
       </div>
     </div>
