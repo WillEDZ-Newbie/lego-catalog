@@ -1,0 +1,154 @@
+/**
+ * Builder: tick a list of stages (grouped by category) into an ordered
+ * pipeline tray. Reorder / remove within the tray, pick a model, then Start.
+ */
+import { useRef } from "react";
+import { useRun } from "@/store/run";
+import {
+  CATEGORY_LABELS,
+  getStage,
+  stagesByCategory,
+} from "@/stages";
+import { BlobImage } from "./BlobImage";
+
+export function Builder() {
+  const {
+    session,
+    models,
+    addStage,
+    removeStage,
+    moveStage,
+    setModel,
+    setSourceImage,
+    saveAsPreset,
+    canStart,
+    beginRun,
+    goHome,
+  } = useRun();
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  if (!session) return null;
+  const groups = stagesByCategory();
+  const hasSource = Boolean(session.sourceImageB64);
+
+  const onImage = async (file: File | undefined) => {
+    if (!file) return;
+    try {
+      await setSourceImage(file);
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "Couldn't open that image.");
+    }
+  };
+
+  const onSavePreset = () => {
+    const name = window.prompt("Name this preset");
+    if (name) saveAsPreset(name);
+  };
+
+  return (
+    <div className="builder">
+      <header className="bar">
+        <button className="ghost-btn" onClick={goHome}>
+          ← Home
+        </button>
+        <span className="inscription bar-title">Build a pipeline</span>
+        <span />
+      </header>
+
+      <div className="builder-grid">
+        <section className="stage-catalog">
+          <div className="source-preview">
+            {hasSource ? (
+              <>
+                <BlobImage blobKey={`${session.id}/source`} alt="Your source image" className="source-thumb" />
+                <span>Working from your image.</span>
+              </>
+            ) : (
+              <span>No source image — begin with a fresh generation, or add one.</span>
+            )}
+            <button className="ghost-btn source-btn" onClick={() => fileRef.current?.click()}>
+              {hasSource ? "Change image" : "Add an image"}
+            </button>
+            <input ref={fileRef} type="file" accept="image/*" hidden onChange={(e) => onImage(e.target.files?.[0])} />
+          </div>
+
+          {groups.map(({ category, stages }) => (
+            <div key={category} className="catalog-group">
+              <h3 className="section-title">{CATEGORY_LABELS[category]}</h3>
+              <div className="stage-cards">
+                {stages.map((stage) => (
+                  <button
+                    key={stage.id}
+                    className="stage-card"
+                    onClick={() => addStage(stage.id)}
+                    title={stage.blurb}
+                  >
+                    <span className="stage-card-name">{stage.name}</span>
+                    <span className="stage-card-blurb">{stage.blurb}</span>
+                    {stage.needsMask && <span className="stage-card-flag">You'll paint an area</span>}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </section>
+
+        <aside className="pipeline-tray">
+          <h3 className="section-title">Your pipeline</h3>
+          {session.pipeline.length === 0 ? (
+            <p className="tray-empty">Tap stages on the left to add them here, in order.</p>
+          ) : (
+            <ol className="tray-list">
+              {session.pipeline.map((inst, i) => {
+                const def = getStage(inst.stageId);
+                return (
+                  <li key={inst.instanceId} className="tray-item">
+                    <span className="tray-index tnum">{i + 1}</span>
+                    <span className="tray-name">{def?.name ?? inst.stageId}</span>
+                    <span className="tray-actions">
+                      <button className="mini-btn" onClick={() => moveStage(inst.instanceId, -1)} disabled={i === 0} aria-label="Move up">↑</button>
+                      <button className="mini-btn" onClick={() => moveStage(inst.instanceId, 1)} disabled={i === session.pipeline.length - 1} aria-label="Move down">↓</button>
+                      <button className="mini-btn danger" onClick={() => removeStage(inst.instanceId)} aria-label="Remove">✕</button>
+                    </span>
+                  </li>
+                );
+              })}
+            </ol>
+          )}
+
+          <label className="control-label" htmlFor="model-pick">
+            Model
+          </label>
+          <select
+            id="model-pick"
+            className="select-input"
+            value={session.model ?? ""}
+            onChange={(e) => setModel(e.target.value || undefined)}
+          >
+            <option value="">Any model (let the workshop choose)</option>
+            {models.map((m) => (
+              <option key={m.name} value={m.name}>
+                {m.name} · {m.count} workers
+              </option>
+            ))}
+          </select>
+
+          {!canStart() && session.pipeline.length > 0 && (
+            <p className="tray-hint">
+              {getStage(session.pipeline[0].stageId)?.input === "image" && !hasSource
+                ? "Your first stage needs an image. Start a session from an image, or begin with a fresh generation."
+                : ""}
+            </p>
+          )}
+
+          <button className="primary-btn start-btn" onClick={beginRun} disabled={!canStart()}>
+            Start carving →
+          </button>
+          {session.pipeline.length > 0 && (
+            <button className="ghost-btn" onClick={onSavePreset}>Save as preset</button>
+          )}
+        </aside>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,67 @@
+/*
+  ATELIER design tokens — "stonemason's studio".
+  This file is design law (see CLAUDE.md "Visual design brief").
+  Dark only in v1. No gradients.
+*/
+:root {
+  /* --- Palette --------------------------------------------------------- */
+  --ground: #1c1a18; /* near-black warm charcoal ground */
+  --ground-raised: #232120; /* cards / raised surfaces */
+  --ground-sunken: #161413; /* wells, insets */
+  --marble: #ede8df; /* Pentelic marble off-white — primary text/surface */
+  --marble-dim: #cfc9bd; /* softened marble for large text blocks */
+  --limestone: #8c8578; /* limestone grey — secondary text, hairlines */
+  --limestone-dim: #5f5a51; /* disabled / tertiary */
+
+  --bronze: #6e7f5c; /* oxidised-bronze green — the SOLE interactive accent */
+  --bronze-bright: #83936f; /* hover/active lift of the accent */
+  --bronze-sunk: #566249; /* pressed */
+
+  --terracotta: #b0603f; /* dry terracotta — destructive/undo ONLY */
+  --terracotta-bright: #c4744f;
+
+  /* --- Semantic aliases ------------------------------------------------ */
+  --bg: var(--ground);
+  --surface: var(--ground-raised);
+  --text: var(--marble);
+  --text-muted: var(--limestone);
+  --accent: var(--bronze);
+  --accent-hover: var(--bronze-bright);
+  --danger: var(--terracotta);
+  --hairline: #33302d;
+
+  --focus-ring: #a9b892; /* lightened bronze, for visible keyboard focus */
+
+  /* --- Type ------------------------------------------------------------ */
+  --font-display: "Cinzel", "Trajan Pro", "Times New Roman", serif;
+  --font-body: "Source Sans 3", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", monospace;
+
+  --tracking-inscription: 0.14em; /* wide carved-inscription tracking */
+
+  /* --- Space & shape --------------------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --touch: 44px; /* minimum touch target */
+
+  /* subtle inset bevel used on frieze frames */
+  --bevel: inset 0 1px 0 rgba(237, 232, 223, 0.06),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+
+  /* --- Motion ---------------------------------------------------------- */
+  --ease-carve: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur-reveal: 420ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-reveal: 0ms;
+  }
+}

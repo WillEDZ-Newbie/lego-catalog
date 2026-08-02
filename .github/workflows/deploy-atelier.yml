@@ -1,0 +1,58 @@
+# Auto-deploy ATELIER (the atelier/ SPA) to GitHub Pages on every push.
+# The artist just opens the resulting URL — no Terminal, ever.
+#
+# Publishes the built site to the `gh-pages` branch. ONE-TIME setup by the repo
+# owner: Settings → Pages → Build and deployment → Source: "Deploy from a
+# branch" → Branch: gh-pages / (root) → Save. After that this runs on every
+# push (from this branch and main) and the live URL updates automatically:
+#   https://willedz-newbie.github.io/lego-catalog/
+name: Deploy ATELIER to Pages
+
+on:
+  push:
+    branches:
+      - claude/magic-packet-dell-ngcxmk
+      - main
+    paths:
+      - "atelier/**"
+      - ".github/workflows/deploy-atelier.yml"
+  workflow_dispatch:
+
+# Needed so the action can push the built site to the gh-pages branch.
+permissions:
+  contents: write
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: atelier/package-lock.json
+
+      - name: Install
+        working-directory: atelier
+        run: npm ci
+
+      - name: Build
+        working-directory: atelier
+        # Project site lives at /lego-catalog/ — bake that in as the base path.
+        env:
+          BASE_PATH: /lego-catalog/
+        run: npm run build
+
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: atelier/dist
+          # peaceiris writes .nojekyll by default so Jekyll never mangles the
+          # Vite output (e.g. files under assets/).
