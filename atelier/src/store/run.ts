@@ -100,6 +100,8 @@ interface RunState {
   retry: () => void;
   undo: () => void;
   stopRun: () => void;
+  /** Fork a new session from an accepted frame, keeping everything up to it. */
+  forkFrom: (frameIndex: number) => void;
 }
 
 /** Non-reactive holder for the in-flight abort controller. */
@@ -403,5 +405,46 @@ export const useRun = create<RunState>((set, get) => ({
   stopRun: () => {
     inflight?.abort();
     set({ phase: "done", pending: null });
+  },
+
+  forkFrom: (frameIndex) => {
+    const s = get().session;
+    if (!s || frameIndex < 0 || frameIndex >= s.frames.length) return;
+    inflight?.abort();
+    // Keep frames 0..frameIndex; the new session references the SAME blobs
+    // (immutable in IndexedDB) — we never copy image data.
+    const kept = s.frames.slice(0, frameIndex + 1);
+    const newId = makeId("session");
+    const pointer = frameIndex + 1;
+    const beyond = pointer >= s.pipeline.length;
+    const nextDef = beyond ? undefined : getStage(s.pipeline[pointer].stageId);
+    const forked: Session = {
+      ...s,
+      id: newId,
+      createdAt: Date.now(),
+      title: `${s.title} (fork)`,
+      frames: kept,
+      pointer,
+    };
+    set({
+      session: forked,
+      view: "runner",
+      phase: beyond ? "done" : "panel",
+      pending: null,
+      attempts: [],
+      maskB64: null,
+      error: null,
+      currentValues: nextDef
+        ? { ...s.pipeline[pointer].values, ...defaultsFor(nextDef.params) }
+        : {},
+    });
+    void saveSession({
+      id: newId,
+      createdAt: forked.createdAt,
+      updatedAt: Date.now(),
+      title: forked.title,
+      thumbKey: kept[kept.length - 1]?.blobKey,
+      frameCount: kept.length,
+    });
   },
 }));

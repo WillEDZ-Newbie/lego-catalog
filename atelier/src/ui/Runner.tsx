@@ -12,6 +12,7 @@ import { getStage } from "@/stages";
 import { AutoPanel } from "./controls/AutoPanel";
 import type { PanelContext } from "./controls/panelContext";
 import { MaskPainter } from "./hero/MaskPainter";
+import { CompareView } from "./CompareView";
 import { BlobImage } from "./BlobImage";
 
 export function Runner() {
@@ -164,18 +165,7 @@ function Judgement() {
 
   return (
     <div className="judgement">
-      <div className="compare">
-        {inputKey && (
-          <figure className="compare-side">
-            <figcaption>Before</figcaption>
-            <BlobImage blobKey={inputKey} alt="Input" className="compare-img" />
-          </figure>
-        )}
-        <figure className="compare-side">
-          <figcaption>After</figcaption>
-          <BlobImage blobKey={pending.blobKey} alt="Result" className="compare-img reveal" />
-        </figure>
-      </div>
+      <CompareView beforeKey={inputKey} afterKey={pending.blobKey} />
 
       {attempts.length > 1 && (
         <div className="attempt-rail">
@@ -221,16 +211,44 @@ function DoneCard() {
 }
 
 function Filmstrip() {
-  const { session } = useRun();
+  const { session, forkFrom } = useRun();
+  const [selected, setSelected] = useState<number | null>(null);
   if (!session || session.frames.length === 0) return null;
+  const currentIndex = session.frames.length - 1;
+
   return (
-    <div className="filmstrip" role="list" aria-label="Accepted steps">
-      {session.frames.map((f) => (
-        <figure key={f.blobKey} className="frieze-frame" role="listitem">
-          <BlobImage blobKey={f.blobKey} alt={f.stageName} className="frame-img" />
-          <figcaption>{f.stageName}</figcaption>
-        </figure>
-      ))}
+    <div className="frieze-wrap">
+      {selected !== null && (
+        <div className="fork-bar">
+          <span>Fork a new session from step {selected + 1}?</span>
+          <button
+            className="primary-btn"
+            onClick={() => {
+              forkFrom(selected);
+              setSelected(null);
+            }}
+          >
+            Fork from here
+          </button>
+          <button className="ghost-btn" onClick={() => setSelected(null)}>
+            Cancel
+          </button>
+        </div>
+      )}
+      <div className="filmstrip" role="list" aria-label="Accepted steps">
+        {session.frames.map((f, i) => (
+          <button
+            key={f.blobKey}
+            className={`frieze-frame ${i === currentIndex ? "lit" : ""} ${i === selected ? "picked" : ""}`}
+            role="listitem"
+            onClick={() => setSelected((s) => (s === i ? null : i))}
+            title={`${f.stageName} — tap to fork from here`}
+          >
+            <BlobImage blobKey={f.blobKey} alt={f.stageName} className="frame-img" />
+            <span className="frame-cap">{f.stageName}</span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

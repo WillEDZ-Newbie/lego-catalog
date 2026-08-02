@@ -48,6 +48,8 @@ export function SeeItPicker({
           >
             <span className={`see-preview see-${opt.value}`}>
               {opt.value === "canny" && edge && <img src={edge} alt="" />}
+              {opt.value === "depth" && <span className="see-glyph" aria-hidden="true">◧</span>}
+              {opt.value === "openpose" && <span className="see-glyph" aria-hidden="true">⚉</span>}
             </span>
             <span className="see-caption">{opt.label}</span>
           </button>

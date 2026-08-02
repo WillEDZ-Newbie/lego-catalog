@@ -7,15 +7,27 @@ product brief — it is the source of truth for scope and design.
 
 100% static SPA · no backend · no paid APIs · free forever.
 
-## Status — Milestone 3
+## Status — Milestone 4
 
 Build order (from the brief), and where we are:
 
 1. **Horde client + types + proof-of-loop test bench** — ✅ done.
 2. **Stage registry + auto-generated panels + Builder + Runner + IndexedDB history** — ✅ done.
-3. **Hero controls: Mask Painter, Ghost Strip, Artist Lock, See-It Picker** — ✅ this milestone.
-4. Judgement screen polish: compare gestures, filmstrip/frieze, fork.
+3. **Hero controls: Mask Painter, Ghost Strip, Artist Lock, See-It Picker** — ✅ done.
+4. **Judgement screen polish: compare gestures, filmstrip/frieze, fork** — ✅ this milestone.
 5. Projects, presets, house style, export/share, PWA install, design pass.
+
+What Milestone 4 ships:
+
+- **CompareView** (`src/ui/CompareView.tsx`) — the judgement screen now has an
+  A/B wipe slider (drag the divider) plus press-and-hold-anywhere to reveal the
+  original; the output rises over the input like a plaster cast being lifted
+  (respects `prefers-reduced-motion`).
+- **Marble-frieze filmstrip** — accepted steps sit in a carved band with inset
+  bevels; the current frame is lit as if by raking workshop light.
+- **Fork from here** — tap any earlier frame → "Fork from here" starts a new
+  session keeping everything up to that frame, **referencing the same immutable
+  IndexedDB blobs** (no image data is copied); the run continues from that point.
 
 What Milestone 3 ships (`src/ui/hero/`):
 
