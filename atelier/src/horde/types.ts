@@ -4,24 +4,28 @@
  * SOURCE OF TRUTH: https://stablehorde.net/api/swagger.json
  * (human-readable at https://stablehorde.net/api).
  *
- * ⚠️ These types were hand-authored from working knowledge of the Horde v2 API
- * because the live spec was unreachable from the build environment at authoring
- * time. Every enum / literal below that the spec or a live endpoint can supply
- * is tagged `VERIFY:` — regenerate this file from swagger.json (or reconcile the
- * tagged values) the moment the API is reachable. Do NOT let these literals
- * silently drift from the spec.
+ * ── Provenance ────────────────────────────────────────────────────────────
+ * The live swagger endpoint is blocked from the build environment (org egress
+ * policy denies stablehorde.net / aihorde.net). However, the swagger is
+ * *generated* from the open-source AI-Horde server, which IS reachable via
+ * raw.githubusercontent.com. These types were therefore reconciled directly
+ * against the generator source at:
+ *   Haidra-Org/AI-Horde @ main
+ *     · horde/apis/models/stable_v2.py  (the flask-restx models → swagger)
+ *     · horde/consts.py                 (KNOWN_SAMPLERS / KNOWN_POST_PROCESSORS)
+ * pinned observation: HORDE_VERSION 5.1.3, HORDE_API_VERSION "2.5".
  *
- * The intended long-term flow (see CLAUDE.md "Before writing code"):
- *   1. fetch swagger.json
- *   2. generate types from it
- *   3. keep only the friendly wrappers (below) hand-written.
+ * Every enum and numeric bound below is CONFIRMED against that source. The one
+ * genuinely dynamic value — the *model list* — is not hard-coded here; it comes
+ * from GET /v2/status/models at runtime. Re-run the reconciliation (or point at
+ * a freshly fetched swagger.json) when bumping to a newer Horde release.
  */
 
 /* -------------------------------------------------------------------------- */
-/*  Enumerations — VERIFY every member against the live spec.                 */
+/*  Enumerations — CONFIRMED against AI-Horde stable_v2.py / consts.py.        */
 /* -------------------------------------------------------------------------- */
 
-/** VERIFY against `ModelGenerationInputStable.sampler_name` enum in swagger. */
+/** CONFIRMED: `KNOWN_SAMPLERS`. API default is `k_euler_a`. */
 export const SAMPLERS = [
   "k_lms",
   "k_heun",
@@ -33,27 +37,61 @@ export const SAMPLERS = [
   "k_dpm_adaptive",
   "k_dpmpp_2s_a",
   "k_dpmpp_2m",
-  "k_dpmpp_sde",
   "dpmsolver",
-  "lcm",
+  "k_dpmpp_sde",
   "DDIM",
+  "lcm",
 ] as const;
 export type Sampler = (typeof SAMPLERS)[number];
+export const DEFAULT_SAMPLER: Sampler = "k_euler_a";
 
-/** VERIFY: post-processor names. Upscale + face-fix stages depend on these. */
+/**
+ * CONFIRMED: keys of `KNOWN_POST_PROCESSORS`. Order preserved from source.
+ * Note the plurals the API actually uses: `CodeFormers` (not "CodeFormer"),
+ * `GFPGAN` (+ newer `GFPGANv1.3`). The brief's "CodeFormer" == `CodeFormers`.
+ */
 export const POST_PROCESSORS = [
   "GFPGAN",
-  "CodeFormers",
   "RealESRGAN_x4plus",
-  "RealESRGAN_x4plus_anime_6B",
   "RealESRGAN_x2plus",
+  "RealESRGAN_x4plus_anime_6B",
   "NMKD_Siax",
   "4x_AnimeSharp",
+  "CodeFormers",
   "strip_background",
+  // modern permissively-licensed upscalers
+  "4xNomos8kSC",
+  "4xLSDIRplus",
+  "4xNomosWebPhoto_RealPLKSR",
+  "4xNomos2_realplksr_dysample",
+  "4xNomos2_hq_dat2",
+  "2xModernSpanimationV1",
+  // modern permissively-licensed face restorers
+  "GFPGANv1.3",
+  "RestoreFormer",
 ] as const;
 export type PostProcessor = (typeof POST_PROCESSORS)[number];
 
-/** VERIFY: ControlNet control_type enum. Drives the "See-It Picker". */
+/** CONFIRMED: `KNOWN_UPSCALERS` — the subset used by the Upscale (finish) stage. */
+export const UPSCALERS = [
+  "RealESRGAN_x4plus",
+  "RealESRGAN_x2plus",
+  "RealESRGAN_x4plus_anime_6B",
+  "NMKD_Siax",
+  "4x_AnimeSharp",
+  "4xNomos8kSC",
+  "4xLSDIRplus",
+  "4xNomosWebPhoto_RealPLKSR",
+  "4xNomos2_realplksr_dysample",
+  "4xNomos2_hq_dat2",
+  "2xModernSpanimationV1",
+] as const;
+export type Upscaler = (typeof UPSCALERS)[number];
+
+/** CONFIRMED: face-restorer post-processors (for the "Face fix" finish stage). */
+export const FACE_FIXERS = ["GFPGAN", "GFPGANv1.3", "CodeFormers", "RestoreFormer"] as const;
+
+/** CONFIRMED: `control_type` enum. Drives the "See-It Picker". */
 export const CONTROL_TYPES = [
   "canny",
   "hed",
@@ -67,7 +105,7 @@ export const CONTROL_TYPES = [
 ] as const;
 export type ControlType = (typeof CONTROL_TYPES)[number];
 
-/** VERIFY: source_processing enum for img2img / inpainting stages. */
+/** CONFIRMED: `source_processing` enum. API default is `img2img`. */
 export const SOURCE_PROCESSING = [
   "img2img",
   "inpainting",
@@ -76,9 +114,53 @@ export const SOURCE_PROCESSING = [
 ] as const;
 export type SourceProcessing = (typeof SOURCE_PROCESSING)[number];
 
+/** CONFIRMED: `KNOWN_WORKFLOWS`. Advanced-only in this app. */
+export const WORKFLOWS = ["qr_code"] as const;
+export type Workflow = (typeof WORKFLOWS)[number];
+
+/* -------------------------------------------------------------------------- */
+/*  Numeric bounds & defaults — CONFIRMED from the field declarations.        */
+/*  These are what the artist-facing sliders should clamp to; do NOT invent    */
+/*  ranges the spec already defines.                                           */
+/* -------------------------------------------------------------------------- */
+
+export const LIMITS = {
+  /** cfg_scale → "Interpretation" slider. Spec default 7.5. */
+  cfgScale: { min: 0, max: 100, default: 7.5 },
+  /** denoising_strength → Ghost Strip. */
+  denoise: { min: 0.01, max: 1.0, example: 0.75 },
+  hiresFixDenoise: { min: 0.01, max: 1.0, example: 0.75 },
+  /** steps → "Effort" slider. */
+  steps: { min: 1, max: 500, default: 30 },
+  /** width/height — must be multiples of 64. */
+  width: { min: 64, max: 3072, multiple: 64, default: 512 },
+  height: { min: 64, max: 3072, multiple: 64, default: 512 },
+  /** n → batch size (Ghost Strip uses 5). */
+  n: { min: 1, max: 20, default: 1 },
+  clipSkip: { min: 1, max: 12, example: 1 },
+  facefixerStrength: { min: 0, max: 1.0, example: 0.75 },
+  seedVariation: { min: 1, max: 1000, example: 1 },
+} as const;
+
 /* -------------------------------------------------------------------------- */
 /*  Request payloads.                                                         */
 /* -------------------------------------------------------------------------- */
+
+/** One LoRA entry (`ModelPayloadLorasStable`). Advanced-only; pasted by name. */
+export interface HordeLora {
+  name: string;
+  model?: number;
+  clip?: number;
+  inject_trigger?: string;
+  is_version?: boolean;
+}
+
+/** One textual-inversion entry (`ModelPayloadTextualInversionsStable`). */
+export interface HordeTextualInversion {
+  name: string;
+  inject_ti?: "prompt" | "negprompt";
+  strength?: number;
+}
 
 /**
  * `ModelGenerationInputStable` — the `params` object of a generation request.
@@ -86,33 +168,43 @@ export type SourceProcessing = (typeof SOURCE_PROCESSING)[number];
  * drawer is auto-generated from the spec for anything not explicitly mapped.
  */
 export interface HordeModelParams {
+  /** CONFIRMED enum. Default `k_euler_a`. */
   sampler_name?: Sampler;
-  /** cfg_scale — surfaced as the artist "Interpretation" slider (Loose↔Literal). VERIFY range. */
+  /** cfg_scale — artist "Interpretation" slider. See LIMITS.cfgScale. */
   cfg_scale?: number;
-  /** denoising_strength — surfaced as the Ghost Strip (Keep↔Reimagine). 0..1. */
+  /** denoising_strength — the Ghost Strip. See LIMITS.denoise. */
   denoising_strength?: number;
-  /** Seed is a *string* in the Horde API. Surfaced as the Artist Lock. */
+  hires_fix_denoising_strength?: number;
+  /** Seed is a *string* in the Horde API (text or numbers). The Artist Lock. */
   seed?: string;
+  /** Increment applied to the seed per image when n>1. See LIMITS.seedVariation. */
+  seed_variation?: number;
+  /** Multiple of 64. See LIMITS.height. */
   height?: number;
+  /** Multiple of 64. See LIMITS.width. */
   width?: number;
-  /** steps — surfaced as the "Effort" slider (Quick↔Careful). VERIFY max. */
+  /** steps — "Effort" slider. See LIMITS.steps. */
   steps?: number;
-  /** n — batch size. Used internally by the Ghost Strip (n:5). VERIFY max. */
+  /** n — batch size. Ghost Strip uses 5. See LIMITS.n. */
   n?: number;
   karras?: boolean;
   hires_fix?: boolean;
   clip_skip?: number;
   tiling?: boolean;
-  /** Ordered list of post-processors (upscale / face-fix). */
+  /** Layer-Diffuse transparent background. */
+  transparent?: boolean;
+  /** Ordered, unique list of post-processors (upscale / face-fix). */
   post_processing?: PostProcessor[];
+  facefixer_strength?: number;
   /** ControlNet type when a structure-lock stage is active. */
   control_type?: ControlType;
-  /** If true, the source image IS the control map (we send `false` per spec note). */
+  /** If true the source IS a pre-made control map; we send `false` per the brief. */
   image_is_control?: boolean;
+  /** Return the ControlNet map instead of an image (used by the See-It preview). */
   return_control_map?: boolean;
-  /** LoRA by name — Advanced only in v1. VERIFY shape (`TeamModelStable`/`ModPayloadStable`). */
-  loras?: Array<{ name: string; model?: number; clip?: number; inject_trigger?: string }>;
-  facefixer_strength?: number;
+  loras?: HordeLora[];
+  tis?: HordeTextualInversion[];
+  workflow?: Workflow;
 }
 
 /** `GenerationInputStable` — the body of POST /v2/generate/async. */

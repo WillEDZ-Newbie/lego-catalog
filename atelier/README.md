@@ -29,22 +29,32 @@ What Milestone 1 ships:
   the loop. **This is scaffolding, not the artist-facing product.**
 - The "stonemason's studio" design tokens (`src/styles/tokens.css`).
 
-## ⚠️ Spec-fidelity caveat (read before trusting enum values)
+## Spec fidelity — how the types were grounded
 
 The brief makes the **live Horde OpenAPI spec the source of truth** and says to
 generate types from `https://stablehorde.net/api/swagger.json`. That endpoint
-was **blocked from the build environment** (organisation egress policy) when
-this milestone was authored, so `src/horde/types.ts` was hand-written from
-working knowledge and every spec-dependent literal is tagged `VERIFY:`
-(sampler names, post-processor names, control types, numeric limits).
+(and the `aihorde.net` mirror) is **blocked from the build environment** by the
+organisation's egress policy.
 
-**Before relying on those values**, regenerate/reconcile the types against the
-live spec — either by unblocking `stablehorde.net` for the environment, or by
-running the app in a browser (which reaches the API directly) and checking the
-`VERIFY` sites. Search the codebase for `VERIFY` to find them all.
+The swagger, however, is *generated* from the open-source AI-Horde server, and
+that source **is** reachable (`raw.githubusercontent.com` is allowed). So
+`src/horde/types.ts` was reconciled directly against the generator source at
+`Haidra-Org/AI-Horde @ main`:
 
-The **deployed app is unaffected** by the block: it runs entirely in the
-artist's browser, which calls the CORS-open Horde API directly.
+- `horde/apis/models/stable_v2.py` — the flask-restx models that produce the
+  swagger (field enums + numeric `min`/`max`/`multiple`/`default`).
+- `horde/consts.py` — `KNOWN_SAMPLERS`, `KNOWN_POST_PROCESSORS`,
+  `KNOWN_UPSCALERS`, `KNOWN_WORKFLOWS`.
+
+Observed at reconciliation: `HORDE_VERSION 5.1.3`, `HORDE_API_VERSION "2.5"`.
+Samplers, control types, and source-processing modes matched exactly; the
+newer post-processors and the real numeric limits (now in the `LIMITS` const)
+were added. **No `VERIFY` placeholders remain.** When bumping to a newer Horde
+release, re-run the reconciliation against those two files (or a freshly
+fetched `swagger.json`).
+
+The **deployed app is unaffected** by the egress block regardless: it runs
+entirely in the artist's browser, which calls the CORS-open Horde API directly.
 
 ## Develop
 

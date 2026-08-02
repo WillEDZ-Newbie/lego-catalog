@@ -19,7 +19,8 @@ import type {
 
 const DEFAULT_BASE = "https://stablehorde.net/api";
 export const ANON_KEY = "0000000000";
-const CLIENT_AGENT = "ATELIER:0.1:github.com/atelier"; // VERIFY: Horde asks for name:version:contact
+// Horde convention for the Client-Agent header is "name:version:contact".
+const CLIENT_AGENT = "ATELIER:0.1:github.com/atelier";
 
 export interface HordeClientOptions {
   /** Called for each request; returns the current key (or anon). */
