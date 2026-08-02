@@ -1,7 +1,11 @@
 # Auto-deploy ATELIER (the atelier/ SPA) to GitHub Pages on every push.
-# The artist just opens the resulting URL — no Terminal, ever. Once merged to
-# the default branch this keeps the live site current; it also deploys from the
-# feature branch so the site is reachable before merge.
+# The artist just opens the resulting URL — no Terminal, ever.
+#
+# Publishes the built site to the `gh-pages` branch. ONE-TIME setup by the repo
+# owner: Settings → Pages → Build and deployment → Source: "Deploy from a
+# branch" → Branch: gh-pages / (root) → Save. After that this runs on every
+# push (from this branch and main) and the live URL updates automatically:
+#   https://willedz-newbie.github.io/lego-catalog/
 name: Deploy ATELIER to Pages
 
 on:
@@ -14,35 +18,25 @@ on:
       - ".github/workflows/deploy-atelier.yml"
   workflow_dispatch:
 
+# Needed so the action can push the built site to the gh-pages branch.
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
-# One deploy at a time; let a newer push cancel an in-flight run.
 concurrency:
-  group: pages
+  group: pages-deploy
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
           cache-dependency-path: atelier/package-lock.json
-
-      # enablement:true turns Pages on via the API so no manual repo-settings
-      # toggle is needed the first time.
-      - name: Configure Pages
-        id: pages
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: Install
         working-directory: atelier
@@ -50,24 +44,15 @@ jobs:
 
       - name: Build
         working-directory: atelier
-        # base_path from configure-pages already carries the correct subpath
-        # (e.g. /lego-catalog/) and a trailing slash.
+        # Project site lives at /lego-catalog/ — bake that in as the base path.
         env:
-          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          BASE_PATH: /lego-catalog/
         run: npm run build
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4.0.0
         with:
-          path: atelier/dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: atelier/dist
+          # peaceiris writes .nojekyll by default so Jekyll never mangles the
+          # Vite output (e.g. files under assets/).
