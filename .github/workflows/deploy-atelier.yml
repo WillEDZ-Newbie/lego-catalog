@@ -1,0 +1,73 @@
+# Auto-deploy ATELIER (the atelier/ SPA) to GitHub Pages on every push.
+# The artist just opens the resulting URL — no Terminal, ever. Once merged to
+# the default branch this keeps the live site current; it also deploys from the
+# feature branch so the site is reachable before merge.
+name: Deploy ATELIER to Pages
+
+on:
+  push:
+    branches:
+      - claude/magic-packet-dell-ngcxmk
+      - main
+    paths:
+      - "atelier/**"
+      - ".github/workflows/deploy-atelier.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time; let a newer push cancel an in-flight run.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: atelier/package-lock.json
+
+      # enablement:true turns Pages on via the API so no manual repo-settings
+      # toggle is needed the first time.
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Install
+        working-directory: atelier
+        run: npm ci
+
+      - name: Build
+        working-directory: atelier
+        # base_path from configure-pages already carries the correct subpath
+        # (e.g. /lego-catalog/) and a trailing slash.
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: atelier/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
