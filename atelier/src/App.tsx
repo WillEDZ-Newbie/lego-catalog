@@ -1,9 +1,20 @@
-import { TestBench } from "@/ui/TestBench";
+import { useRun } from "@/store/run";
+import { Home } from "@/ui/Home";
+import { Builder } from "@/ui/Builder";
+import { Runner } from "@/ui/Runner";
+import "@/styles/app.css";
 
 /**
- * v1 entry. For now this mounts the Milestone 1 test bench. Milestone 2
- * replaces this with the Home → Builder → Runner shell.
+ * v1 shell: a tiny view switch (no router needed) between Home, Builder and
+ * Runner. Projects/presets and the House Style editor arrive in Milestone 5.
  */
 export default function App() {
-  return <TestBench />;
+  const view = useRun((s) => s.view);
+  return (
+    <div className="app">
+      {view === "home" && <Home />}
+      {view === "builder" && <Builder />}
+      {view === "runner" && <Runner />}
+    </div>
+  );
 }

@@ -7,27 +7,41 @@ product brief — it is the source of truth for scope and design.
 
 100% static SPA · no backend · no paid APIs · free forever.
 
-## Status — Milestone 1
+## Status — Milestone 2
 
 Build order (from the brief), and where we are:
 
-1. **Horde client + types + proof-of-loop test bench** — ✅ this milestone.
-2. Stage registry + auto-generated panels + Builder + Runner + IndexedDB history.
+1. **Horde client + types + proof-of-loop test bench** — ✅ done.
+2. **Stage registry + auto-generated panels + Builder + Runner + IndexedDB history** — ✅ this milestone.
 3. Hero controls: Mask Painter, Ghost Strip, Artist Lock, See-It Picker.
 4. Judgement screen polish: compare gestures, filmstrip/frieze, fork.
 5. Projects, presets, house style, export/share, PWA install, design pass.
 
-What Milestone 1 ships:
+What Milestone 2 ships (the real Home → Builder → Runner flow):
 
-- `src/horde/` — typed AI Horde v2 client: `submit → check → status → R2`
-  download, with etiquette-correct polling (1s floor, 3s backoff after 30s),
-  DELETE-on-abort, model list with caching, and plain-language error mapping.
-- `src/horde/types.ts` — hand-authored v2 types (see the caveat below).
-- `src/store/settings.ts` — API key in `localStorage`, anonymous by default.
-- `src/ui/TestBench.tsx` — a utilitarian page that runs one txt2img and renders
-  the result, exposing raw mechanics (queue position, kudos, wait_time) to prove
-  the loop. **This is scaffolding, not the artist-facing product.**
-- The "stonemason's studio" design tokens (`src/styles/tokens.css`).
+- `src/stages/` — the **Stage Registry**: all 14 launch stages as pure data +
+  `buildPayload` transforms, house-style composition, and the sculptural-realism
+  prompt blocks (positive-only, negatives via the Horde `###` separator).
+- `src/ui/controls/AutoPanel.tsx` — control surface auto-generated from each
+  stage's `ParamDef[]` (slider / toggle / text / select) with an Advanced drawer.
+- `src/ui/Builder.tsx` — tick-list grouped by category + ordered pipeline tray
+  (reorder / remove) + live model picker.
+- `src/ui/Runner.tsx` — step-through execution: control panel → "carving" queue
+  card (ETA in words) → judgement screen with **Continue / Retry / Undo / Stop**
+  → filmstrip of accepted steps.
+- `src/store/run.ts` — the session state machine over **append-only, immutable
+  IndexedDB history** (`session/{id}/{step}-{attempt}`); undo is a pointer move.
+- `src/lib/db.ts` (idb blobs + session recents) and `src/lib/image.ts`
+  (downscale/encode uploads to webp for Horde `source_image`).
+
+Milestone-1 pieces still underneath: `src/horde/` (typed client), the
+`src/ui/TestBench.tsx` diagnostic page (no longer the entry point), and the
+`src/styles/tokens.css` design system.
+
+Not yet (by design): mask-painting repair stages are listed but **gated** in the
+Builder until the Mask Painter lands in Milestone 3; the denoise slider, seed
+toggle, ControlNet select and model picker are the plain Milestone-2 controls
+that Milestone 3 upgrades to the Ghost Strip / Artist Lock / See-It Picker.
 
 ## Spec fidelity — how the types were grounded
 
