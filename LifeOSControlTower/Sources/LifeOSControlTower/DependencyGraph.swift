@@ -98,62 +98,118 @@ public struct DependencyGraph: Sendable {
 
     // MARK: - Cycles
 
-    /// Detects circular *blocking* dependencies and returns each cycle's
-    /// actual path (e.g. [A, B, C] meaning A -> B -> C -> A).
-    /// Informational edges (`informs`, `reviewOf`) may legitimately form
-    /// loops and are ignored here.
-    public func detectCycles(includeNonBlocking: Bool = false) -> [[ProjectID]] {
-        var color: [ProjectID: Int] = [:] // 0/absent = white, 1 = grey, 2 = black
-        var parent: [ProjectID: ProjectID] = [:]
-        var cycles: [[ProjectID]] = []
-        var claimed = Set<ProjectID>() // avoid reporting the same cycle twice
-
-        func neighbours(_ id: ProjectID) -> [ProjectID] {
-            (downstream[id] ?? [])
+    /// Detects circular *blocking* dependencies and returns each distinct
+    /// elementary cycle\'s actual path (e.g. [A, B, C] meaning A -> B -> C -> A),
+    /// including cycles that share nodes. Informational edges (`informs`,
+    /// `reviewOf`) may legitimately form loops and are ignored unless
+    /// `includeNonBlocking` is set.
+    ///
+    /// Enumeration runs only inside strongly connected components, so acyclic
+    /// portfolios cost one linear pass. `limit` caps the number of reported
+    /// cycles (a portfolio with more than that many distinct cycles is
+    /// structurally broken regardless of the exact count).
+    public func detectCycles(includeNonBlocking: Bool = false, limit: Int = 64) -> [[ProjectID]] {
+        var adjacency: [ProjectID: [ProjectID]] = [:]
+        for id in projectIDs {
+            adjacency[id] = (downstream[id] ?? [])
                 .filter { includeNonBlocking || $0.kind.isBlocking }
                 .map(\.dependent)
+                .sorted()
         }
 
-        func visit(_ start: ProjectID) {
-            var stack: [(ProjectID, Int)] = [(start, 0)]
-            color[start] = 1
-            while let (node, idx) = stack.last {
-                let ns = neighbours(node)
-                if idx < ns.count {
-                    stack[stack.count - 1].1 += 1
-                    let next = ns[idx]
-                    switch color[next] ?? 0 {
-                    case 0:
-                        color[next] = 1
-                        parent[next] = node
-                        stack.append((next, 0))
-                    case 1:
-                        // Found a cycle: walk back from `node` to `next`.
-                        var path = [node]
-                        var cursor = node
-                        while cursor != next, let par = parent[cursor] {
-                            cursor = par
-                            path.append(cursor)
+        var cycles: [[ProjectID]] = []
+        for component in stronglyConnectedComponents(adjacency: adjacency) {
+            guard cycles.count < limit else { break }
+            let members = Set(component)
+            let selfLoop = component.count == 1
+                && (adjacency[component[0]] ?? []).contains(component[0])
+            guard component.count > 1 || selfLoop else { continue }
+
+            // Enumerate elementary cycles inside the component. Each cycle is
+            // found exactly once, rooted at its smallest member: the DFS from
+            // root `r` may only walk nodes >= r.
+            let ordered = component.sorted()
+            for root in ordered {
+                guard cycles.count < limit else { break }
+                var path: [ProjectID] = [root]
+                var onPath: Set<ProjectID> = [root]
+                var iterators: [[ProjectID]] = [neighbours(of: root, in: members, adjacency: adjacency, atLeast: root)]
+                while !iterators.isEmpty {
+                    guard cycles.count < limit else { break }
+                    if let next = iterators[iterators.count - 1].popLast() {
+                        if next == root {
+                            cycles.append(path)
+                        } else if !onPath.contains(next) {
+                            path.append(next)
+                            onPath.insert(next)
+                            iterators.append(neighbours(of: next, in: members, adjacency: adjacency, atLeast: root))
                         }
-                        let cycle = path.reversed().map { $0 }
-                        if claimed.isDisjoint(with: cycle) {
-                            claimed.formUnion(cycle)
-                            cycles.append(Array(cycle))
-                        }
-                    default:
-                        break
+                    } else {
+                        iterators.removeLast()
+                        onPath.remove(path.removeLast())
                     }
-                } else {
-                    color[node] = 2
-                    stack.removeLast()
                 }
             }
         }
-
-        for id in projectIDs.sorted() where (color[id] ?? 0) == 0 {
-            visit(id)
-        }
         return cycles
+    }
+
+    private func neighbours(
+        of node: ProjectID,
+        in members: Set<ProjectID>,
+        adjacency: [ProjectID: [ProjectID]],
+        atLeast root: ProjectID
+    ) -> [ProjectID] {
+        (adjacency[node] ?? []).filter { members.contains($0) && $0 >= root }
+    }
+
+    /// Iterative Tarjan strongly-connected-components (no recursion, so deep
+    /// chains cannot overflow the stack). Deterministic ordering.
+    private func stronglyConnectedComponents(
+        adjacency: [ProjectID: [ProjectID]]
+    ) -> [[ProjectID]] {
+        var index: [ProjectID: Int] = [:]
+        var lowlink: [ProjectID: Int] = [:]
+        var onStack: Set<ProjectID> = []
+        var stack: [ProjectID] = []
+        var counter = 0
+        var components: [[ProjectID]] = []
+
+        for start in projectIDs.sorted() where index[start] == nil {
+            var work: [(node: ProjectID, neighbourIndex: Int)] = [(start, 0)]
+            index[start] = counter; lowlink[start] = counter; counter += 1
+            stack.append(start); onStack.insert(start)
+
+            while let (node, ni) = work.last {
+                let ns = adjacency[node] ?? []
+                if ni < ns.count {
+                    work[work.count - 1].neighbourIndex += 1
+                    let next = ns[ni]
+                    if index[next] == nil {
+                        index[next] = counter; lowlink[next] = counter; counter += 1
+                        stack.append(next); onStack.insert(next)
+                        work.append((next, 0))
+                    } else if onStack.contains(next) {
+                        lowlink[node] = min(lowlink[node]!, index[next]!)
+                    }
+                } else {
+                    work.removeLast()
+                    if let (parent, _) = work.last {
+                        lowlink[parent] = min(lowlink[parent]!, lowlink[node]!)
+                    }
+                    if lowlink[node] == index[node] {
+                        var component: [ProjectID] = []
+                        while let top = stack.popLast() {
+                            onStack.remove(top)
+                            component.append(top)
+                            if top == node { break }
+                        }
+                        components.append(component)
+                    }
+                }
+            }
+        }
+        return components
     }
 
     public var hasCycle: Bool { !detectCycles().isEmpty }

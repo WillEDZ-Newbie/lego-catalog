@@ -24,7 +24,8 @@ ProjectRegistry  ── source of truth; ALL mutations route through it and
  └── Decision                                            (global register, lineage-linked)
 
 Pure analysis over snapshots (stateless, deterministic):
-  DependencyGraph      cycles w/ paths, impact sets, hubs, depth, chains, blockage explanation
+  DependencyGraph      distinct elementary cycles w/ paths (Tarjan SCC-scoped),
+                       impact sets, hubs, depth, chains, blockage explanation
   HealthEngine         evidence-based state, configurable thresholds, injected `now`
   NextActionValidator  missing/vague/blocked/awaitingReview/awaitingDecision/executable
   ConflictDetector     structured Diagnostics (info/warning/error/releaseBlocking)
@@ -45,6 +46,12 @@ Key invariants:
   exception is `Milestone.state` (kept per the brief), and
   `ConflictDetector` polices its coherence (`awaitingReview` without an
   open gate, `blocked` without evidence).
+- **Completion has one door.** `setStatus` cannot reach `.completed` or
+  `.archived`; only `completeProject` (which enforces milestones and open
+  blockers) and `archive` can, so their guards and audit events cannot be
+  bypassed. Same for milestones: `completeMilestone` is the only route to
+  `.completed`, enforcing criteria, prerequisites and review gates — and a
+  dangling gate reference always fails, never passing as approval.
 - **Overrides are events.** Completing a project/milestone past its guards
   requires a rationale and leaves `…Overridden` events that the validator
   respects.
@@ -121,6 +128,10 @@ unit-tested.
   projects for the milestone ID; IDs are assumed globally unique.
 - **The event timeline is append-only but not tamper-proof** — an import
   can supply any history. Auditability assumes storage is trusted.
-- **`registry.remove` deletes without an event** (kept for registry
-  hygiene); prefer `archive` in real flows.
+- **`registry.remove` is a hard delete** — audited with a `projectRemoved`
+  event and past history survives, but the current-state record is gone;
+  prefer `archive` in real flows.
+- **Cycle enumeration is capped** (default 64 distinct cycles per call,
+  documented parameter) — beyond that the portfolio is structurally broken
+  regardless of the exact count.
 - No persistence, UI, scheduling or external execution — by design.

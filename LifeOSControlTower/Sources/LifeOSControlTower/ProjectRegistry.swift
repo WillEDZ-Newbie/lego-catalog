@@ -92,18 +92,42 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
         decisions[decision.id] = decision
     }
 
-    /// Restores an event timeline verbatim (import path only).
+    /// Restores an event timeline verbatim (import path only). The counter
+    /// resumes past the highest `evt-N` id present, so future events never
+    /// collide with imported ones even when ids are gapped or reordered.
     internal mutating func restoreEventsUnchecked(_ list: [ProjectEvent]) {
         events = list
-        eventCounter = list.count
+        var highest = list.count
+        for event in list where event.id.rawValue.hasPrefix("evt-") {
+            if let n = Int(event.id.rawValue.dropFirst(4)) {
+                highest = max(highest, n)
+            }
+        }
+        eventCounter = highest
     }
 
+    /// Hard removal. Prefer `archive` in real flows: removal keeps the
+    /// project's past events and appends an explicit `projectRemoved` audit
+    /// event, but the current-state record is gone.
     public mutating func remove(_ id: ProjectID, at date: Date) throws {
         guard projects[id] != nil else { throw RegistryError.unknownProject(id) }
+        emit(.projectRemoved, project: id, at: date)
         projects[id] = nil
     }
 
+    /// Sets the lifecycle status. Completion and archival are deliberately
+    /// NOT reachable here: their guards and audit events live in
+    /// `completeProject` and `archive`, the only doors to those states.
     public mutating func setStatus(_ id: ProjectID, to target: ProjectStatus, at date: Date) throws {
+        switch target {
+        case .completed: throw RegistryError.completionViaSetStatus(id)
+        case .archived: throw RegistryError.archivalViaSetStatus(id)
+        default: try applyStatus(id, to: target, at: date)
+        }
+    }
+
+    /// Shared transition core used by setStatus/completeProject/archive.
+    private mutating func applyStatus(_ id: ProjectID, to target: ProjectStatus, at date: Date) throws {
         try mutate(id, at: date) { p in
             guard p.status.canTransition(to: target) else {
                 throw RegistryError.invalidStatusTransition(from: p.status, to: target)
@@ -128,11 +152,15 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
                 throw RegistryError.invalidStatusTransition(from: p.status, to: .completed)
             }
             let incomplete = p.incompleteRequiredMilestones
+            let openBlockers = p.openBlockers
             var kinds: [ProjectEvent.Kind] = []
-            if !incomplete.isEmpty {
-                guard let rationale = overrideRationale else {
-                    throw RegistryError.incompleteRequiredMilestones(id, milestones: incomplete.map(\.id))
-                }
+            if !incomplete.isEmpty && overrideRationale == nil {
+                throw RegistryError.incompleteRequiredMilestones(id, milestones: incomplete.map(\.id))
+            }
+            if !openBlockers.isEmpty && overrideRationale == nil {
+                throw RegistryError.unresolvedBlockers(id, blockers: openBlockers.map(\.id))
+            }
+            if !incomplete.isEmpty || !openBlockers.isEmpty, let rationale = overrideRationale {
                 kinds.append(.projectCompletionOverridden(rationale: rationale))
             }
             kinds.append(.statusChanged(from: p.status, to: .completed))
@@ -142,8 +170,9 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
     }
 
     /// Archives a project (from any archivable status) preserving all history.
+    /// The only route to `.archived`.
     public mutating func archive(_ id: ProjectID, at date: Date) throws {
-        try setStatus(id, to: .archived, at: date)
+        try applyStatus(id, to: .archived, at: date)
     }
 
     /// Explicitly reactivates archived or dormant work.
@@ -152,7 +181,7 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
         guard p.status == .archived || p.status == .dormant else {
             throw RegistryError.projectNotArchivedOrDormant(id)
         }
-        try setStatus(id, to: .active, at: date)
+        try applyStatus(id, to: .active, at: date)
     }
 
     // MARK: - Simple field mutations
@@ -258,6 +287,9 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
 
     public mutating func addBlocker(_ id: ProjectID, _ blocker: Blocker, at date: Date) throws {
         try mutate(id, at: date) { p in
+            guard p.blocker(blocker.id) == nil else {
+                throw RegistryError.duplicateBlockerID(blocker.id)
+            }
             p.blockers.append(blocker)
             return [.blockerAdded(blocker.id)]
         }
@@ -285,6 +317,11 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
     // MARK: - Milestones
 
     public mutating func addMilestone(_ id: ProjectID, _ milestone: Milestone, at date: Date) throws {
+        // Milestone IDs are globally unique: cross-project prerequisites
+        // resolve by ID across the whole portfolio.
+        guard !projects.values.contains(where: { $0.milestone(milestone.id) != nil }) else {
+            throw RegistryError.duplicateMilestoneID(milestone.id)
+        }
         try mutate(id, at: date) { p in
             p.milestones.append(milestone)
             return [.milestoneAdded(milestone.id)]
@@ -297,6 +334,9 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
         to state: Milestone.State,
         at date: Date
     ) throws {
+        guard state != .completed else {
+            throw RegistryError.milestoneCompletionViaSetState(milestoneID)
+        }
         try mutate(id, at: date) { p in
             guard let idx = p.milestones.firstIndex(where: { $0.id == milestoneID }) else {
                 throw RegistryError.unknownMilestone(milestoneID, in: id)
@@ -335,6 +375,14 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
         at date: Date,
         overrideRationale: String? = nil
     ) throws {
+        // Prerequisite satisfaction needs the whole registry; evaluate before
+        // entering the single-project mutation.
+        let host = try requireProject(id)
+        guard let preM = host.milestone(milestoneID) else {
+            throw RegistryError.unknownMilestone(milestoneID, in: id)
+        }
+        let prerequisitesSatisfied = milestonePrerequisitesSatisfied(preM, in: host)
+
         try mutate(id, at: date) { p in
             guard let idx = p.milestones.firstIndex(where: { $0.id == milestoneID }) else {
                 throw RegistryError.unknownMilestone(milestoneID, in: id)
@@ -343,10 +391,21 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
             guard m.state != .completed else {
                 throw RegistryError.milestoneAlreadyCompleted(milestoneID)
             }
+            // A dangling gate reference is corruption, never approval — no
+            // override can complete past it.
+            if let gateID = m.reviewGateID, p.reviewGate(gateID) == nil {
+                throw RegistryError.unknownReviewGate(gateID, in: id)
+            }
             var kinds: [ProjectEvent.Kind] = []
             let unsatisfied = m.unsatisfiedRequiredCriteria
             var needsOverride = false
-            if !unsatisfied.isEmpty { needsOverride = true }
+            if !unsatisfied.isEmpty {
+                if overrideRationale == nil {
+                    throw RegistryError.unsatisfiedAcceptanceCriteria(
+                        milestoneID, unsatisfied: unsatisfied.map(\.id))
+                }
+                needsOverride = true
+            }
             if let gateID = m.reviewGateID,
                let gate = p.reviewGates.first(where: { $0.id == gateID }),
                gate.resolution?.outcome != .approved {
@@ -355,11 +414,13 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
                 }
                 needsOverride = true
             }
-            if needsOverride {
-                guard let rationale = overrideRationale else {
-                    throw RegistryError.unsatisfiedAcceptanceCriteria(
-                        milestoneID, unsatisfied: unsatisfied.map(\.id))
+            if !prerequisitesSatisfied {
+                if overrideRationale == nil {
+                    throw RegistryError.unsatisfiedMilestonePrerequisites(milestoneID)
                 }
+                needsOverride = true
+            }
+            if needsOverride, let rationale = overrideRationale {
                 kinds.append(.milestoneCompletionOverridden(milestoneID, rationale: rationale))
             }
             kinds.append(.milestoneStateChanged(milestoneID, from: m.state, to: .completed))
@@ -374,6 +435,9 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
 
     public mutating func openReviewGate(_ id: ProjectID, _ gate: ReviewGate, at date: Date) throws {
         try mutate(id, at: date) { p in
+            guard p.reviewGate(gate.id) == nil else {
+                throw RegistryError.duplicateReviewGateID(gate.id)
+            }
             p.reviewGates.append(gate)
             return [.reviewRequested(gate.id)]
         }
@@ -402,6 +466,9 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
 
     public mutating func addRisk(_ id: ProjectID, _ risk: Risk, at date: Date) throws {
         try mutate(id, at: date) { p in
+            guard !p.risks.contains(where: { $0.id == risk.id }) else {
+                throw RegistryError.duplicateRiskID(risk.id)
+            }
             p.risks.append(risk)
             return [.riskAdded(risk.id)]
         }
@@ -428,6 +495,9 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
 
     /// Records a decision and links it to its affected projects' timelines.
     public mutating func recordDecision(_ decision: Decision, at date: Date) throws {
+        guard decisions[decision.id] == nil else {
+            throw RegistryError.duplicateDecisionID(decision.id)
+        }
         var d = decision
         // Supersession must go through supersedeDecision.
         d.supersededBy = nil
@@ -447,6 +517,9 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
         guard var old = decisions[oldID] else { throw RegistryError.unknownDecision(oldID) }
         guard old.status == .active else { throw RegistryError.decisionNotActive(oldID) }
         guard old.supersededBy == nil else { throw RegistryError.decisionAlreadySuperseded(oldID) }
+        guard newDecision.id != oldID, decisions[newDecision.id] == nil else {
+            throw RegistryError.duplicateDecisionID(newDecision.id)
+        }
         var new = newDecision
         new.supersedes = oldID
         new.status = .active

@@ -63,10 +63,13 @@ public struct WorkQueuePolicy: Sendable {
 public enum AttentionBucket: Int, Codable, Sendable, Comparable {
     /// Executable now (or promoted decision/review unlocking downstream work).
     case actionable = 0
+    /// Could proceed, but the next action is missing or too vague to execute —
+    /// the work item is "define a concrete next step", not the action itself.
+    case needsDefinition = 1
     /// Waiting on a user decision or review.
-    case awaitingHuman = 1
+    case awaitingHuman = 2
     /// Blocked on dependencies/blockers not in the user's hands.
-    case blocked = 2
+    case blocked = 3
 
     public static func < (lhs: AttentionBucket, rhs: AttentionBucket) -> Bool {
         lhs.rawValue < rhs.rawValue
@@ -106,7 +109,20 @@ public enum WorkQueueEngine {
             var bucket: AttentionBucket
             switch health.state {
             case .ready, .active, .stale, .atRisk:
-                bucket = .actionable
+                // Unblocked — but only rank as ordinary actionable work when
+                // the next action is concrete enough to execute.
+                let action = NextActionValidator.validate(
+                    project, in: registry, graph: graph, now: now)
+                switch action.classification {
+                case .missing:
+                    bucket = .needsDefinition
+                    reasons.append("no next action recorded — define a concrete next step")
+                case .vague:
+                    bucket = .needsDefinition
+                    reasons.append("next action is too vague to execute — define a concrete next step")
+                default:
+                    bucket = .actionable
+                }
             case .needsDecision, .waitingForReview:
                 bucket = .awaitingHuman
                 if downstreamCount >= policy.unlockPromotionThreshold {

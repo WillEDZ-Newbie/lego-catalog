@@ -16,7 +16,7 @@ structured reasons.
 
 ```sh
 swift build
-swift test        # 100 behavioural tests, deterministic, no wall-clock dependence
+swift test        # 116 behavioural tests, deterministic, no wall-clock dependence
 ```
 
 Or open the package folder in Xcode (`File ▸ Open… ▸ LifeOSControlTower/`) —
@@ -80,10 +80,11 @@ Agreed before implementation:
    evidence, so stored state and reality cannot disagree. "Stabilisation"
    is a stage label (`currentStage`), not a status.
 2. **The work queue is not a weighted-sum oracle.** Coarse attention
-   buckets order first (executable → awaiting-human → blocked, with a
-   documented promotion for decisions/reviews that unlock downstream
-   work); documented per-component points order within a bucket and double
-   as the display score.
+   buckets order first (executable → needs-definition → awaiting-human →
+   blocked, with a documented promotion for decisions/reviews that unlock
+   downstream work; projects whose next action is missing or vague are
+   never presented as ordinary actionable work); documented per-component
+   points order within a bucket and double as the display score.
 3. **Typed IDs** (`ProjectID`, `MilestoneID`, …) — the compiler rejects a
    milestone ID where a project ID belongs.
 4. No `.xcodeproj` is shipped: Xcode opens `Package.swift` natively.

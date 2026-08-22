@@ -23,6 +23,16 @@ public enum RegistryError: Error, Equatable, Sendable, CustomStringConvertible {
     case decisionAlreadySuperseded(DecisionID)
     case decisionNotActive(DecisionID)
     case projectNotArchivedOrDormant(ProjectID)
+    case completionViaSetStatus(ProjectID)
+    case archivalViaSetStatus(ProjectID)
+    case milestoneCompletionViaSetState(MilestoneID)
+    case unresolvedBlockers(ProjectID, blockers: [BlockerID])
+    case unsatisfiedMilestonePrerequisites(MilestoneID)
+    case duplicateBlockerID(BlockerID)
+    case duplicateMilestoneID(MilestoneID)
+    case duplicateReviewGateID(ReviewGateID)
+    case duplicateRiskID(RiskID)
+    case duplicateDecisionID(DecisionID)
 
     public var description: String {
         switch self {
@@ -49,6 +59,21 @@ public enum RegistryError: Error, Equatable, Sendable, CustomStringConvertible {
         case .decisionAlreadySuperseded(let d): return "Decision '\(d)' is already superseded."
         case .decisionNotActive(let d): return "Decision '\(d)' is not active."
         case .projectNotArchivedOrDormant(let p): return "Project '\(p)' is neither archived nor dormant."
+        case .completionViaSetStatus(let p):
+            return "Project '\(p)' cannot be completed via setStatus; use completeProject(_:at:overrideRationale:)."
+        case .archivalViaSetStatus(let p):
+            return "Project '\(p)' cannot be archived via setStatus; use archive(_:at:)."
+        case .milestoneCompletionViaSetState(let m):
+            return "Milestone '\(m)' cannot be completed via setMilestoneState; use completeMilestone(_:_:at:overrideRationale:)."
+        case .unresolvedBlockers(let p, let blockers):
+            return "Project '\(p)' has unresolved blockers: \(blockers.map(\.rawValue).joined(separator: ", "))."
+        case .unsatisfiedMilestonePrerequisites(let m):
+            return "Milestone '\(m)' has unsatisfied prerequisites."
+        case .duplicateBlockerID(let id): return "A blocker with id '\(id)' already exists on this project."
+        case .duplicateMilestoneID(let id): return "A milestone with id '\(id)' already exists in the registry."
+        case .duplicateReviewGateID(let id): return "A review gate with id '\(id)' already exists on this project."
+        case .duplicateRiskID(let id): return "A risk with id '\(id)' already exists on this project."
+        case .duplicateDecisionID(let id): return "A decision with id '\(id)' already exists."
         }
     }
 }

@@ -47,7 +47,7 @@ func makeRegistry(_ projects: Project...) -> ProjectRegistry {
                 try! registry.setStatus(p.id, to: .active, at: p.createdAt)
                 try! registry.setStatus(p.id, to: .dormant, at: p.createdAt)
             case .archived:
-                try! registry.setStatus(p.id, to: .archived, at: p.createdAt)
+                try! registry.archive(p.id, at: p.createdAt)
             case .cancelled:
                 try! registry.setStatus(p.id, to: .active, at: p.createdAt)
                 try! registry.setStatus(p.id, to: .cancelled, at: p.createdAt)

@@ -41,6 +41,7 @@ public enum CodecError: Error, Equatable, Sendable, CustomStringConvertible {
     case malformedJSON(String)
     case unsupportedSchemaVersion(found: Int, supported: ClosedRange<Int>)
     case duplicateProjectIDs([String])
+    case duplicateDecisionIDs([String])
     case migrationFailed(fromVersion: Int, detail: String)
 
     public var description: String {
@@ -49,6 +50,7 @@ public enum CodecError: Error, Equatable, Sendable, CustomStringConvertible {
         case .unsupportedSchemaVersion(let found, let supported):
             return "Schema version \(found) unsupported (supported: \(supported.lowerBound)...\(supported.upperBound))."
         case .duplicateProjectIDs(let ids): return "Duplicate project ids: \(ids.joined(separator: ", "))."
+        case .duplicateDecisionIDs(let ids): return "Duplicate decision ids: \(ids.joined(separator: ", "))."
         case .migrationFailed(let v, let d): return "Migration from v\(v) failed: \(d)"
         }
     }
@@ -120,6 +122,15 @@ public enum ControlTowerCodec {
             duplicates.append(project.id.rawValue)
         }
         guard duplicates.isEmpty else { throw CodecError.duplicateProjectIDs(duplicates) }
+
+        var seenDecisions = Set<DecisionID>()
+        var duplicateDecisions: [String] = []
+        for decision in payload.decisions where !seenDecisions.insert(decision.id).inserted {
+            duplicateDecisions.append(decision.id.rawValue)
+        }
+        guard duplicateDecisions.isEmpty else {
+            throw CodecError.duplicateDecisionIDs(duplicateDecisions)
+        }
 
         var registry = ProjectRegistry()
         for project in payload.projects { registry.insertUnchecked(project) }

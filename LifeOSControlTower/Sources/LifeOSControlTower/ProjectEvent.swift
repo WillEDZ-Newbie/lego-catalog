@@ -31,6 +31,7 @@ public struct ProjectEvent: Codable, Hashable, Sendable, Identifiable {
         case deadlineChanged(from: Date?, to: Date?)
         case projectArchived
         case projectReactivated
+        case projectRemoved
     }
 
     public var id: EventID
