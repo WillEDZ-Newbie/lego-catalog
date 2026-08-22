@@ -46,10 +46,11 @@ Key invariants:
   exception is `Milestone.state` (kept per the brief), and
   `ConflictDetector` polices its coherence (`awaitingReview` without an
   open gate, `blocked` without evidence).
-- **Completion has one door.** `setStatus` cannot reach `.completed` or
-  `.archived`; only `completeProject` (which enforces milestones and open
-  blockers) and `archive` can, so their guards and audit events cannot be
-  bypassed. Same for milestones: `completeMilestone` is the only route to
+- **Completion has one door — in both directions.** `setStatus` cannot reach
+  `.completed` or `.archived`, and cannot leave them either: reopening
+  completed work goes through `reopen`, waking dormant/archived work through
+  `reactivate`, each audited with a reactivation event. Override rationales
+  must contain actual text; blank rationales are rejected. Same for milestones: `completeMilestone` is the only route to
   `.completed`, enforcing criteria, prerequisites and review gates — and a
   dangling gate reference always fails, never passing as approval.
 - **Overrides are events.** Completing a project/milestone past its guards

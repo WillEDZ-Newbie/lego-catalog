@@ -122,8 +122,18 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
         switch target {
         case .completed: throw RegistryError.completionViaSetStatus(id)
         case .archived: throw RegistryError.archivalViaSetStatus(id)
-        default: try applyStatus(id, to: target, at: date)
+        default: break
         }
+        // Leaving a resting state is equally guarded: reopening completed work
+        // goes through reopen(), waking dormant work through reactivate().
+        let current = try requireProject(id).status
+        if current == .completed && target == .active {
+            throw RegistryError.reopenViaSetStatus(id)
+        }
+        if current == .dormant && target == .active {
+            throw RegistryError.reactivationViaSetStatus(id)
+        }
+        try applyStatus(id, to: target, at: date)
     }
 
     /// Shared transition core used by setStatus/completeProject/archive.
@@ -134,7 +144,9 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
             }
             var kinds: [ProjectEvent.Kind] = [.statusChanged(from: p.status, to: target)]
             if target == .archived { kinds.append(.projectArchived) }
-            if p.status == .archived && target == .active { kinds.append(.projectReactivated) }
+            if target == .active && (p.status == .archived || p.status == .dormant || p.status == .completed) {
+                kinds.append(.projectReactivated)
+            }
             p.status = target
             return kinds
         }
@@ -147,6 +159,10 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
         at date: Date,
         overrideRationale: String? = nil
     ) throws {
+        if let rationale = overrideRationale,
+           rationale.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            throw RegistryError.emptyOverrideRationale
+        }
         try mutate(id, at: date) { p in
             guard p.status.canTransition(to: .completed) else {
                 throw RegistryError.invalidStatusTransition(from: p.status, to: .completed)
@@ -180,6 +196,16 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
         let p = try requireProject(id)
         guard p.status == .archived || p.status == .dormant else {
             throw RegistryError.projectNotArchivedOrDormant(id)
+        }
+        try applyStatus(id, to: .active, at: date)
+    }
+
+    /// Deliberately reopens a completed project. The only route from
+    /// `.completed` back to `.active`; audited with a reactivation event.
+    public mutating func reopen(_ id: ProjectID, at date: Date) throws {
+        let p = try requireProject(id)
+        guard p.status == .completed else {
+            throw RegistryError.projectNotCompleted(id)
         }
         try applyStatus(id, to: .active, at: date)
     }
@@ -375,6 +401,10 @@ public struct ProjectRegistry: Codable, Sendable, Equatable {
         at date: Date,
         overrideRationale: String? = nil
     ) throws {
+        if let rationale = overrideRationale,
+           rationale.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            throw RegistryError.emptyOverrideRationale
+        }
         // Prerequisite satisfaction needs the whole registry; evaluate before
         // entering the single-project mutation.
         let host = try requireProject(id)

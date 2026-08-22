@@ -295,3 +295,71 @@ final class HardeningTests: XCTestCase {
         XCTAssertEqual(queue.first { $0.projectID == ProjectID("down") }?.bucket, .blocked)
     }
 }
+
+/// Regression tests for the second client correction round.
+final class RestingStateAndRationaleTests: XCTestCase {
+
+    // setStatus must not reopen a completed project; reopen() is the audited door.
+    func testSetStatusRejectsReopeningCompleted() throws {
+        var registry = makeRegistry(makeProject("p", status: .completed))
+        XCTAssertThrowsError(try registry.setStatus(ProjectID("p"), to: .active, at: t0)) {
+            XCTAssertEqual($0 as? RegistryError, .reopenViaSetStatus(ProjectID("p")))
+        }
+        try registry.reopen(ProjectID("p"), at: t0)
+        XCTAssertEqual(registry.project(ProjectID("p"))?.status, .active)
+        XCTAssertTrue(registry.events(for: ProjectID("p")).map(\.kind).contains(.projectReactivated))
+    }
+
+    // setStatus must not wake dormant work; reactivate() is the audited door.
+    func testSetStatusRejectsReactivatingDormant() throws {
+        var registry = makeRegistry(makeProject("p", status: .dormant))
+        XCTAssertThrowsError(try registry.setStatus(ProjectID("p"), to: .active, at: t0)) {
+            XCTAssertEqual($0 as? RegistryError, .reactivationViaSetStatus(ProjectID("p")))
+        }
+        try registry.reactivate(ProjectID("p"), at: t0)
+        XCTAssertEqual(registry.project(ProjectID("p"))?.status, .active)
+        XCTAssertTrue(registry.events(for: ProjectID("p")).map(\.kind).contains(.projectReactivated))
+    }
+
+    // reopen() applies only to completed projects.
+    func testReopenRequiresCompletedStatus() {
+        var registry = makeRegistry(makeProject("p", status: .active))
+        XCTAssertThrowsError(try registry.reopen(ProjectID("p"), at: t0)) {
+            XCTAssertEqual($0 as? RegistryError, .projectNotCompleted(ProjectID("p")))
+        }
+    }
+
+    // Blank override rationales are rejected on project completion.
+    func testCompleteProjectRejectsBlankOverrideRationale() throws {
+        for blank in ["", "   ", "\n\t "] {
+            var registry = makeRegistry(makeProject("p", status: .active))
+            try registry.addBlocker(ProjectID("p"), Blocker(
+                id: BlockerID("b"), type: .technical, summary: "s", owner: .user, createdAt: t0), at: t0)
+            XCTAssertThrowsError(try registry.completeProject(
+                ProjectID("p"), at: t0, overrideRationale: blank)) {
+                XCTAssertEqual($0 as? RegistryError, .emptyOverrideRationale,
+                               "rationale \(blank.debugDescription) must be rejected")
+            }
+            // a real rationale still works
+            try registry.completeProject(ProjectID("p"), at: t0,
+                                         overrideRationale: "blocker obsolete after descope")
+            XCTAssertEqual(registry.project(ProjectID("p"))?.status, .completed)
+        }
+    }
+
+    // Blank override rationales are rejected on milestone completion.
+    func testCompleteMilestoneRejectsBlankOverrideRationale() throws {
+        var registry = makeRegistry(makeProject("p", status: .active))
+        try registry.addMilestone(ProjectID("p"), Milestone(
+            id: MilestoneID("m"), title: "t", state: .active,
+            acceptanceCriteria: [.init(id: CriterionID("c"), text: "req")],
+            owner: .user, createdAt: t0), at: t0)
+        XCTAssertThrowsError(try registry.completeMilestone(
+            ProjectID("p"), MilestoneID("m"), at: t0, overrideRationale: "  \n ")) {
+            XCTAssertEqual($0 as? RegistryError, .emptyOverrideRationale)
+        }
+        try registry.completeMilestone(ProjectID("p"), MilestoneID("m"), at: t0,
+                                       overrideRationale: "criteria tracked in follow-up")
+        XCTAssertEqual(registry.project(ProjectID("p"))?.milestone(MilestoneID("m"))?.state, .completed)
+    }
+}

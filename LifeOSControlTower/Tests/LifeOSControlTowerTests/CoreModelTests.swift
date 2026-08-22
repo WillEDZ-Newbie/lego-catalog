@@ -43,7 +43,7 @@ final class CoreModelTests: XCTestCase {
         let id = ProjectID("p1")
         try registry.setStatus(id, to: .active, at: t0)
         try registry.setStatus(id, to: .dormant, at: t0)
-        try registry.setStatus(id, to: .active, at: t0)
+        try registry.reactivate(id, at: t0)
         try registry.completeProject(id, at: t0)
         try registry.archive(id, at: t0)
         XCTAssertEqual(registry.project(id)?.status, .archived)

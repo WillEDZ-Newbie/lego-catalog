@@ -25,6 +25,10 @@ public enum RegistryError: Error, Equatable, Sendable, CustomStringConvertible {
     case projectNotArchivedOrDormant(ProjectID)
     case completionViaSetStatus(ProjectID)
     case archivalViaSetStatus(ProjectID)
+    case reopenViaSetStatus(ProjectID)
+    case reactivationViaSetStatus(ProjectID)
+    case projectNotCompleted(ProjectID)
+    case emptyOverrideRationale
     case milestoneCompletionViaSetState(MilestoneID)
     case unresolvedBlockers(ProjectID, blockers: [BlockerID])
     case unsatisfiedMilestonePrerequisites(MilestoneID)
@@ -63,6 +67,14 @@ public enum RegistryError: Error, Equatable, Sendable, CustomStringConvertible {
             return "Project '\(p)' cannot be completed via setStatus; use completeProject(_:at:overrideRationale:)."
         case .archivalViaSetStatus(let p):
             return "Project '\(p)' cannot be archived via setStatus; use archive(_:at:)."
+        case .reopenViaSetStatus(let p):
+            return "Completed project '\(p)' cannot be reopened via setStatus; use reopen(_:at:)."
+        case .reactivationViaSetStatus(let p):
+            return "Dormant project '\(p)' cannot be reactivated via setStatus; use reactivate(_:at:)."
+        case .projectNotCompleted(let p):
+            return "Project '\(p)' is not completed; reopen applies only to completed projects."
+        case .emptyOverrideRationale:
+            return "An override rationale must contain actual text; empty or whitespace-only rationales are rejected."
         case .milestoneCompletionViaSetState(let m):
             return "Milestone '\(m)' cannot be completed via setMilestoneState; use completeMilestone(_:_:at:overrideRationale:)."
         case .unresolvedBlockers(let p, let blockers):
