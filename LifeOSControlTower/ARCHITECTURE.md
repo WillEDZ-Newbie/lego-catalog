@@ -6,7 +6,7 @@
 |---|---|---|
 | Chief (DO) | Execution & next actions | Will consume ready/blocked/review queues and `NextActionAssessment`s |
 | Atlas (KNOW) | Knowledge & context | Will add semantic context on top of `ProjectID`s |
-| Nexus (ORGANISE) | Files & intake | Will supply `FileReference` associations |
+| Nexus (ORGANISE) | Files & intake | Will supply `FileReference` associations (ownership under review vs Atlas per the boundaries brief) |
 | Machine Oracle / ChatGPT | Architecture & review | Will reason over exported structured state |
 
 The Control Tower is the portfolio/control layer: it knows what exists,
@@ -97,7 +97,7 @@ Adapter seams (later work, in the host app, not here):
   into `@Model` classes; the codec is the boundary. Store events for audit.
 - **Chief**: poll `WorkQueueEngine.rank` and `registry.query()`; render
   `reasons` verbatim — they are written to be shown.
-- **Atlas/Nexus**: join on `ProjectID`/`FileReference.identifier`.
+- **Atlas/Nexus**: join on `ProjectID`/`FileReference.identifier` (file/evidence resolution ownership pending the Nexus-vs-Atlas boundary decision).
 - **ChatGPT/Oracle**: feed `ControlTowerCodec.export` output; ingest
   proposed `Decision`s through `recordDecision` after human approval.
 - **Shortcuts/Siri**: thin intents over registry mutations.
