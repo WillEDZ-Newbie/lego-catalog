@@ -1,4 +1,8 @@
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 /// Fluent query layer mirroring the approved core's shape
 /// (`registry.query().blocked()` …). Pure projections over a state
@@ -28,7 +32,7 @@ public struct TowerQuery: Sendable {
     public func completed() -> [ProjectSnapshot] { withLifecycle(.completed) }
     public func dormant() -> [ProjectSnapshot] { withLifecycle(.dormant) }
     public func inStage(_ stage: String) -> [ProjectSnapshot] {
-        filter { $0.stage.caseInsensitiveCompare(stage) == .orderedSame }
+        filter { $0.stage.lowercased() == stage.lowercased() }
     }
 
     public func needingReview() -> [ProjectSnapshot] {

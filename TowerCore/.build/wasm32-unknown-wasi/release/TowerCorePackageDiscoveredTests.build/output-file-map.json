@@ -1,0 +1,17 @@
+{
+  "": {
+    "dependencies": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/TowerCorePackageDiscoveredTests.d",
+    "object": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/TowerCorePackageDiscoveredTests.o",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/master.swiftdeps"
+  },
+  "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.derived/TowerCoreTests.swift": {
+    "object": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/TowerCoreTests.swift.o",
+    "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/TowerCoreTests~partial.swiftmodule",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/TowerCoreTests.swiftdeps"
+  },
+  "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.derived/all-discovered-tests.swift": {
+    "object": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/all-discovered-tests.swift.o",
+    "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/all-discovered-tests~partial.swiftmodule",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/all-discovered-tests.swiftdeps"
+  }
+}

@@ -1,4 +1,8 @@
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 /// Portfolio-level workload analysis: reports load, never reassigns work,
 /// never invents capacity.

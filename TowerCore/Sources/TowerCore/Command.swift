@@ -1,4 +1,8 @@
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 /// Everything a caller can ask the tower to do. Commands are validated
 /// against current state; only valid commands become events.

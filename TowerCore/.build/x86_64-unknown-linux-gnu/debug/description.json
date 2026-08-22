@@ -52,6 +52,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/JSONValue.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Migration.swift"
         },
         {
@@ -105,6 +109,7 @@
         "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Domain.swift.o",
         "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Event.swift.o",
         "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Graph.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/JSONValue.swift.o",
         "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Migration.swift.o",
         "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Queries.swift.o",
         "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/SampleHistory.swift.o",
@@ -170,6 +175,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/JSONValue.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Migration.swift.o"
         },
         {
@@ -217,6 +226,7 @@
         "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Domain.swift",
         "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Event.swift",
         "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Graph.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/JSONValue.swift",
         "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Migration.swift",
         "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Queries.swift",
         "/home/user/lego-catalog/TowerCore/Sources/TowerCore/SampleHistory.swift",
@@ -498,6 +508,92 @@
       ],
       "tempsPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build",
       "wholeModuleOptimization" : false
+    },
+    "C.TowerWeb-x86_64-unknown-linux-gnu-debug.module" : {
+      "executable" : "/opt/swift/usr/bin/swiftc",
+      "fileList" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/sources",
+      "importPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/Bridge.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/main.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/swift-version-6A52383ED409C6A7.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules/TowerCore.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/sources"
+        }
+      ],
+      "isLibrary" : false,
+      "moduleName" : "TowerWeb",
+      "moduleOutputPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules/TowerWeb.swiftmodule",
+      "objects" : [
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/Bridge.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/main.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-unknown-linux-gnu",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j4",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+        "-parseable-output",
+        "-Xfrontend",
+        "-entry-point-function-name",
+        "-Xfrontend",
+        "TowerWeb_main",
+        "-swift-version",
+        "6",
+        "-g",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "towercore",
+        "-Xcc",
+        "-fno-omit-frame-pointer"
+      ],
+      "outputFileMapPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/Bridge.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/main.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules/TowerWeb.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/Bridge.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/main.swift"
+      ],
+      "tempsPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build",
+      "wholeModuleOptimization" : false
     }
   },
   "swiftFrontendCommands" : {
@@ -518,6 +614,7 @@
       "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Domain.swift",
       "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Event.swift",
       "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Graph.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/JSONValue.swift",
       "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Migration.swift",
       "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Queries.swift",
       "/home/user/lego-catalog/TowerCore/Sources/TowerCore/SampleHistory.swift",
@@ -674,6 +771,49 @@
       "-fno-omit-frame-pointer",
       "-driver-use-frontend-path",
       "/opt/swift/usr/bin/swiftc"
+    ],
+    "TowerWeb" : [
+      "/opt/swift/usr/bin/swiftc",
+      "-module-name",
+      "TowerWeb",
+      "-package-name",
+      "towercore",
+      "-incremental",
+      "-c",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/Bridge.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/main.swift",
+      "-I",
+      "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "-target",
+      "x86_64-unknown-linux-gnu",
+      "-enable-batch-mode",
+      "-index-store-path",
+      "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j4",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+      "-parseable-output",
+      "-Xfrontend",
+      "-entry-point-function-name",
+      "-Xfrontend",
+      "TowerWeb_main",
+      "-swift-version",
+      "6",
+      "-g",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "towercore",
+      "-Xcc",
+      "-fno-omit-frame-pointer",
+      "-driver-use-frontend-path",
+      "/opt/swift/usr/bin/swiftc"
     ]
   },
   "targetDependencyMap" : {
@@ -690,6 +830,9 @@
       "TowerCore"
     ],
     "TowerCoreTests" : [
+      "TowerCore"
+    ],
+    "TowerWeb" : [
       "TowerCore"
     ]
   },
@@ -776,6 +919,10 @@
         {
           "kind" : "file",
           "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Graph.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/JSONValue.swift"
         },
         {
           "kind" : "file",
@@ -878,6 +1025,10 @@
         {
           "kind" : "file",
           "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Graph.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/JSONValue.swift.o"
         },
         {
           "kind" : "file",
@@ -995,6 +1146,114 @@
         }
       ],
       "outputFilePath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/sources"
+    },
+    "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/Bridge.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/main.swift"
+        }
+      ],
+      "outputFilePath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/sources"
+    },
+    "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Assess.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Command.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Compat.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Domain.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Event.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Graph.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/JSONValue.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Migration.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Queries.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/SampleHistory.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/State.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Support.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Tower.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/TowerCore.swiftmodule.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/V1Ingest.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Validation.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Workload.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/Bridge.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/TowerWeb.swiftmodule.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/main.swift.o"
+        }
+      ],
+      "outputFilePath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.product/Objects.LinkFileList"
     },
     "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/swift-version-6A52383ED409C6A7.txt" : {
       "alwaysOutOfDate" : true,

@@ -1,4 +1,8 @@
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 /// Compatibility façade: the approved LifeOS Control Tower core (v1.2)
 /// exposes named methods; these wrappers give TowerCore the same call shape

@@ -1,0 +1,17 @@
+{
+  "": {
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/master.swiftdeps"
+  },
+  "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/Bridge.swift": {
+    "dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/Bridge.d",
+    "object": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/Bridge.swift.o",
+    "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/Bridge~partial.swiftmodule",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/Bridge.swiftdeps"
+  },
+  "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/main.swift": {
+    "dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/main.d",
+    "object": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/main.swift.o",
+    "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/main~partial.swiftmodule",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerWeb.build/main.swiftdeps"
+  }
+}

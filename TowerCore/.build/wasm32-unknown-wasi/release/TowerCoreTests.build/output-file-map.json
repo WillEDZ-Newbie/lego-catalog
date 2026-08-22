@@ -1,0 +1,32 @@
+{
+  "": {
+    "dependencies": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/TowerCoreTests.d",
+    "object": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/TowerCoreTests.o",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/master.swiftdeps"
+  },
+  "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/AlignmentTests.swift": {
+    "object": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/AlignmentTests.swift.o",
+    "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/AlignmentTests~partial.swiftmodule",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/AlignmentTests.swiftdeps"
+  },
+  "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/OperationalTests.swift": {
+    "object": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/OperationalTests.swift.o",
+    "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/OperationalTests~partial.swiftmodule",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/OperationalTests.swiftdeps"
+  },
+  "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyHarness.swift": {
+    "object": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/PropertyHarness.swift.o",
+    "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/PropertyHarness~partial.swiftmodule",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/PropertyHarness.swiftdeps"
+  },
+  "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyTests.swift": {
+    "object": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/PropertyTests.swift.o",
+    "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/PropertyTests~partial.swiftmodule",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/PropertyTests.swiftdeps"
+  },
+  "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/TowerTests.swift": {
+    "object": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/TowerTests.swift.o",
+    "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/TowerTests~partial.swiftmodule",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/TowerTests.swiftdeps"
+  }
+}

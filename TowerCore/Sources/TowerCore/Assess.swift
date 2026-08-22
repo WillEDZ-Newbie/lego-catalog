@@ -1,4 +1,8 @@
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 // MARK: - Evidence (typed all the way down)
 
@@ -246,7 +250,7 @@ extension Tower {
         if !p.openGates.isEmpty {
             return (.awaitingReview, p.openGates.map { .openGate($0.id, $0.kind, reviewer: $0.reviewer) })
         }
-        guard let raw = p.nextAction?.trimmingCharacters(in: .whitespacesAndNewlines),
+        guard let raw = p.nextAction?.towerTrimmed,
               !raw.isEmpty else {
             return (.missing, [.actionMissing])
         }

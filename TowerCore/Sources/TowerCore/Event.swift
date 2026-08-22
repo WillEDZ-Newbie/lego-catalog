@@ -1,4 +1,8 @@
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 /// One immutable fact in the portfolio's history. **Events are the truth;
 /// state is a cache** — `TowerState` is always a pure fold over the log.

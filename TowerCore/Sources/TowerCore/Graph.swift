@@ -1,4 +1,8 @@
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 /// Dependency analysis over a state snapshot. Because `Tower` rejects
 /// blocking cycles at the door, the blocking subgraph here is always a DAG —

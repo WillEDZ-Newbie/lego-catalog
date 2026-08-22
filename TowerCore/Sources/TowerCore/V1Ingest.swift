@@ -1,4 +1,8 @@
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 /// Non-destructive ingestion of a portfolio exported by the approved
 /// LifeOS Control Tower core (v1 `PortfolioExport` JSON).
@@ -49,45 +53,46 @@ public enum V1Ingest {
     // MARK: - Entry point
 
     public static func ingest(v1Data data: Data, at now: Date) throws -> (tower: Tower, report: IngestReport) {
-        guard let raw = try? JSONSerialization.jsonObject(with: data),
-              let root = raw as? [String: Any] else {
+        guard let tree = try? JSONValue.parse(data), tree.object != nil else {
             throw IngestFailure.malformed("top level is not a JSON object")
         }
-        let projects = root["projects"] as? [[String: Any]] ?? []
-        let decisions = root["decisions"] as? [[String: Any]] ?? []
+        let projects = (tree["projects"]?.array ?? []).compactMap { $0.object != nil ? $0 : nil }
+        let decisions = (tree["decisions"]?.array ?? []).compactMap { $0.object != nil ? $0 : nil }
 
         var tower = Tower()
         var report = IngestReport()
-        let iso = ISO8601DateFormatter()
-        func date(_ v: Any?) -> Date? { (v as? String).flatMap { iso.date(from: $0) } }
+        let isoStyle = Date.ISO8601FormatStyle(includingFractionalSeconds: false)
+        func date(_ v: JSONValue?) -> Date? {
+            guard let s = v?.string else { return nil }
+            return (try? isoStyle.parse(s)) ?? (try? Date.ISO8601FormatStyle(includingFractionalSeconds: true).parse(s))
+        }
         func run(_ c: Command, _ effective: Date?) throws {
             try tower.execute(c, at: now, effectiveAt: effective ?? now)
         }
         func adapt(_ subject: String, _ detail: String) {
             report.adaptations.append(Adaptation(subject: subject, detail: detail))
         }
-        func text(_ v: Any?, fallback: String) -> NonEmptyText {
-            NonEmptyText(v as? String ?? "") ?? NonEmptyText(fallback)!
+        func text(_ v: JSONValue?, fallback: String) -> NonEmptyText {
+            NonEmptyText(v?.string ?? "") ?? NonEmptyText(fallback)!
         }
-        func owner(_ v: Any?) -> Owner {
-            guard let d = v as? [String: Any], let key = d.keys.first else { return .user }
+        func owner(_ v: JSONValue?) -> Owner {
+            guard let d = v?.object, let key = d.keys.first else { return .user }
             switch key {
             case "user": return .user
             case "chatGPT": return .chatGPT
             case "grok": return .grok
             case "claude": return .claude
             case "tool":
-                let name = (d["tool"] as? [String: Any])?["name"] as? String ?? "tool"
-                return .tool(name: name)
+                return .tool(name: d["tool"]?["name"]?.string ?? "tool")
             case "mixed":
-                let arr = ((d["mixed"] as? [String: Any])?["_0"] as? [Any]) ?? []
+                let arr = d["mixed"]?["_0"]?.array ?? []
                 let owners = arr.map { owner($0) }
                 return owners.isEmpty ? .user : .mixed(owners)
             default: return .user
             }
         }
-        func level(_ v: Any?, subject: String, field: String) -> Level {
-            switch v as? String {
+        func level(_ v: JSONValue?, subject: String, field: String) -> Level {
+            switch v?.string {
             case "low": return .low
             case "medium": return .medium
             case "high": return .high
@@ -103,11 +108,11 @@ public enum V1Ingest {
             var id: ProjectID
             var status: String
             var updatedAt: Date?
-            var dict: [String: Any]
+            var dict: JSONValue
         }
         var pending: [Pending] = []
         for p in projects {
-            guard let idStr = p["id"] as? String else {
+            guard let idStr = p["id"]?.string else {
                 adapt("project", "entry without id skipped"); continue
             }
             let id = ProjectID(idStr)
@@ -115,11 +120,11 @@ public enum V1Ingest {
             let seed = Event.ProjectSeed(
                 id: id,
                 name: text(p["name"], fallback: "Untitled (\(idStr))"),
-                purpose: p["purpose"] as? String ?? "",
-                priority: Priority(rawValue: p["priority"] as? String ?? "") ?? .medium,
+                purpose: p["purpose"]?.string ?? "",
+                priority: Priority(rawValue: p["priority"]?.string ?? "") ?? .medium,
                 owner: owner(p["owner"]),
-                stage: p["currentStage"] as? String ?? "",
-                nextAction: p["nextAction"] as? String,
+                stage: p["currentStage"]?.string ?? "",
+                nextAction: p["nextAction"]?.string,
                 deadline: date(p["deadline"]))
             do {
                 try run(.createProject(seed), created)
@@ -127,21 +132,21 @@ public enum V1Ingest {
             } catch {
                 adapt(idStr, "could not create (\(error)); skipped"); continue
             }
-            if let last = p["lastAction"] as? String, let t = NonEmptyText(last) {
+            if let last = p["lastAction"]?.string, let t = NonEmptyText(last) {
                 try? run(.completeAction(id, t), date(p["updatedAt"]) ?? created)
-                if let na = p["nextAction"] as? String {
+                if let na = p["nextAction"]?.string {
                     try? run(.setNextAction(id, na), date(p["updatedAt"]) ?? created)
                 }
             }
-            pending.append(Pending(id: id, status: p["status"] as? String ?? "notStarted",
+            pending.append(Pending(id: id, status: p["status"]?.string ?? "notStarted",
                                    updatedAt: date(p["updatedAt"]), dict: p))
         }
 
         // ---- Phase 2: dependencies (cycle-closers demoted to informs) ----
         for p in pending {
-            for depAny in p.dict["dependencies"] as? [[String: Any]] ?? [] {
-                guard let target = depAny["prerequisite"] as? String else { continue }
-                let kind = DependencyKind(rawValue: depAny["kind"] as? String ?? "") ?? .blocks
+            for depAny in p.dict["dependencies"]?.array ?? [] {
+                guard let target = depAny["prerequisite"]?.string else { continue }
+                let kind = DependencyKind(rawValue: depAny["kind"]?.string ?? "") ?? .blocks
                 let when = p.updatedAt
                 do {
                     try run(.addDependency(p.id, on: ProjectID(target), kind: kind), when)
@@ -164,31 +169,31 @@ public enum V1Ingest {
         var milestoneCompletions: [PendingMilestoneCompletion] = []
 
         for p in pending {
-            for g in p.dict["reviewGates"] as? [[String: Any]] ?? [] {
-                guard let gid = g["id"] as? String else { continue }
+            for g in p.dict["reviewGates"]?.array ?? [] {
+                guard let gid = g["id"]?.string else { continue }
                 let gate = Gate(id: GateID(gid),
                                 title: text(g["title"], fallback: "Review \(gid)"),
-                                kind: Gate.Kind(rawValue: g["kind"] as? String ?? "") ?? .userApproval,
+                                kind: Gate.Kind(rawValue: g["kind"]?.string ?? "") ?? .userApproval,
                                 reviewer: owner(g["reviewer"]),
                                 openedAt: date(g["requestedAt"]) ?? now)
                 do { try run(.openGate(p.id, gate), gate.openedAt); report.gates += 1 }
                 catch { adapt(gid, "gate skipped: \(error)"); continue }
-                if let res = g["resolution"] as? [String: Any] {
-                    let outcome: Gate.Outcome = (res["outcome"] as? String) == "rejected" ? .rejected : .approved
-                    let rationale = NonEmptyText(res["rationale"] as? String ?? "")
+                if let res = g["resolution"], res.object != nil {
+                    let outcome: Gate.Outcome = res["outcome"]?.string == "rejected" ? .rejected : .approved
+                    let rationale = NonEmptyText(res["rationale"]?.string ?? "")
                         ?? NonEmptyText("migrated: no rationale recorded in source")!
-                    if NonEmptyText(res["rationale"] as? String ?? "") == nil {
+                    if NonEmptyText(res["rationale"]?.string ?? "") == nil {
                         adapt(gid, "gate verdict had no rationale in source; placeholder recorded")
                     }
                     try? run(.resolveGate(p.id, GateID(gid), outcome: outcome, rationale: rationale),
                              date(g["resolvedAt"]) ?? now)
                 }
             }
-            for b in p.dict["blockers"] as? [[String: Any]] ?? [] {
-                guard let bid = b["id"] as? String else { continue }
+            for b in p.dict["blockers"]?.array ?? [] {
+                guard let bid = b["id"]?.string else { continue }
                 let blocker = Blocker(
                     id: BlockerID(bid),
-                    kind: Blocker.Kind(rawValue: b["type"] as? String ?? "") ?? .unknown,
+                    kind: Blocker.Kind(rawValue: b["type"]?.string ?? "") ?? .unknown,
                     summary: text(b["summary"], fallback: "Blocker \(bid)"),
                     owner: owner(b["owner"]),
                     severity: level(b["severity"], subject: bid, field: "severity"),
@@ -196,13 +201,13 @@ public enum V1Ingest {
                 do { try run(.openBlocker(p.id, blocker), blocker.openedAt); report.blockers += 1 }
                 catch { adapt(bid, "blocker skipped: \(error)"); continue }
                 if let resolvedAt = date(b["resolvedAt"]) {
-                    let summary = ((b["resolution"] as? [String: Any])?["summary"] as? String)
+                    let summary = b["resolution"]?["summary"]?.string
                     let rt = NonEmptyText(summary ?? "") ?? NonEmptyText("migrated: resolved in source without structured resolution")!
                     try? run(.resolveBlocker(p.id, BlockerID(bid), resolution: rt), resolvedAt)
                 }
             }
-            for r in p.dict["risks"] as? [[String: Any]] ?? [] {
-                guard let rid = r["id"] as? String else { continue }
+            for r in p.dict["risks"]?.array ?? [] {
+                guard let rid = r["id"]?.string else { continue }
                 let risk = Risk(id: RiskID(rid),
                                 summary: text(r["summary"], fallback: "Risk \(rid)"),
                                 likelihood: level(r["likelihood"], subject: rid, field: "likelihood"),
@@ -210,35 +215,35 @@ public enum V1Ingest {
                                 owner: owner(r["owner"]))
                 do { try run(.addRisk(p.id, risk), p.updatedAt); report.risks += 1 }
                 catch { adapt(rid, "risk skipped: \(error)"); continue }
-                if let status = Risk.Status(rawValue: r["status"] as? String ?? ""), status != .open {
+                if let status = Risk.Status(rawValue: r["status"]?.string ?? ""), status != .open {
                     try? run(.setRiskStatus(p.id, RiskID(rid), status), p.updatedAt)
                 }
             }
-            for f in p.dict["files"] as? [[String: Any]] ?? [] {
-                if let ref = NonEmptyText(f["identifier"] as? String ?? "") {
+            for f in p.dict["files"]?.array ?? [] {
+                if let ref = NonEmptyText(f["identifier"]?.string ?? "") {
                     try? run(.addFileReference(p.id, ref), p.updatedAt)
                 }
             }
-            for m in p.dict["milestones"] as? [[String: Any]] ?? [] {
-                guard let mid = m["id"] as? String else { continue }
+            for m in p.dict["milestones"]?.array ?? [] {
+                guard let mid = m["id"]?.string else { continue }
                 var prereqs: [ProjectID] = []
-                for prereq in m["prerequisites"] as? [[String: Any]] ?? [] {
-                    if let proj = (prereq["project"] as? [String: Any])?["_0"] as? String {
+                for prereq in m["prerequisites"]?.array ?? [] {
+                    if let proj = prereq["project"]?["_0"]?.string {
                         prereqs.append(ProjectID(proj))
-                    } else if let ms = (prereq["milestone"] as? [String: Any])?["_0"] as? String {
+                    } else if let ms = prereq["milestone"]?["_0"]?.string {
                         adapt(mid, "milestone-to-milestone prerequisite '\(ms)' not representable; recorded here, omitted from copy")
                     }
                 }
                 var criteria: [Criterion] = []
                 var satisfied: [(CriterionID, Date?)] = []
-                for c in m["acceptanceCriteria"] as? [[String: Any]] ?? [] {
-                    guard let cid = c["id"] as? String else { continue }
+                for c in m["acceptanceCriteria"]?.array ?? [] {
+                    guard let cid = c["id"]?.string else { continue }
                     criteria.append(Criterion(id: CriterionID(cid),
                                               text: text(c["text"], fallback: "criterion \(cid)"),
-                                              isRequired: c["isRequired"] as? Bool ?? true))
+                                              isRequired: c["isRequired"]?.boolValue ?? true))
                     if c["satisfiedAt"] != nil { satisfied.append((CriterionID(cid), date(c["satisfiedAt"]))) }
                 }
-                var gateID = (m["reviewGateID"] as? String).map { GateID($0) }
+                var gateID = m["reviewGateID"]?.string.map { GateID($0) }
                 if let g = gateID, tower.state.project(p.id)?.gate(g) == nil {
                     adapt(mid, "references missing gate '\(g)' in source; imported without gate (a missing gate is never approval)")
                     gateID = nil
@@ -250,28 +255,28 @@ public enum V1Ingest {
                     prerequisiteProjects: prereqs.filter { pid in pending.contains { $0.id == pid } },
                     gateID: gateID,
                     deadline: date(m["deadline"]),
-                    requiredForCompletion: m["isRequiredForProjectCompletion"] as? Bool ?? true,
+                    requiredForCompletion: m["isRequiredForProjectCompletion"]?.boolValue ?? true,
                     createdAt: date(m["createdAt"]) ?? now)
                 do { try run(.addMilestone(p.id, milestone), milestone.createdAt); report.milestones += 1 }
                 catch { adapt(mid, "milestone skipped: \(error)"); continue }
                 for (cid, when) in satisfied {
                     try? run(.satisfyCriterion(p.id, MilestoneID(mid), cid), when)
                 }
-                if (m["state"] as? String) == "completed" || m["completedAt"] != nil {
+                if m["state"]?.string == "completed" || m["completedAt"] != nil {
                     milestoneCompletions.append(.init(project: p.id, milestone: MilestoneID(mid)))
                 }
             }
         }
 
         // ---- Phase 4: decisions and supersession lineage ----
-        func decisionValue(_ d: [String: Any]) -> Decision? {
-            guard let id = d["id"] as? String else { return nil }
+        func decisionValue(_ d: JSONValue) -> Decision? {
+            guard let id = d["id"]?.string else { return nil }
             return Decision(id: DecisionID(id),
                             title: text(d["title"], fallback: "Decision \(id)"),
                             decision: text(d["decision"], fallback: "(not recorded)"),
                             rationale: text(d["rationale"], fallback: "(not recorded)"),
                             owner: owner(d["owner"]),
-                            affectedProjects: (d["affectedProjects"] as? [String] ?? []).map { ProjectID($0) },
+                            affectedProjects: (d["affectedProjects"]?.array ?? []).compactMap { $0.string.map { ProjectID($0) } },
                             decidedAt: date(d["date"]) ?? now)
         }
         let sortedDecisions = decisions.sorted {
@@ -281,7 +286,7 @@ public enum V1Ingest {
         var recorded = Set<DecisionID>()
         for d in sortedDecisions {
             guard let value = decisionValue(d) else { continue }
-            if let oldID = d["supersedes"] as? String {
+            if let oldID = d["supersedes"]?.string {
                 supersessions.append((DecisionID(oldID), value, date(d["date"]))); continue
             }
             do { try run(.recordDecision(value), value.decidedAt); report.decisions += 1; recorded.insert(value.id) }

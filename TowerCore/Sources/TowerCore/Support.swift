@@ -1,4 +1,8 @@
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 /// Strongly typed identifier, one specialisation per entity kind.
 public struct Identifier<Marker>: RawRepresentable, Hashable, Sendable, Comparable, Codable,
@@ -37,10 +41,25 @@ public typealias EventID = Identifier<EventMarker>
 /// Text that provably contains non-whitespace content. Used wherever blank
 /// input would corrupt an audit trail (override rationales, gate verdicts):
 /// the illegal state — a blank rationale — cannot be constructed at all.
+extension String {
+    /// Portable whitespace/newline trim (FoundationEssentials has no
+    /// `trimmingCharacters(in:)`).
+    var towerTrimmed: String {
+        var scalars = Array(unicodeScalars)
+        func isWS(_ c: Unicode.Scalar) -> Bool {
+            c == " " || c == "\t" || c == "\n" || c == "\r" || c.properties.isWhitespace
+        }
+        while let f = scalars.first, isWS(f) { scalars.removeFirst() }
+        while let l = scalars.last, isWS(l) { scalars.removeLast() }
+        var view = String.UnicodeScalarView(); view.append(contentsOf: scalars)
+        return String(view)
+    }
+}
+
 public struct NonEmptyText: Codable, Hashable, Sendable, CustomStringConvertible {
     public let text: String
     public init?(_ raw: String) {
-        let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmed = raw.towerTrimmed
         guard !trimmed.isEmpty else { return nil }
         self.text = trimmed
     }

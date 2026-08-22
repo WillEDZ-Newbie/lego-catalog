@@ -1,4 +1,8 @@
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 /// A deterministic fictional portfolio built purely through guarded
 /// commands — usable from tests and demos without leaving the package.
@@ -98,7 +102,7 @@ public enum SampleHistory {
         let actions = ["Draft the v2 interface spec", "Run the importer on the 5k sample",
                        "Write regression tests for the parser", nil]
         for i in 0..<20 {
-            let id = String(format: "gen-%02d", i)
+            let id = "gen-" + (i < 10 ? "0" : "") + String(i)
             let created = ago(Double(5 + rng.int(70)))
             mk(id, "Sample Project #\(i)",
                pri: [Priority.critical, .high, .medium, .low][rng.int(4)],

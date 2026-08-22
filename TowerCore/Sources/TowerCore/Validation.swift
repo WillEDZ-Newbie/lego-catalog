@@ -1,4 +1,8 @@
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 /// A violation found while validating an imported history. Each names the
 /// offending event and the invariant it breaks — imports fail loudly and

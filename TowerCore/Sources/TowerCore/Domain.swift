@@ -1,4 +1,8 @@
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 public enum Lifecycle: String, Codable, CaseIterable, Sendable {
     case notStarted, active, dormant, completed, cancelled, archived

@@ -1,4 +1,8 @@
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 /// Pure snapshot of the portfolio: the fold of the event log. `apply` is
 /// total over events produced by `Tower.execute` — it never validates,

@@ -1,4 +1,8 @@
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 /// The façade. Owns the event log, maintains the folded state, validates
 /// every command before it becomes history.
@@ -344,15 +348,13 @@ extension Tower {
         // Read the version first so older payloads can be migrated forward
         // on their raw JSON before decoding.
         var payload = data
-        if let raw = try? JSONSerialization.jsonObject(with: data),
-           var dict = raw as? [String: Any] {
-            let version = dict["schemaVersion"] as? Int ?? 0
+        if let tree = try? JSONValue.parse(data), tree.object != nil {
+            let version = tree["schemaVersion"]?.int ?? 0
             guard SchemaSteps.supportedVersions.contains(version) else {
                 throw TowerCodecError.unsupportedSchemaVersion(version)
             }
             if version < TowerExport.currentSchemaVersion {
-                dict = try SchemaSteps.migrate(dict, from: version)
-                payload = try JSONSerialization.data(withJSONObject: dict)
+                payload = try SchemaSteps.migrate(tree, from: version).serialized()
             }
         }
         let decoder = JSONDecoder()

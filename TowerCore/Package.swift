@@ -8,6 +8,7 @@ let package = Package(
     ],
     targets: [
         .target(name: "TowerCore"),
+        .executableTarget(name: "TowerWeb", dependencies: ["TowerCore"]),
         .testTarget(name: "TowerCoreTests", dependencies: ["TowerCore"])
     ]
 )
