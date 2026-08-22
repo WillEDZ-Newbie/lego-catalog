@@ -1,0 +1,11 @@
+-lswiftSwiftOnoneSupport
+-lswiftCore
+-lswift_Concurrency
+-lswift_StringProcessing
+-lswift_RegexParser
+-lswiftGlibc
+-lFoundationEssentials
+-lm
+-lpthread
+-lutil
+-ldl

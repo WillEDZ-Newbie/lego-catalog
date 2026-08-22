@@ -1,0 +1,21 @@
+version: "Swift version 6.0.3 (swift-6.0.3-RELEASE)"
+options: "384776953252fadceb0553a8d9a3aca5d218f8254e7b6388b32e80cc266990b1"
+build_start_time: [1787411413, 503894000]
+build_end_time: [1787411433, 971082000]
+inputs:
+  "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Assess.swift": [1787411292, 0]
+  "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Command.swift": [1787411247, 0]
+  "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Compat.swift": [1787411292, 0]
+  "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Domain.swift": [1787411247, 0]
+  "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Event.swift": [1787411247, 0]
+  "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Graph.swift": [1787411247, 0]
+  "/home/user/lego-catalog/TowerCore/Sources/TowerCore/JSONValue.swift": [1787411247, 0]
+  "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Migration.swift": [1787411247, 0]
+  "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Queries.swift": [1787411263, 0]
+  "/home/user/lego-catalog/TowerCore/Sources/TowerCore/SampleHistory.swift": [1787411263, 0]
+  "/home/user/lego-catalog/TowerCore/Sources/TowerCore/State.swift": [1787411247, 0]
+  "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Support.swift": [1787411292, 0]
+  "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Tower.swift": [1787411292, 0]
+  "/home/user/lego-catalog/TowerCore/Sources/TowerCore/V1Ingest.swift": [1787411247, 0]
+  "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Validation.swift": [1787411247, 0]
+  "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Workload.swift": [1787411247, 0]

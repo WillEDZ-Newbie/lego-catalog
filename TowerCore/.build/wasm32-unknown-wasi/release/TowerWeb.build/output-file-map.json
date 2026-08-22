@@ -1,0 +1,17 @@
+{
+  "": {
+    "dependencies": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/TowerWeb.d",
+    "object": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/TowerWeb.o",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/master.swiftdeps"
+  },
+  "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/Bridge.swift": {
+    "object": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/Bridge.swift.o",
+    "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/Bridge~partial.swiftmodule",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/Bridge.swiftdeps"
+  },
+  "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/main.swift": {
+    "object": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/main.swift.o",
+    "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/main~partial.swiftmodule",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/main.swiftdeps"
+  }
+}

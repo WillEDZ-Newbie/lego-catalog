@@ -1,0 +1,7 @@
+version: "Swift version 6.0.3 (swift-6.0.3-RELEASE)"
+options: "be0916d1e56226f307cdba16469451c4fc4d0ab87edc75724f89a3c6e2dad060"
+build_start_time: [1787411434, 93987000]
+build_end_time: [1787411437, 805677000]
+inputs:
+  "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/Bridge.swift": [1787411396, 0]
+  "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/main.swift": [1787411396, 0]

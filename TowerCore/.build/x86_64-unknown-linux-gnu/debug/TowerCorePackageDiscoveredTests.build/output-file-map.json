@@ -1,0 +1,17 @@
+{
+  "": {
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/master.swiftdeps"
+  },
+  "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.derived/TowerCoreTests.swift": {
+    "dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/TowerCoreTests.d",
+    "object": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/TowerCoreTests.swift.o",
+    "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/TowerCoreTests~partial.swiftmodule",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/TowerCoreTests.swiftdeps"
+  },
+  "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.derived/all-discovered-tests.swift": {
+    "dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/all-discovered-tests.d",
+    "object": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/all-discovered-tests.swift.o",
+    "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/all-discovered-tests~partial.swiftmodule",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/all-discovered-tests.swiftdeps"
+  }
+}

@@ -1,0 +1,1301 @@
+{
+  "builtTestProducts" : [
+    {
+      "binaryPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.wasm",
+      "packagePath" : "/home/user/lego-catalog/TowerCore",
+      "productName" : "TowerCorePackageTests"
+    }
+  ],
+  "copyCommands" : {
+
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+    "TowerCorePackageDiscoveredTests"
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.TowerCore-wasm32-unknown-wasi-release.module" : {
+      "executable" : "/opt/swift/usr/bin/swiftc",
+      "fileList" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/sources",
+      "importPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Assess.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Command.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Compat.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Domain.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Event.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Graph.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/JSONValue.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Migration.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Queries.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/SampleHistory.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/State.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Support.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Tower.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/V1Ingest.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Validation.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Workload.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/swift-version-6A52383ED409C6A7.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "TowerCore",
+      "moduleOutputPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules/TowerCore.swiftmodule",
+      "objects" : [
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Assess.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Command.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Compat.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Domain.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Event.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Graph.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/JSONValue.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Migration.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Queries.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/SampleHistory.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/State.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Support.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Tower.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/V1Ingest.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Validation.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Workload.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "wasm32-unknown-wasi",
+        "-O",
+        "-j4",
+        "-DSWIFT_PACKAGE",
+        "-module-cache-path",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-swift-version",
+        "6",
+        "-sdk",
+        "/opt/swift/usr/share/wasi-sysroot",
+        "-g",
+        "-I/opt/swift/usr/lib/swift_static/wasi",
+        "-static-stdlib",
+        "-Osize",
+        "-Xclang-linker",
+        "-mexec-model=reactor",
+        "-Xcc",
+        "--sysroot",
+        "-Xcc",
+        "/opt/swift/usr/share/wasi-sysroot",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "towercore"
+      ],
+      "outputFileMapPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Assess.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Command.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Compat.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Domain.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Event.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Graph.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/JSONValue.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Migration.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Queries.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/SampleHistory.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/State.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Support.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Tower.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/V1Ingest.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Validation.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Workload.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules/TowerCore.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Assess.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Command.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Compat.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Domain.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Event.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Graph.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/JSONValue.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Migration.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Queries.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/SampleHistory.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/State.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Support.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Tower.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/V1Ingest.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Validation.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Workload.swift"
+      ],
+      "tempsPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build",
+      "wholeModuleOptimization" : true
+    },
+    "C.TowerCorePackageDiscoveredTests-wasm32-unknown-wasi-release.module" : {
+      "executable" : "/opt/swift/usr/bin/swiftc",
+      "fileList" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/sources",
+      "importPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.derived/TowerCoreTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.derived/all-discovered-tests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/swift-version-6A52383ED409C6A7.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules/TowerCoreTests.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "TowerCorePackageDiscoveredTests",
+      "moduleOutputPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules/TowerCorePackageDiscoveredTests.swiftmodule",
+      "objects" : [
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/TowerCoreTests.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/all-discovered-tests.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "wasm32-unknown-wasi",
+        "-O",
+        "-enable-testing",
+        "-j4",
+        "-DSWIFT_PACKAGE",
+        "-module-cache-path",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-sdk",
+        "/opt/swift/usr/share/wasi-sysroot",
+        "-g",
+        "-I/opt/swift/usr/lib/swift_static/wasi",
+        "-static-stdlib",
+        "-Osize",
+        "-Xclang-linker",
+        "-mexec-model=reactor",
+        "-Xcc",
+        "--sysroot",
+        "-Xcc",
+        "/opt/swift/usr/share/wasi-sysroot",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "towercore"
+      ],
+      "outputFileMapPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/TowerCoreTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/all-discovered-tests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules/TowerCorePackageDiscoveredTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.derived/TowerCoreTests.swift",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.derived/all-discovered-tests.swift"
+      ],
+      "tempsPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build",
+      "wholeModuleOptimization" : true
+    },
+    "C.TowerCorePackageTests-wasm32-unknown-wasi-release.module" : {
+      "executable" : "/opt/swift/usr/bin/swiftc",
+      "fileList" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.build/sources",
+      "importPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.derived/runner.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/swift-version-6A52383ED409C6A7.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules/TowerCoreTests.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules/TowerCorePackageDiscoveredTests.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "TowerCorePackageTests",
+      "moduleOutputPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules/TowerCorePackageTests.swiftmodule",
+      "objects" : [
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.build/runner.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "wasm32-unknown-wasi",
+        "-O",
+        "-enable-testing",
+        "-j4",
+        "-DSWIFT_PACKAGE",
+        "-module-cache-path",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-sdk",
+        "/opt/swift/usr/share/wasi-sysroot",
+        "-g",
+        "-I/opt/swift/usr/lib/swift_static/wasi",
+        "-static-stdlib",
+        "-Osize",
+        "-Xclang-linker",
+        "-mexec-model=reactor",
+        "-Xcc",
+        "--sysroot",
+        "-Xcc",
+        "/opt/swift/usr/share/wasi-sysroot",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "towercore"
+      ],
+      "outputFileMapPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.build/runner.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules/TowerCorePackageTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.derived/runner.swift"
+      ],
+      "tempsPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.build",
+      "wholeModuleOptimization" : true
+    },
+    "C.TowerCoreTests-wasm32-unknown-wasi-release.module" : {
+      "executable" : "/opt/swift/usr/bin/swiftc",
+      "fileList" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/sources",
+      "importPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/AlignmentTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/OperationalTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyHarness.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/TowerTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/swift-version-6A52383ED409C6A7.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules/TowerCore.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "TowerCoreTests",
+      "moduleOutputPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules/TowerCoreTests.swiftmodule",
+      "objects" : [
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/AlignmentTests.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/OperationalTests.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/PropertyHarness.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/PropertyTests.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/TowerTests.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "wasm32-unknown-wasi",
+        "-index-store-path",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/index/store",
+        "-O",
+        "-enable-testing",
+        "-j4",
+        "-DSWIFT_PACKAGE",
+        "-module-cache-path",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-swift-version",
+        "6",
+        "-sdk",
+        "/opt/swift/usr/share/wasi-sysroot",
+        "-g",
+        "-I/opt/swift/usr/lib/swift_static/wasi",
+        "-static-stdlib",
+        "-Osize",
+        "-Xclang-linker",
+        "-mexec-model=reactor",
+        "-Xcc",
+        "--sysroot",
+        "-Xcc",
+        "/opt/swift/usr/share/wasi-sysroot",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "towercore"
+      ],
+      "outputFileMapPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/AlignmentTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/OperationalTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/PropertyHarness.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/PropertyTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/TowerTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules/TowerCoreTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/AlignmentTests.swift",
+        "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/OperationalTests.swift",
+        "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyHarness.swift",
+        "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyTests.swift",
+        "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/TowerTests.swift"
+      ],
+      "tempsPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build",
+      "wholeModuleOptimization" : true
+    },
+    "C.TowerWeb-wasm32-unknown-wasi-release.module" : {
+      "executable" : "/opt/swift/usr/bin/swiftc",
+      "fileList" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/sources",
+      "importPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/Bridge.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/main.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/swift-version-6A52383ED409C6A7.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules/TowerCore.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/sources"
+        }
+      ],
+      "isLibrary" : false,
+      "moduleName" : "TowerWeb",
+      "moduleOutputPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/TowerWeb.swiftmodule",
+      "objects" : [
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/Bridge.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/main.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "wasm32-unknown-wasi",
+        "-O",
+        "-j4",
+        "-DSWIFT_PACKAGE",
+        "-module-cache-path",
+        "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/ModuleCache",
+        "-parseable-output",
+        "-swift-version",
+        "6",
+        "-sdk",
+        "/opt/swift/usr/share/wasi-sysroot",
+        "-g",
+        "-I/opt/swift/usr/lib/swift_static/wasi",
+        "-static-stdlib",
+        "-Osize",
+        "-Xclang-linker",
+        "-mexec-model=reactor",
+        "-Xcc",
+        "--sysroot",
+        "-Xcc",
+        "/opt/swift/usr/share/wasi-sysroot",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "towercore"
+      ],
+      "outputFileMapPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/Bridge.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/main.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/TowerWeb.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/Bridge.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/main.swift"
+      ],
+      "tempsPath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build",
+      "wholeModuleOptimization" : true
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "TowerCore" : [
+      "/opt/swift/usr/bin/swiftc",
+      "-module-name",
+      "TowerCore",
+      "-package-name",
+      "towercore",
+      "-whole-module-optimization",
+      "-num-threads",
+      "4",
+      "-c",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Assess.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Command.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Compat.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Domain.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Event.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Graph.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/JSONValue.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Migration.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Queries.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/SampleHistory.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/State.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Support.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Tower.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/V1Ingest.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Validation.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Workload.swift",
+      "-I",
+      "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules",
+      "-target",
+      "wasm32-unknown-wasi",
+      "-O",
+      "-j4",
+      "-DSWIFT_PACKAGE",
+      "-module-cache-path",
+      "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-swift-version",
+      "6",
+      "-sdk",
+      "/opt/swift/usr/share/wasi-sysroot",
+      "-g",
+      "-I/opt/swift/usr/lib/swift_static/wasi",
+      "-static-stdlib",
+      "-Osize",
+      "-Xclang-linker",
+      "-mexec-model=reactor",
+      "-Xcc",
+      "--sysroot",
+      "-Xcc",
+      "/opt/swift/usr/share/wasi-sysroot",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "towercore",
+      "-driver-use-frontend-path",
+      "/opt/swift/usr/bin/swiftc"
+    ],
+    "TowerCorePackageDiscoveredTests" : [
+      "/opt/swift/usr/bin/swiftc",
+      "-module-name",
+      "TowerCorePackageDiscoveredTests",
+      "-package-name",
+      "towercore",
+      "-whole-module-optimization",
+      "-num-threads",
+      "4",
+      "-c",
+      "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.derived/TowerCoreTests.swift",
+      "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.derived/all-discovered-tests.swift",
+      "-I",
+      "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules",
+      "-target",
+      "wasm32-unknown-wasi",
+      "-O",
+      "-enable-testing",
+      "-j4",
+      "-DSWIFT_PACKAGE",
+      "-module-cache-path",
+      "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-sdk",
+      "/opt/swift/usr/share/wasi-sysroot",
+      "-g",
+      "-I/opt/swift/usr/lib/swift_static/wasi",
+      "-static-stdlib",
+      "-Osize",
+      "-Xclang-linker",
+      "-mexec-model=reactor",
+      "-Xcc",
+      "--sysroot",
+      "-Xcc",
+      "/opt/swift/usr/share/wasi-sysroot",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "towercore",
+      "-driver-use-frontend-path",
+      "/opt/swift/usr/bin/swiftc"
+    ],
+    "TowerCorePackageTests" : [
+      "/opt/swift/usr/bin/swiftc",
+      "-module-name",
+      "TowerCorePackageTests",
+      "-package-name",
+      "towercore",
+      "-whole-module-optimization",
+      "-num-threads",
+      "4",
+      "-c",
+      "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.derived/runner.swift",
+      "-I",
+      "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules",
+      "-target",
+      "wasm32-unknown-wasi",
+      "-O",
+      "-enable-testing",
+      "-j4",
+      "-DSWIFT_PACKAGE",
+      "-module-cache-path",
+      "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-sdk",
+      "/opt/swift/usr/share/wasi-sysroot",
+      "-g",
+      "-I/opt/swift/usr/lib/swift_static/wasi",
+      "-static-stdlib",
+      "-Osize",
+      "-Xclang-linker",
+      "-mexec-model=reactor",
+      "-Xcc",
+      "--sysroot",
+      "-Xcc",
+      "/opt/swift/usr/share/wasi-sysroot",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "towercore",
+      "-driver-use-frontend-path",
+      "/opt/swift/usr/bin/swiftc"
+    ],
+    "TowerCoreTests" : [
+      "/opt/swift/usr/bin/swiftc",
+      "-module-name",
+      "TowerCoreTests",
+      "-package-name",
+      "towercore",
+      "-whole-module-optimization",
+      "-num-threads",
+      "4",
+      "-c",
+      "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/AlignmentTests.swift",
+      "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/OperationalTests.swift",
+      "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyHarness.swift",
+      "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyTests.swift",
+      "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/TowerTests.swift",
+      "-I",
+      "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules",
+      "-target",
+      "wasm32-unknown-wasi",
+      "-index-store-path",
+      "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/index/store",
+      "-O",
+      "-enable-testing",
+      "-j4",
+      "-DSWIFT_PACKAGE",
+      "-module-cache-path",
+      "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-swift-version",
+      "6",
+      "-sdk",
+      "/opt/swift/usr/share/wasi-sysroot",
+      "-g",
+      "-I/opt/swift/usr/lib/swift_static/wasi",
+      "-static-stdlib",
+      "-Osize",
+      "-Xclang-linker",
+      "-mexec-model=reactor",
+      "-Xcc",
+      "--sysroot",
+      "-Xcc",
+      "/opt/swift/usr/share/wasi-sysroot",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "towercore",
+      "-driver-use-frontend-path",
+      "/opt/swift/usr/bin/swiftc"
+    ],
+    "TowerWeb" : [
+      "/opt/swift/usr/bin/swiftc",
+      "-module-name",
+      "TowerWeb",
+      "-package-name",
+      "towercore",
+      "-whole-module-optimization",
+      "-num-threads",
+      "4",
+      "-c",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/Bridge.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/main.swift",
+      "-I",
+      "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules",
+      "-target",
+      "wasm32-unknown-wasi",
+      "-O",
+      "-j4",
+      "-DSWIFT_PACKAGE",
+      "-module-cache-path",
+      "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/ModuleCache",
+      "-parseable-output",
+      "-swift-version",
+      "6",
+      "-sdk",
+      "/opt/swift/usr/share/wasi-sysroot",
+      "-g",
+      "-I/opt/swift/usr/lib/swift_static/wasi",
+      "-static-stdlib",
+      "-Osize",
+      "-Xclang-linker",
+      "-mexec-model=reactor",
+      "-Xcc",
+      "--sysroot",
+      "-Xcc",
+      "/opt/swift/usr/share/wasi-sysroot",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "towercore",
+      "-driver-use-frontend-path",
+      "/opt/swift/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "TowerCore" : [
+
+    ],
+    "TowerCorePackageDiscoveredTests" : [
+      "TowerCoreTests",
+      "TowerCore"
+    ],
+    "TowerCorePackageTests" : [
+      "TowerCorePackageDiscoveredTests",
+      "TowerCoreTests",
+      "TowerCore"
+    ],
+    "TowerCoreTests" : [
+      "TowerCore"
+    ],
+    "TowerWeb" : [
+      "TowerCore"
+    ]
+  },
+  "testDiscoveryCommands" : {
+    "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.derived/all-discovered-tests.swift" : {
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/AlignmentTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/OperationalTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/PropertyHarness.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/PropertyTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/TowerTests.swift.o"
+        }
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.derived/TowerCoreTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.derived/all-discovered-tests.swift"
+        }
+      ]
+    }
+  },
+  "testEntryPointCommands" : {
+    "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.derived/runner.swift" : {
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/Modules/TowerCorePackageDiscoveredTests.swiftmodule"
+        }
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.derived/runner.swift"
+        }
+      ]
+    }
+  },
+  "writeCommands" : {
+    "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Assess.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Command.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Compat.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Domain.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Event.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Graph.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/JSONValue.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Migration.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Queries.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/SampleHistory.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/State.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Support.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Tower.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/V1Ingest.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Validation.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Workload.swift"
+        }
+      ],
+      "outputFilePath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/sources"
+    },
+    "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.derived/TowerCoreTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.derived/all-discovered-tests.swift"
+        }
+      ],
+      "outputFilePath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/sources"
+    },
+    "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.derived/runner.swift"
+        }
+      ],
+      "outputFilePath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.build/sources"
+    },
+    "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Assess.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Command.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Compat.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Domain.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Event.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Graph.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/JSONValue.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Migration.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Queries.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/SampleHistory.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/State.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Support.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Tower.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/V1Ingest.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Validation.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Workload.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/TowerCoreTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageDiscoveredTests.build/all-discovered-tests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.build/runner.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/AlignmentTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/OperationalTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/PropertyHarness.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/PropertyTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/TowerTests.swift.o"
+        }
+      ],
+      "outputFilePath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.product/Objects.LinkFileList"
+    },
+    "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/AlignmentTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/OperationalTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyHarness.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/TowerTests.swift"
+        }
+      ],
+      "outputFilePath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCoreTests.build/sources"
+    },
+    "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/Bridge.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerWeb/main.swift"
+        }
+      ],
+      "outputFilePath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/sources"
+    },
+    "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Assess.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Command.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Compat.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Domain.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Event.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Graph.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/JSONValue.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Migration.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Queries.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/SampleHistory.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/State.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Support.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Tower.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/V1Ingest.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Validation.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCore.build/Workload.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/Bridge.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.build/main.swift.o"
+        }
+      ],
+      "outputFilePath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerWeb.product/Objects.LinkFileList"
+    },
+    "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/swift-version-6A52383ED409C6A7.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/opt/swift/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/swift-version-6A52383ED409C6A7.txt"
+    }
+  }
+}

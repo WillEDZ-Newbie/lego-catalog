@@ -1,0 +1,12 @@
+{
+  "": {
+    "dependencies": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.build/TowerCorePackageTests.d",
+    "object": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.build/TowerCorePackageTests.o",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.build/master.swiftdeps"
+  },
+  "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.derived/runner.swift": {
+    "object": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.build/runner.swift.o",
+    "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.build/runner~partial.swiftmodule",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/wasm32-unknown-wasi/release/TowerCorePackageTests.build/runner.swiftdeps"
+  }
+}
