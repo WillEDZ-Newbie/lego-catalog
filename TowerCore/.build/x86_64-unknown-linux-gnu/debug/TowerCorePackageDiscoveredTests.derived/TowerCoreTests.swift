@@ -45,6 +45,29 @@ fileprivate extension PropertyTests {
     ]
 }
 
+fileprivate extension QueryAndWorkloadTests {
+    @available(*, deprecated, message: "Not actually deprecated. Marked as deprecated to allow inclusion of deprecated tests (which test deprecated functionality) without warnings")
+    static nonisolated(unsafe) let __allTests__QueryAndWorkloadTests = [
+        ("testFluentQueries", testFluentQueries),
+        ("testWorkloadReport", testWorkloadReport)
+    ]
+}
+
+fileprivate extension SampleHistoryTests {
+    @available(*, deprecated, message: "Not actually deprecated. Marked as deprecated to allow inclusion of deprecated tests (which test deprecated functionality) without warnings")
+    static nonisolated(unsafe) let __allTests__SampleHistoryTests = [
+        ("testDeterministicAndSubstantial", testDeterministicAndSubstantial)
+    ]
+}
+
+fileprivate extension SchemaMigrationTests {
+    @available(*, deprecated, message: "Not actually deprecated. Marked as deprecated to allow inclusion of deprecated tests (which test deprecated functionality) without warnings")
+    static nonisolated(unsafe) let __allTests__SchemaMigrationTests = [
+        ("testUnsupportedFutureVersionRejected", testUnsupportedFutureVersionRejected),
+        ("testV0PayloadMigratesForward", testV0PayloadMigratesForward)
+    ]
+}
+
 fileprivate extension TowerLifecycleTests {
     @available(*, deprecated, message: "Not actually deprecated. Marked as deprecated to allow inclusion of deprecated tests (which test deprecated functionality) without warnings")
     static nonisolated(unsafe) let __allTests__TowerLifecycleTests = [
@@ -56,6 +79,13 @@ fileprivate extension TowerLifecycleTests {
         ("testRestingStatesNeedDeliberateExits", testRestingStatesNeedDeliberateExits)
     ]
 }
+
+fileprivate extension V1IngestTests {
+    @available(*, deprecated, message: "Not actually deprecated. Marked as deprecated to allow inclusion of deprecated tests (which test deprecated functionality) without warnings")
+    static nonisolated(unsafe) let __allTests__V1IngestTests = [
+        ("testIngestIsNonDestructiveAndComplete", testIngestIsNonDestructiveAndComplete)
+    ]
+}
 @available(*, deprecated, message: "Not actually deprecated. Marked as deprecated to allow inclusion of deprecated tests (which test deprecated functionality) without warnings")
 func __TowerCoreTests__allTests() -> [XCTestCaseEntry] {
     return [
@@ -63,6 +93,10 @@ func __TowerCoreTests__allTests() -> [XCTestCaseEntry] {
         testCase(CompatFacadeTests.__allTests__CompatFacadeTests),
         testCase(ImportValidationTests.__allTests__ImportValidationTests),
         testCase(PropertyTests.__allTests__PropertyTests),
-        testCase(TowerLifecycleTests.__allTests__TowerLifecycleTests)
+        testCase(QueryAndWorkloadTests.__allTests__QueryAndWorkloadTests),
+        testCase(SampleHistoryTests.__allTests__SampleHistoryTests),
+        testCase(SchemaMigrationTests.__allTests__SchemaMigrationTests),
+        testCase(TowerLifecycleTests.__allTests__TowerLifecycleTests),
+        testCase(V1IngestTests.__allTests__V1IngestTests)
     ]
 }

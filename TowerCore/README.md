@@ -62,6 +62,31 @@ mirrors the approved core's call shape — `createProject`, `completeProject(_:a
 `completeMilestone`, `archive`, `reopen`, `reactivate` — including v1's
 blank-rationale rejection, so call sites written for v1 map one-to-one.
 
+## Operational surface
+
+Fully operational engine, feature-parity with the approved core:
+
+- **Queries**: `tower.query().blocked() / readyToStart() / needingReview() /
+  needingDecision() / dueSoon / overdue / stale / ownedBy / dependingOn / withOpenRisks` …
+- **Workload**: `tower.workload(at:)` — per-owner load, review/blocker queues,
+  milestones due soon, configurable overload flags.
+- **Sample history**: `SampleHistory.standard(now:)` — a deterministic ~35-project
+  portfolio built purely through guarded commands, inside the package.
+- **Schema migration**: versioned import pipeline (`SchemaSteps`), v0→v1 step tested.
+- **v1 ingestion** (`V1Ingest.ingest(v1Data:at:)`): reads a portfolio exported by the
+  approved core **without ever touching the source** and builds TowerCore's own
+  event-history copy. Anything v1 permits that TowerCore's guarantees refuse is
+  represented honestly and **reported, never silently altered**: a cycle-closing
+  blocking edge is demoted to a non-blocking `informs` link (traced in the report),
+  a project completed past open guards becomes an **audited override** whose
+  rationale names the source facts. Bitemporal: source dates are `effectiveAt`,
+  ingestion time is `recordedAt`.
+
+  Proven against the real v1 synthetic export: 80/80 projects, exact status
+  parity, source byte-identical, exactly 2 adaptations — v1's two deliberate
+  pathological fixtures — and the copy re-imports through TowerCore's own
+  validated pipeline identically.
+
 ## Status
 
 Experimental companion to the approved core, aligned with the boundaries

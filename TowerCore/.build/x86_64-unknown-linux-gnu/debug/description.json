@@ -52,6 +52,18 @@
         },
         {
           "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Migration.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Queries.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/SampleHistory.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/State.swift"
         },
         {
@@ -64,7 +76,15 @@
         },
         {
           "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/V1Ingest.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Validation.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Workload.swift"
         },
         {
           "kind" : "file",
@@ -85,10 +105,15 @@
         "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Domain.swift.o",
         "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Event.swift.o",
         "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Graph.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Migration.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Queries.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/SampleHistory.swift.o",
         "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/State.swift.o",
         "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Support.swift.o",
         "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Tower.swift.o",
-        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Validation.swift.o"
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/V1Ingest.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Validation.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Workload.swift.o"
       ],
       "otherArguments" : [
         "-target",
@@ -145,6 +170,18 @@
         },
         {
           "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Migration.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Queries.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/SampleHistory.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/State.swift.o"
         },
         {
@@ -157,7 +194,15 @@
         },
         {
           "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/V1Ingest.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Validation.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Workload.swift.o"
         },
         {
           "kind" : "file",
@@ -172,10 +217,15 @@
         "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Domain.swift",
         "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Event.swift",
         "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Graph.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Migration.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Queries.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/SampleHistory.swift",
         "/home/user/lego-catalog/TowerCore/Sources/TowerCore/State.swift",
         "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Support.swift",
         "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Tower.swift",
-        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Validation.swift"
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/V1Ingest.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Validation.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Workload.swift"
       ],
       "tempsPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build",
       "wholeModuleOptimization" : false
@@ -347,6 +397,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/OperationalTests.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyHarness.swift"
         },
         {
@@ -375,6 +429,7 @@
       "moduleOutputPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules/TowerCoreTests.swiftmodule",
       "objects" : [
         "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/AlignmentTests.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/OperationalTests.swift.o",
         "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/PropertyHarness.swift.o",
         "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/PropertyTests.swift.o",
         "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/TowerTests.swift.o"
@@ -414,6 +469,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/OperationalTests.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/PropertyHarness.swift.o"
         },
         {
@@ -432,6 +491,7 @@
       "prepareForIndexing" : false,
       "sources" : [
         "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/AlignmentTests.swift",
+        "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/OperationalTests.swift",
         "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyHarness.swift",
         "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyTests.swift",
         "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/TowerTests.swift"
@@ -458,10 +518,15 @@
       "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Domain.swift",
       "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Event.swift",
       "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Graph.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Migration.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Queries.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/SampleHistory.swift",
       "/home/user/lego-catalog/TowerCore/Sources/TowerCore/State.swift",
       "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Support.swift",
       "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Tower.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/V1Ingest.swift",
       "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Validation.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Workload.swift",
       "-I",
       "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules",
       "-target",
@@ -576,6 +641,7 @@
       "-incremental",
       "-c",
       "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/AlignmentTests.swift",
+      "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/OperationalTests.swift",
       "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyHarness.swift",
       "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyTests.swift",
       "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/TowerTests.swift",
@@ -633,6 +699,10 @@
         {
           "kind" : "file",
           "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/AlignmentTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/OperationalTests.swift.o"
         },
         {
           "kind" : "file",
@@ -709,6 +779,18 @@
         },
         {
           "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Migration.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Queries.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/SampleHistory.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/State.swift"
         },
         {
@@ -721,7 +803,15 @@
         },
         {
           "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/V1Ingest.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Validation.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Workload.swift"
         }
       ],
       "outputFilePath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/sources"
@@ -791,6 +881,18 @@
         },
         {
           "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Migration.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Queries.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/SampleHistory.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/State.swift.o"
         },
         {
@@ -807,7 +909,15 @@
         },
         {
           "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/V1Ingest.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Validation.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Workload.swift.o"
         },
         {
           "kind" : "file",
@@ -832,6 +942,10 @@
         {
           "kind" : "file",
           "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/AlignmentTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/OperationalTests.swift.o"
         },
         {
           "kind" : "file",
@@ -862,6 +976,10 @@
         {
           "kind" : "file",
           "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/AlignmentTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/OperationalTests.swift"
         },
         {
           "kind" : "file",

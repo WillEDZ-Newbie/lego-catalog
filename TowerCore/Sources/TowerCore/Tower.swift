@@ -341,10 +341,24 @@ extension Tower {
     }
 
     public static func imported(from data: Data) throws -> Tower {
+        // Read the version first so older payloads can be migrated forward
+        // on their raw JSON before decoding.
+        var payload = data
+        if let raw = try? JSONSerialization.jsonObject(with: data),
+           var dict = raw as? [String: Any] {
+            let version = dict["schemaVersion"] as? Int ?? 0
+            guard SchemaSteps.supportedVersions.contains(version) else {
+                throw TowerCodecError.unsupportedSchemaVersion(version)
+            }
+            if version < TowerExport.currentSchemaVersion {
+                dict = try SchemaSteps.migrate(dict, from: version)
+                payload = try JSONSerialization.data(withJSONObject: dict)
+            }
+        }
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         let export: TowerExport
-        do { export = try decoder.decode(TowerExport.self, from: data) }
+        do { export = try decoder.decode(TowerExport.self, from: payload) }
         catch { throw TowerCodecError.malformed(String(describing: error)) }
         guard export.schemaVersion == TowerExport.currentSchemaVersion else {
             throw TowerCodecError.unsupportedSchemaVersion(export.schemaVersion)
