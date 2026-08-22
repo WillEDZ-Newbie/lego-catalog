@@ -39,7 +39,32 @@ export/import identity, log integrity, permanent acyclicity, completion
 proven-or-audited, deliberate resting-state exits, sound and explained
 attention ranking, time-travel convergence.
 
+## Alignment with the LifeOS boundaries brief
+
+Checked against the canonical "Full System Explanation and Claude Boundaries"
+document, §3.1 required invariants:
+
+| # | Invariant | TowerCore |
+|---|---|---|
+| 1–2 | Completion only via dedicated operations | ✅ stronger: no generic setters exist at all |
+| 3 | Completion rejects open blockers/milestones without audited override | ✅ and the override rationale is `NonEmptyText` — blank is unconstructible |
+| 4 | Milestone completion enforces criteria, prerequisites, gates | ✅ |
+| 5 | Missing referenced gate ≠ approval | ✅ stronger: a dangling gate reference cannot be created |
+| 6 | Unique IDs; decision IDs never reused | ✅ |
+| 7 | Append-only history with audit events on every transition | ✅ the audit **is** the history; completion events carry their proof |
+| 8 | Import validates identities/references/invariants | ✅ guarded replay (`Tower.validated`) rejects tampered histories with precise violations |
+| 9 | Distinct cycles never collapsed | ✅ by prevention: the first cycle-closing event is rejected with its exact path, on `execute` and on import alike |
+| 10 | Missing/vague next actions → needs-definition | ✅ |
+
+§3.2 command/query separation holds structurally (commands = `execute`,
+queries = value-type projections). A **compatibility façade** (`Compat.swift`)
+mirrors the approved core's call shape — `createProject`, `completeProject(_:at:overrideRationale:)`,
+`completeMilestone`, `archive`, `reopen`, `reactivate` — including v1's
+blank-rationale rejection, so call sites written for v1 map one-to-one.
+
 ## Status
 
-Experimental companion to v1 — built to demonstrate the architecture ceiling.
-v1 remains the reviewed, client-facing deliverable.
+Experimental companion to the approved core, aligned with the boundaries
+brief and offered as an **architecture decision proposal** — adopting it is a
+decision for the owner and reviewer, not a default. The approved v1 core
+remains the client-facing deliverable.

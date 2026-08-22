@@ -57,6 +57,7 @@ public enum Rejection: Error, Equatable, Sendable, CustomStringConvertible {
     case blockerAlreadyResolved(BlockerID)
     case decisionNotActive(DecisionID)
     case decisionIDReused(DecisionID)
+    case blankOverrideRationale
 
     public var description: String {
         switch self {
@@ -81,6 +82,7 @@ public enum Rejection: Error, Equatable, Sendable, CustomStringConvertible {
         case .blockerAlreadyResolved(let id): return "blocker '\(id)' already resolved"
         case .decisionNotActive(let id): return "decision '\(id)' is not active"
         case .decisionIDReused(let id): return "decision id '\(id)' already used"
+        case .blankOverrideRationale: return "an override rationale must contain actual text"
         }
     }
 }

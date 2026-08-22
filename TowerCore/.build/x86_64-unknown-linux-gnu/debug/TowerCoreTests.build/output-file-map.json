@@ -2,6 +2,12 @@
   "": {
     "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/master.swiftdeps"
   },
+  "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/AlignmentTests.swift": {
+    "dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/AlignmentTests.d",
+    "object": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/AlignmentTests.swift.o",
+    "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/AlignmentTests~partial.swiftmodule",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/AlignmentTests.swiftdeps"
+  },
   "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyHarness.swift": {
     "dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/PropertyHarness.d",
     "object": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/PropertyHarness.swift.o",

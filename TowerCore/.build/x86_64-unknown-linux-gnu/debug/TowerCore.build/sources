@@ -1,8 +1,10 @@
 /home/user/lego-catalog/TowerCore/Sources/TowerCore/Assess.swift
 /home/user/lego-catalog/TowerCore/Sources/TowerCore/Command.swift
+/home/user/lego-catalog/TowerCore/Sources/TowerCore/Compat.swift
 /home/user/lego-catalog/TowerCore/Sources/TowerCore/Domain.swift
 /home/user/lego-catalog/TowerCore/Sources/TowerCore/Event.swift
 /home/user/lego-catalog/TowerCore/Sources/TowerCore/Graph.swift
 /home/user/lego-catalog/TowerCore/Sources/TowerCore/State.swift
 /home/user/lego-catalog/TowerCore/Sources/TowerCore/Support.swift
 /home/user/lego-catalog/TowerCore/Sources/TowerCore/Tower.swift
+/home/user/lego-catalog/TowerCore/Sources/TowerCore/Validation.swift

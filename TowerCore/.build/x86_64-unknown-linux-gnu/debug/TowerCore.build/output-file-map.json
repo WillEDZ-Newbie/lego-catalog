@@ -14,6 +14,12 @@
     "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Command~partial.swiftmodule",
     "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Command.swiftdeps"
   },
+  "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Compat.swift": {
+    "dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Compat.d",
+    "object": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Compat.swift.o",
+    "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Compat~partial.swiftmodule",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Compat.swiftdeps"
+  },
   "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Domain.swift": {
     "dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Domain.d",
     "object": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Domain.swift.o",
@@ -49,5 +55,11 @@
     "object": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Tower.swift.o",
     "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Tower~partial.swiftmodule",
     "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Tower.swiftdeps"
+  },
+  "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Validation.swift": {
+    "dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Validation.d",
+    "object": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Validation.swift.o",
+    "swiftmodule": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Validation~partial.swiftmodule",
+    "swift-dependencies": "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Validation.swiftdeps"
   }
 }

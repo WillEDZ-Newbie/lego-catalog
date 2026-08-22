@@ -349,6 +349,9 @@ extension Tower {
         guard export.schemaVersion == TowerExport.currentSchemaVersion else {
             throw TowerCodecError.unsupportedSchemaVersion(export.schemaVersion)
         }
-        return Tower.replay(export.events)
+        // Guarded replay: identities, references and structural invariants
+        // are re-checked; a history the guards would not have produced is
+        // rejected with precise violations, never silently repaired.
+        return try Tower.validated(export.events)
     }
 }
