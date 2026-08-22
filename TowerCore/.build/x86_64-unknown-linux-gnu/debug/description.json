@@ -1,0 +1,835 @@
+{
+  "builtTestProducts" : [
+    {
+      "binaryPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.xctest",
+      "packagePath" : "/home/user/lego-catalog/TowerCore",
+      "productName" : "TowerCorePackageTests"
+    }
+  ],
+  "copyCommands" : {
+
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+    "TowerCorePackageDiscoveredTests"
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.TowerCore-x86_64-unknown-linux-gnu-debug.module" : {
+      "executable" : "/opt/swift/usr/bin/swiftc",
+      "fileList" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/sources",
+      "importPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Assess.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Command.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Domain.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Event.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Graph.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/State.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Support.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Tower.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/swift-version-6A52383ED409C6A7.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "TowerCore",
+      "moduleOutputPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules/TowerCore.swiftmodule",
+      "objects" : [
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Assess.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Command.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Domain.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Event.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Graph.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/State.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Support.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Tower.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-unknown-linux-gnu",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j4",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-swift-version",
+        "6",
+        "-g",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "towercore",
+        "-Xcc",
+        "-fno-omit-frame-pointer"
+      ],
+      "outputFileMapPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Assess.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Command.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Domain.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Event.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Graph.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/State.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Support.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Tower.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules/TowerCore.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Assess.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Command.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Domain.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Event.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Graph.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/State.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Support.swift",
+        "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Tower.swift"
+      ],
+      "tempsPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.TowerCorePackageDiscoveredTests-x86_64-unknown-linux-gnu-debug.module" : {
+      "executable" : "/opt/swift/usr/bin/swiftc",
+      "fileList" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/sources",
+      "importPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.derived/TowerCoreTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.derived/all-discovered-tests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/swift-version-6A52383ED409C6A7.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules/TowerCoreTests.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "TowerCorePackageDiscoveredTests",
+      "moduleOutputPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules/TowerCorePackageDiscoveredTests.swiftmodule",
+      "objects" : [
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/TowerCoreTests.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/all-discovered-tests.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-unknown-linux-gnu",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j4",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-g",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "towercore",
+        "-Xcc",
+        "-fno-omit-frame-pointer"
+      ],
+      "outputFileMapPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/TowerCoreTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/all-discovered-tests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules/TowerCorePackageDiscoveredTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.derived/TowerCoreTests.swift",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.derived/all-discovered-tests.swift"
+      ],
+      "tempsPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.TowerCorePackageTests-x86_64-unknown-linux-gnu-debug.module" : {
+      "executable" : "/opt/swift/usr/bin/swiftc",
+      "fileList" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.build/sources",
+      "importPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.derived/runner.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/swift-version-6A52383ED409C6A7.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules/TowerCoreTests.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules/TowerCorePackageDiscoveredTests.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "TowerCorePackageTests",
+      "moduleOutputPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules/TowerCorePackageTests.swiftmodule",
+      "objects" : [
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.build/runner.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-unknown-linux-gnu",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j4",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-g",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "towercore",
+        "-Xcc",
+        "-fno-omit-frame-pointer"
+      ],
+      "outputFileMapPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.build/runner.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules/TowerCorePackageTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.derived/runner.swift"
+      ],
+      "tempsPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.TowerCoreTests-x86_64-unknown-linux-gnu-debug.module" : {
+      "executable" : "/opt/swift/usr/bin/swiftc",
+      "fileList" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/sources",
+      "importPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyHarness.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/TowerTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/swift-version-6A52383ED409C6A7.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules/TowerCore.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "TowerCoreTests",
+      "moduleOutputPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules/TowerCoreTests.swiftmodule",
+      "objects" : [
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/PropertyHarness.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/PropertyTests.swift.o",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/TowerTests.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-unknown-linux-gnu",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j4",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-swift-version",
+        "6",
+        "-g",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "towercore",
+        "-Xcc",
+        "-fno-omit-frame-pointer"
+      ],
+      "outputFileMapPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/PropertyHarness.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/PropertyTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/TowerTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules/TowerCoreTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyHarness.swift",
+        "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyTests.swift",
+        "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/TowerTests.swift"
+      ],
+      "tempsPath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build",
+      "wholeModuleOptimization" : false
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "TowerCore" : [
+      "/opt/swift/usr/bin/swiftc",
+      "-module-name",
+      "TowerCore",
+      "-package-name",
+      "towercore",
+      "-incremental",
+      "-c",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Assess.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Command.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Domain.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Event.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Graph.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/State.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Support.swift",
+      "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Tower.swift",
+      "-I",
+      "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "-target",
+      "x86_64-unknown-linux-gnu",
+      "-enable-batch-mode",
+      "-index-store-path",
+      "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j4",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-swift-version",
+      "6",
+      "-g",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "towercore",
+      "-Xcc",
+      "-fno-omit-frame-pointer",
+      "-driver-use-frontend-path",
+      "/opt/swift/usr/bin/swiftc"
+    ],
+    "TowerCorePackageDiscoveredTests" : [
+      "/opt/swift/usr/bin/swiftc",
+      "-module-name",
+      "TowerCorePackageDiscoveredTests",
+      "-package-name",
+      "towercore",
+      "-incremental",
+      "-c",
+      "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.derived/TowerCoreTests.swift",
+      "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.derived/all-discovered-tests.swift",
+      "-I",
+      "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "-target",
+      "x86_64-unknown-linux-gnu",
+      "-enable-batch-mode",
+      "-index-store-path",
+      "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j4",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-g",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "towercore",
+      "-Xcc",
+      "-fno-omit-frame-pointer",
+      "-driver-use-frontend-path",
+      "/opt/swift/usr/bin/swiftc"
+    ],
+    "TowerCorePackageTests" : [
+      "/opt/swift/usr/bin/swiftc",
+      "-module-name",
+      "TowerCorePackageTests",
+      "-package-name",
+      "towercore",
+      "-incremental",
+      "-c",
+      "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.derived/runner.swift",
+      "-I",
+      "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "-target",
+      "x86_64-unknown-linux-gnu",
+      "-enable-batch-mode",
+      "-index-store-path",
+      "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j4",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-g",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "towercore",
+      "-Xcc",
+      "-fno-omit-frame-pointer",
+      "-driver-use-frontend-path",
+      "/opt/swift/usr/bin/swiftc"
+    ],
+    "TowerCoreTests" : [
+      "/opt/swift/usr/bin/swiftc",
+      "-module-name",
+      "TowerCoreTests",
+      "-package-name",
+      "towercore",
+      "-incremental",
+      "-c",
+      "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyHarness.swift",
+      "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyTests.swift",
+      "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/TowerTests.swift",
+      "-I",
+      "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "-target",
+      "x86_64-unknown-linux-gnu",
+      "-enable-batch-mode",
+      "-index-store-path",
+      "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j4",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-swift-version",
+      "6",
+      "-g",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "towercore",
+      "-Xcc",
+      "-fno-omit-frame-pointer",
+      "-driver-use-frontend-path",
+      "/opt/swift/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "TowerCore" : [
+
+    ],
+    "TowerCorePackageDiscoveredTests" : [
+      "TowerCoreTests",
+      "TowerCore"
+    ],
+    "TowerCorePackageTests" : [
+      "TowerCorePackageDiscoveredTests",
+      "TowerCoreTests",
+      "TowerCore"
+    ],
+    "TowerCoreTests" : [
+      "TowerCore"
+    ]
+  },
+  "testDiscoveryCommands" : {
+    "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.derived/all-discovered-tests.swift" : {
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/PropertyHarness.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/PropertyTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/TowerTests.swift.o"
+        }
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.derived/TowerCoreTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.derived/all-discovered-tests.swift"
+        }
+      ]
+    }
+  },
+  "testEntryPointCommands" : {
+    "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.derived/runner.swift" : {
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/Modules/TowerCorePackageDiscoveredTests.swiftmodule"
+        }
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.derived/runner.swift"
+        }
+      ]
+    }
+  },
+  "writeCommands" : {
+    "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Assess.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Command.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Domain.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Event.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Graph.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/State.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Support.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Sources/TowerCore/Tower.swift"
+        }
+      ],
+      "outputFilePath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/sources"
+    },
+    "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.derived/TowerCoreTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.derived/all-discovered-tests.swift"
+        }
+      ],
+      "outputFilePath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/sources"
+    },
+    "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.derived/runner.swift"
+        }
+      ],
+      "outputFilePath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.build/sources"
+    },
+    "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Assess.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Command.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Domain.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Event.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Graph.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/State.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Support.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/Tower.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCore.build/TowerCore.swiftmodule.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/TowerCorePackageDiscoveredTests.swiftmodule.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/TowerCoreTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageDiscoveredTests.build/all-discovered-tests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.build/TowerCorePackageTests.swiftmodule.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.build/runner.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/PropertyHarness.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/PropertyTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/TowerCoreTests.swiftmodule.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/TowerTests.swift.o"
+        }
+      ],
+      "outputFilePath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCorePackageTests.product/Objects.LinkFileList"
+    },
+    "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyHarness.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/PropertyTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/home/user/lego-catalog/TowerCore/Tests/TowerCoreTests/TowerTests.swift"
+        }
+      ],
+      "outputFilePath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/TowerCoreTests.build/sources"
+    },
+    "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/swift-version-6A52383ED409C6A7.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/opt/swift/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/home/user/lego-catalog/TowerCore/.build/x86_64-unknown-linux-gnu/debug/swift-version-6A52383ED409C6A7.txt"
+    }
+  }
+}
